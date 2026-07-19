@@ -1,88 +1,102 @@
 import React from 'react';
-import logoDark from '../assets/LogoDarkHorizontal tr.png';
-import logoWhite from '../assets/LogoWhiteHorizontal tr.png';
+import logo from '../assets/Logo.png';
 
 interface HeaderProps {
   cartCount: number;
   onCartClick: () => void;
   isHeroVisible: boolean;
+  currentView: 'landing' | 'products' | 'pdp';
+  onNavigate: (view: 'landing' | 'products') => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick, isHeroVisible }) => {
-  // If hero is visible, header is transparent with white text and white logo.
-  // When scrolled past hero, it becomes white with dark text and dark logo.
-  const isDarkBg = isHeroVisible;
+export const Header: React.FC<HeaderProps> = ({
+  cartCount,
+  onCartClick,
+  isHeroVisible,
+  currentView,
+  onNavigate,
+}) => {
+  // Transparent over the Hero. Translucent dark elsewhere.
+  const isOverHero = currentView === 'landing' && isHeroVisible;
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isDarkBg
-          ? 'bg-transparent text-brand-light border-b border-transparent py-6'
-          : 'bg-brand-light/90 backdrop-blur-md text-brand-dark border-b border-brand-dark/10 py-4 shadow-sm'
+        isOverHero
+          ? 'bg-transparent text-white border-b border-transparent py-6'
+          : 'bg-brand-dark/90 backdrop-blur-md text-brand-light border-b border-brand-light/10 py-4 shadow-sm'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         
         {/* Navigation Links (Left) */}
-        <nav className="hidden md:flex items-center space-x-8 text-xs font-display uppercase tracking-widest font-medium">
-          <a
-            href="#shop"
-            className="hover:opacity-60 transition-opacity relative group py-2"
+        <nav className="hidden md:flex items-center space-x-8 text-xs font-display uppercase tracking-widest font-semibold text-brand-light">
+          <button
+            onClick={() => onNavigate('products')}
+            className={`hover:opacity-60 transition-opacity relative group py-2 cursor-pointer ${
+              currentView === 'products' ? 'opacity-100 font-bold' : 'opacity-85'
+            }`}
           >
             Shop
-            <span className={`absolute bottom-0 left-0 w-full h-[1px] ${isDarkBg ? 'bg-brand-light' : 'bg-brand-dark'} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left`}></span>
-          </a>
-          <a
-            href="#fabric"
-            className="hover:opacity-60 transition-opacity relative group py-2"
+            <span className={`absolute bottom-0 left-0 w-full h-[1px] bg-brand-light transform ${currentView === 'products' ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100 transition-transform duration-300 origin-left`}></span>
+          </button>
+          
+          <button
+            onClick={() => {
+              onNavigate('landing');
+              setTimeout(() => {
+                const specSection = document.getElementById('fabric');
+                if (specSection) specSection.scrollIntoView({ behavior: 'smooth' });
+              }, 100);
+            }}
+            className="hover:opacity-60 transition-opacity relative group py-2 cursor-pointer opacity-85"
           >
             Fabric
-            <span className={`absolute bottom-0 left-0 w-full h-[1px] ${isDarkBg ? 'bg-brand-light' : 'bg-brand-dark'} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left`}></span>
-          </a>
-          <a
-            href="#about"
-            className="hover:opacity-60 transition-opacity relative group py-2"
+            <span className="absolute bottom-0 left-0 w-full h-[1px] bg-brand-light transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+          </button>
+
+          <button
+            onClick={() => {
+              onNavigate('landing');
+              setTimeout(() => {
+                const footerSection = document.querySelector('footer');
+                if (footerSection) footerSection.scrollIntoView({ behavior: 'smooth' });
+              }, 100);
+            }}
+            className="hover:opacity-60 transition-opacity relative group py-2 cursor-pointer opacity-85"
           >
             About
-            <span className={`absolute bottom-0 left-0 w-full h-[1px] ${isDarkBg ? 'bg-brand-light' : 'bg-brand-dark'} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left`}></span>
-          </a>
+            <span className="absolute bottom-0 left-0 w-full h-[1px] bg-brand-light transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+          </button>
         </nav>
 
         {/* Mobile Menu Icon (Left) */}
         <div className="md:hidden flex items-center">
-          <button className="focus:outline-none hover:opacity-60 transition-opacity" aria-label="Menu">
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="1.5"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
+          <button
+            onClick={() => onNavigate(currentView === 'landing' ? 'products' : 'landing')}
+            className="focus:outline-none hover:opacity-60 transition-opacity cursor-pointer text-xs font-display uppercase tracking-widest font-semibold text-brand-light"
+          >
+            {currentView === 'landing' ? 'Shop' : 'Home'}
           </button>
         </div>
 
-        {/* Logo (Center) */}
+        {/* Logo (Center) - Dynamic logo loading exclusively from Logo.png */}
         <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center">
-          <a href="#" className="flex items-center">
+          <button onClick={() => onNavigate('landing')} className="flex items-center cursor-pointer focus:outline-none">
             <img
-              src={isDarkBg ? logoWhite : logoDark}
+              src={logo}
               alt="axivers"
               className="h-7 sm:h-8 w-auto object-contain transition-all duration-300"
             />
-          </a>
+          </button>
         </div>
 
         {/* Shopping Cart & Actions (Right) */}
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-6 text-brand-light">
+          {/* Cart Icon */}
           <button
             onClick={onCartClick}
-            className="relative flex items-center focus:outline-none hover:opacity-60 transition-opacity py-2"
+            className="relative flex items-center focus:outline-none hover:opacity-60 transition-opacity py-2 cursor-pointer"
             aria-label="Open Cart"
           >
             <svg
@@ -99,11 +113,7 @@ export const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick, isHeroVi
               />
             </svg>
             <span
-              className={`absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center rounded-none text-[9px] font-bold font-sans transition-all duration-300 ${
-                isDarkBg
-                  ? 'bg-brand-light text-brand-dark'
-                  : 'bg-brand-dark text-brand-light'
-              }`}
+              className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center rounded-none text-[9px] font-bold font-sans bg-brand-light text-brand-dark transition-all duration-300"
             >
               {cartCount}
             </span>

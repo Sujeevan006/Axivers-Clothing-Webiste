@@ -1,6 +1,5 @@
-@import "tailwindcss";
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
 
 @theme {
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -75,5 +74,10 @@
 /* Utilities for visual presentation */
 .text-stroke {
   -webkit-text-stroke: 1px var(--color-brand-dark);
+  color: transparent;
+}
+
+.text-stroke-white {
+  -webkit-text-stroke: 1px var(--color-brand-light);
   color: transparent;
 }
