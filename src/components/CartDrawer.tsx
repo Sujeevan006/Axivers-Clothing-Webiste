@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface CartItem {
   id: string;
@@ -24,6 +24,25 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   onUpdateQuantity,
   onRemoveItem,
 }) => {
+  const [shouldRender, setShouldRender] = useState(isOpen);
+  const [isTransitioned, setIsTransitioned] = useState(isOpen);
+
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+      const timer = setTimeout(() => {
+        setIsTransitioned(true);
+      }, 10);
+      return () => clearTimeout(timer);
+    } else {
+      setIsTransitioned(false);
+      const timer = setTimeout(() => {
+        setShouldRender(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const shippingFee = subtotal > 10000 ? 0 : 350;
   const total = subtotal === 0 ? 0 : subtotal + shippingFee;
@@ -31,13 +50,13 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   return (
     <div
       className={`fixed inset-0 z-50 overflow-hidden ${
-        isOpen ? 'visible pointer-events-auto' : 'invisible pointer-events-none'
+        shouldRender ? 'visible pointer-events-auto' : 'hidden pointer-events-none'
       }`}
     >
       {/* Backdrop overlay */}
       <div
         className={`absolute inset-0 bg-[#060606]/60 backdrop-blur-sm transition-opacity duration-300 ${
-          isOpen ? 'opacity-100' : 'opacity-0'
+          isTransitioned ? 'opacity-100' : 'opacity-0'
         }`}
         onClick={onClose}
       />
@@ -45,7 +64,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
       {/* Cart Panel */}
       <div
         className={`absolute top-0 right-0 h-full w-full max-w-md bg-brand-light text-brand-dark flex flex-col transition-all duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0 shadow-2xl' : 'translate-x-full shadow-none'
+          isTransitioned ? 'translate-x-0 shadow-2xl' : 'translate-x-full shadow-none'
         }`}
       >
         {/* Header */}

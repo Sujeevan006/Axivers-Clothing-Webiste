@@ -55,6 +55,7 @@
 
 /* Custom global rules for premium aesthetic */
 @layer base {
+  html,
   body {
     background-color: var(--color-brand-light);
     color: var(--color-brand-dark);
@@ -62,6 +63,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    max-width: 100%;
   }
 
   /* Selection styling */
