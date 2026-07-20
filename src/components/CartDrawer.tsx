@@ -30,8 +30,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
   return (
     <div
-      className={`fixed inset-0 z-50 transition-visibility duration-300 ${
-        isOpen ? 'visible' : 'invisible'
+      className={`fixed inset-0 z-50 overflow-hidden ${
+        isOpen ? 'visible pointer-events-auto' : 'invisible pointer-events-none'
       }`}
     >
       {/* Backdrop overlay */}
@@ -44,8 +44,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
       {/* Cart Panel */}
       <div
-        className={`absolute top-0 right-0 h-full w-full max-w-md bg-brand-light text-brand-dark shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
+        className={`absolute top-0 right-0 h-full w-full max-w-md bg-brand-light text-brand-dark flex flex-col transition-all duration-300 ease-in-out ${
+          isOpen ? 'translate-x-0 shadow-2xl' : 'translate-x-full shadow-none'
         }`}
       >
         {/* Header */}
