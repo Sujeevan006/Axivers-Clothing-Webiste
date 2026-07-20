@@ -90,7 +90,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               </p>
               <button
                 onClick={onClose}
-                className="mt-6 px-6 py-3 bg-brand-dark text-brand-light text-xs font-display uppercase tracking-widest font-semibold hover:opacity-95 transition-opacity"
+                className="mt-6 px-6 py-3 bg-brand-dark text-brand-light text-xs font-display uppercase tracking-widest font-semibold hover:opacity-95 transition-opacity rounded-md"
               >
                 Continue Shopping
               </button>
@@ -124,7 +124,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
                   {/* Quantity selector & Price */}
                   <div className="flex justify-between items-center mt-2">
-                    <div className="flex items-center border border-brand-dark/20">
+                    <div className="flex items-center border border-brand-dark/20 rounded-md overflow-hidden">
                       <button
                         onClick={() => onUpdateQuantity(item.id, item.size, item.quantity - 1)}
                         className="px-2 py-1 text-xs hover:bg-brand-dark/5 transition-colors focus:outline-none cursor-pointer"
@@ -180,7 +180,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             {/* Checkout Action Button */}
             <button
               onClick={() => alert('Proceeding to Checkout with secure gateway... (Mock Checkout)')}
-              className="w-full py-4 bg-brand-dark text-brand-light text-xs font-display uppercase tracking-widest font-bold border border-brand-dark hover:bg-transparent hover:text-brand-dark transition-all duration-300 rounded-none cursor-pointer text-center"
+              className="w-full py-4 bg-brand-dark text-brand-light text-xs font-display uppercase tracking-widest font-bold border border-brand-dark hover:bg-transparent hover:text-brand-dark transition-all duration-300 rounded-md cursor-pointer text-center"
             >
               Proceed to Checkout
             </button>

@@ -7,7 +7,11 @@ interface PDPProps {
   onBackToShop: () => void;
 }
 
-export const PDP: React.FC<PDPProps> = ({ product, onAddToCart, onBackToShop }) => {
+export const PDP: React.FC<PDPProps> = ({
+  product,
+  onAddToCart,
+  onBackToShop,
+}) => {
   const [selectedSize, setSelectedSize] = useState<string>('M');
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
   const [isAdding, setIsAdding] = useState<boolean>(false);
@@ -45,20 +49,28 @@ export const PDP: React.FC<PDPProps> = ({ product, onAddToCart, onBackToShop }) 
   return (
     <section className="py-32 bg-brand-dark text-brand-light px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        
         {/* Back navigation button */}
         <button
           onClick={onBackToShop}
           className="group flex items-center space-x-2 text-[10px] uppercase tracking-[0.2em] font-display font-bold mb-8 hover:opacity-70 transition-opacity focus:outline-none cursor-pointer text-brand-light"
         >
-          <svg className="w-3 h-3 transform transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
+          <svg
+            className="w-3 h-3 transform transition-transform group-hover:-translate-x-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2.5"
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
           <span>Back to Collection</span>
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          
           {/* Left Column: Image Gallery */}
           <div className="lg:col-span-7 grid grid-cols-12 gap-4">
             {/* Main Large Image Display */}
@@ -73,14 +85,14 @@ export const PDP: React.FC<PDPProps> = ({ product, onAddToCart, onBackToShop }) 
                 {product.categoryLabel}
               </span>
             </div>
-            
+
             {/* Thumbnail Track */}
             <div className="col-span-12 flex gap-4 mt-2">
               {product.images.map((img, idx) => (
                 <button
                   key={idx}
                   onClick={() => setActiveImageIndex(idx)}
-                  className={`flex-1 aspect-square bg-zinc-950 border cursor-pointer overflow-hidden transition-all duration-300 relative ${
+                  className={`flex-1 aspect-square bg-zinc-950 border cursor-pointer overflow-hidden transition-all duration-300 rounded-md relative ${
                     activeImageIndex === idx
                       ? 'border-brand-light opacity-100 ring-1 ring-brand-light'
                       : 'border-brand-light/10 opacity-70 hover:opacity-100'
@@ -98,26 +110,37 @@ export const PDP: React.FC<PDPProps> = ({ product, onAddToCart, onBackToShop }) 
 
           {/* Right Column: Product Actions & Details */}
           <div className="lg:col-span-5 flex flex-col justify-start">
-            
             {/* Breadcrumbs */}
             <div className="flex items-center space-x-2 text-[10px] uppercase tracking-wider text-brand-light/50 mb-4 font-display">
-              <button onClick={onBackToShop} className="hover:text-brand-light transition-colors">axivers</button>
+              <button
+                onClick={onBackToShop}
+                className="hover:text-brand-light transition-colors"
+              >
+                axivers
+              </button>
               <span>/</span>
-              <button onClick={onBackToShop} className="hover:text-brand-light transition-colors">Apparel</button>
+              <button
+                onClick={onBackToShop}
+                className="hover:text-brand-light transition-colors"
+              >
+                Apparel
+              </button>
               <span>/</span>
-              <span className="text-brand-light font-semibold">{product.name}</span>
+              <span className="text-brand-light font-semibold">
+                {product.name}
+              </span>
             </div>
 
             {/* Product Header */}
             <h2 className="text-3xl sm:text-4xl font-display font-semibold tracking-tight mb-2">
               {product.name}
             </h2>
-            
+
             {/* Price */}
-            <div className="text-lg font-display font-medium tracking-wider mb-6">
+            <div className="text-2xl font-display font-bold mt-2 mb-6">
               LKR {product.price.toLocaleString()}
             </div>
-            
+
             <hr className="border-brand-light/10 mb-6" />
 
             {/* Description */}
@@ -128,18 +151,20 @@ export const PDP: React.FC<PDPProps> = ({ product, onAddToCart, onBackToShop }) 
             {/* Size Selector */}
             <div className="mb-8">
               <div className="flex justify-between items-center mb-3">
-                <span className="text-xs uppercase tracking-widest font-display font-semibold">Select Size</span>
+                <span className="text-xs uppercase tracking-widest font-display font-semibold">
+                  Select Size
+                </span>
                 <span className="text-xs text-brand-light/50 underline cursor-pointer hover:text-brand-light transition-colors font-display">
                   Size Guide
                 </span>
               </div>
-              
+
               <div className="grid grid-cols-4 gap-3">
                 {sizes.map((size) => (
                   <button
                     key={size}
                     onClick={() => setSelectedSize(size)}
-                    className={`py-3.5 border text-xs font-display font-semibold tracking-wider transition-all duration-300 rounded-none cursor-pointer ${
+                    className={`py-3.5 border text-xs font-display font-semibold tracking-wider transition-all duration-300 rounded-md cursor-pointer ${
                       selectedSize === size
                         ? 'bg-brand-light text-brand-dark border-brand-light'
                         : 'bg-transparent text-brand-light border-brand-light/20 hover:border-brand-light'
@@ -155,7 +180,7 @@ export const PDP: React.FC<PDPProps> = ({ product, onAddToCart, onBackToShop }) 
             <button
               onClick={handleAddToCart}
               disabled={isAdding}
-              className={`w-full py-4 text-xs font-display uppercase tracking-widest font-bold border transition-all duration-300 rounded-none cursor-pointer flex items-center justify-center gap-2 mb-8 ${
+              className={`w-full py-4 text-xs font-display uppercase tracking-widest font-bold border transition-all duration-300 rounded-md cursor-pointer flex items-center justify-center gap-2 mb-8 ${
                 addedSuccess
                   ? 'bg-emerald-600 text-white border-emerald-600'
                   : 'bg-brand-light text-brand-dark border-brand-light hover:bg-transparent hover:text-brand-light'
@@ -163,16 +188,41 @@ export const PDP: React.FC<PDPProps> = ({ product, onAddToCart, onBackToShop }) 
             >
               {isAdding ? (
                 <>
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-brand-dark" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-brand-dark"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
                   </svg>
                   Processing...
                 </>
               ) : addedSuccess ? (
                 <>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M5 13l4 4L19 7"
+                    />
                   </svg>
                   Added to Cart
                 </>
@@ -196,20 +246,39 @@ export const PDP: React.FC<PDPProps> = ({ product, onAddToCart, onBackToShop }) 
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </button>
-                
+
                 <div
                   className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                    openAccordion === 'fabric' ? 'max-h-60 pb-5 opacity-100' : 'max-h-0 opacity-0'
+                    openAccordion === 'fabric'
+                      ? 'max-h-60 pb-5 opacity-100'
+                      : 'max-h-0 opacity-0'
                   }`}
                 >
                   <div className="text-xs font-light text-brand-light/80 space-y-2 leading-relaxed tracking-wide">
-                    <p><strong>Composition:</strong> {product.fabricSpec}</p>
-                    <p><strong>Fit:</strong> Contemporary athletic fit. True to size with a clean structured drape.</p>
-                    <p><strong>Feel:</strong> Cloud-soft handfeel. Lightweight, highly breathable, and moisture-wicking for premium, all-day comfort.</p>
-                    <p><strong>Origin:</strong> Precision-knitted and crafted locally in Sri Lanka.</p>
+                    <p>
+                      <strong>Composition:</strong> {product.fabricSpec}
+                    </p>
+                    <p>
+                      <strong>Fit:</strong> Contemporary athletic fit. True to
+                      size with a clean structured drape.
+                    </p>
+                    <p>
+                      <strong>Feel:</strong> Cloud-soft handfeel. Lightweight,
+                      highly breathable, and moisture-wicking for premium,
+                      all-day comfort.
+                    </p>
+                    <p>
+                      <strong>Origin:</strong> Precision-knitted and crafted
+                      locally in Sri Lanka.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -227,17 +296,26 @@ export const PDP: React.FC<PDPProps> = ({ product, onAddToCart, onBackToShop }) 
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </button>
-                
+
                 <div
                   className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                    openAccordion === 'care' ? 'max-h-60 pb-5 opacity-100' : 'max-h-0 opacity-0'
+                    openAccordion === 'care'
+                      ? 'max-h-60 pb-5 opacity-100'
+                      : 'max-h-0 opacity-0'
                   }`}
                 >
                   <p className="text-xs font-light text-brand-light/80 leading-relaxed tracking-wide">
-                    {product.careInstructions} Machine wash cold (30°C) on a gentle cycle. Wash inside out with similar colors. Flat dry in shade. Do not iron prints or embroidery detail.
+                    {product.careInstructions} Machine wash cold (30°C) on a
+                    gentle cycle. Wash inside out with similar colors. Flat dry
+                    in shade. Do not iron prints or embroidery detail.
                   </p>
                 </div>
               </div>
@@ -255,24 +333,41 @@ export const PDP: React.FC<PDPProps> = ({ product, onAddToCart, onBackToShop }) 
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </button>
-                
+
                 <div
                   className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                    openAccordion === 'shipping' ? 'max-h-60 pb-5 opacity-100' : 'max-h-0 opacity-0'
+                    openAccordion === 'shipping'
+                      ? 'max-h-60 pb-5 opacity-100'
+                      : 'max-h-0 opacity-0'
                   }`}
                 >
                   <div className="text-xs font-light text-brand-light/80 space-y-2 leading-relaxed tracking-wide">
-                    <p><strong>Sri Lanka Delivery:</strong> 1-3 business days islandwide. Colombo next-day shipping available. LKR 350 flat shipping rate or free for orders over LKR 10,000.</p>
-                    <p><strong>International Shipping:</strong> Express global DHL shipping calculated at checkout (4-7 business days).</p>
-                    <p><strong>Returns:</strong> Returns accepted within 7 days of receipt for exchange or store credit in original unworn condition with tags attached.</p>
+                    <p>
+                      <strong>Sri Lanka Delivery:</strong> 1-3 business days
+                      islandwide. Colombo next-day shipping available. LKR 350
+                      flat shipping rate or free for orders over LKR 10,000.
+                    </p>
+                    <p>
+                      <strong>International Shipping:</strong> Express global
+                      DHL shipping calculated at checkout (4-7 business days).
+                    </p>
+                    <p>
+                      <strong>Returns:</strong> Returns accepted within 7 days
+                      of receipt for exchange or store credit in original unworn
+                      condition with tags attached.
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-            
           </div>
         </div>
       </div>

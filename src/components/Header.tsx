@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../assets/Logo.png';
+import logo from '../assets/Logo2.png';
 
 interface HeaderProps {
   cartCount: number;
@@ -28,25 +28,29 @@ export const Header: React.FC<HeaderProps> = ({
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        
         {/* Navigation Links (Left) */}
-        <nav className="hidden md:flex items-center space-x-8 text-xs font-display uppercase tracking-widest font-semibold text-brand-light">
+        <nav className="hidden md:flex items-center space-x-8 text-md font-display font-semibold text-brand-light">
           <button
             onClick={() => onNavigate('products')}
             className={`hover:opacity-60 transition-opacity relative group py-2 cursor-pointer ${
-              currentView === 'products' ? 'opacity-100 font-bold' : 'opacity-85'
+              currentView === 'products'
+                ? 'opacity-100 font-bold'
+                : 'opacity-85'
             }`}
           >
             Shop
-            <span className={`absolute bottom-0 left-0 w-full h-[1px] bg-brand-light transform ${currentView === 'products' ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100 transition-transform duration-300 origin-left`}></span>
+            <span
+              className={`absolute bottom-0 left-0 w-full h-[1px] bg-brand-light transform ${currentView === 'products' ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100 transition-transform duration-300 origin-left`}
+            ></span>
           </button>
-          
+
           <button
             onClick={() => {
               onNavigate('landing');
               setTimeout(() => {
                 const specSection = document.getElementById('fabric');
-                if (specSection) specSection.scrollIntoView({ behavior: 'smooth' });
+                if (specSection)
+                  specSection.scrollIntoView({ behavior: 'smooth' });
               }, 100);
             }}
             className="hover:opacity-60 transition-opacity relative group py-2 cursor-pointer opacity-85"
@@ -60,7 +64,8 @@ export const Header: React.FC<HeaderProps> = ({
               onNavigate('landing');
               setTimeout(() => {
                 const footerSection = document.querySelector('footer');
-                if (footerSection) footerSection.scrollIntoView({ behavior: 'smooth' });
+                if (footerSection)
+                  footerSection.scrollIntoView({ behavior: 'smooth' });
               }, 100);
             }}
             className="hover:opacity-60 transition-opacity relative group py-2 cursor-pointer opacity-85"
@@ -73,7 +78,9 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Mobile Menu Icon (Left) */}
         <div className="md:hidden flex items-center">
           <button
-            onClick={() => onNavigate(currentView === 'landing' ? 'products' : 'landing')}
+            onClick={() =>
+              onNavigate(currentView === 'landing' ? 'products' : 'landing')
+            }
             className="focus:outline-none hover:opacity-60 transition-opacity cursor-pointer text-xs font-display uppercase tracking-widest font-semibold text-brand-light"
           >
             {currentView === 'landing' ? 'Shop' : 'Home'}
@@ -82,11 +89,14 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Logo (Center) - Dynamic logo loading exclusively from Logo.png */}
         <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center">
-          <button onClick={() => onNavigate('landing')} className="flex items-center cursor-pointer focus:outline-none">
+          <button
+            onClick={() => onNavigate('landing')}
+            className="flex items-center cursor-pointer focus:outline-none"
+          >
             <img
               src={logo}
               alt="axivers"
-              className="h-7 sm:h-8 w-auto object-contain transition-all duration-300"
+              className="h-10 sm:h-12 w-auto object-contain hover:scale-95 transition-all duration-300 transform"
             />
           </button>
         </div>
@@ -112,9 +122,7 @@ export const Header: React.FC<HeaderProps> = ({
                 d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
               />
             </svg>
-            <span
-              className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center rounded-none text-[9px] font-bold font-sans bg-brand-light text-brand-dark transition-all duration-300"
-            >
+            <span className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center rounded-none text-[9px] font-bold font-sans bg-brand-light text-brand-dark transition-all duration-300">
               {cartCount}
             </span>
           </button>

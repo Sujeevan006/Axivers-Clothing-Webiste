@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import logo2 from '../assets/Logo2.png';
 
 export const Footer: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -20,8 +21,8 @@ export const Footer: React.FC = () => {
         
         {/* Left Column: Brand & Tagline */}
         <div className="md:col-span-4 space-y-4">
-          <div className="text-xl font-display font-bold uppercase tracking-widest text-white">
-            axivers<span className="text-brand-light/40">.</span>
+          <div className="flex items-center">
+            <img src={logo2} alt="axivers" className="h-10 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300" />
           </div>
           <p className="text-xs text-brand-light/60 font-light leading-relaxed max-w-sm tracking-wide">
             Precision-crafted athletic luxury essentials designed for the modern lifestyle. Re-engineering basics from the yarns up.
@@ -68,11 +69,11 @@ export const Footer: React.FC = () => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="ENTER EMAIL ADDRESS"
               required
-              className="bg-black/45 border border-brand-light/20 text-xs px-4 py-3 text-white placeholder-brand-light/40 focus:outline-none focus:border-brand-light rounded-none flex-1 tracking-wider font-mono uppercase"
+              className="bg-black/45 border border-brand-light/20 text-xs px-4 py-3 text-white placeholder-brand-light/40 focus:outline-none focus:border-brand-light rounded-md flex-1 tracking-wider font-mono uppercase"
             />
             <button
               type="submit"
-              className="px-6 py-3 bg-brand-light text-brand-dark font-display text-xs uppercase tracking-widest font-bold border border-brand-light hover:bg-transparent hover:text-brand-light transition-all duration-300 rounded-none cursor-pointer text-center"
+              className="px-6 py-3 bg-brand-light text-brand-dark font-display text-xs uppercase tracking-widest font-bold border border-brand-light hover:bg-transparent hover:text-brand-light transition-all duration-300 rounded-md cursor-pointer text-center"
             >
               {subscribed ? 'SUBSCRIBED' : 'JOIN'}
             </button>

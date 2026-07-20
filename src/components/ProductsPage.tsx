@@ -51,30 +51,33 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
   return (
     <section className="pt-32 pb-24 px-4 sm:px-6 lg:px-8 bg-brand-dark text-brand-light min-h-screen">
       <div className="max-w-7xl mx-auto">
-        
         {/* Page Header */}
         <div className="text-center mb-16 space-y-4">
           <span className="text-[10px] uppercase tracking-[0.3em] text-brand-light/50 font-display block">
             Systematic Wardrobe
           </span>
           <h2 className="text-3xl sm:text-5xl font-display font-light tracking-tight">
-            The <span className="font-semibold italic font-sans">Core Collection</span>
+            The{' '}
+            <span className="font-semibold italic font-sans">
+              Core Collection
+            </span>
           </h2>
           <p className="text-xs sm:text-sm font-light text-brand-light/60 max-w-lg mx-auto leading-relaxed">
-            A modular range of engineered garments. Meticulously cut from local combed yarns and Beechwood Modal fibers to create the ultimate premium drape.
+            A modular range of engineered garments. Meticulously cut from local
+            combed yarns and Beechwood Modal fibers to create the ultimate
+            premium drape.
           </p>
         </div>
 
         {/* Filters & Sorting Controls */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 border-b border-brand-light/10 pb-6 mb-12">
-          
           {/* Category Tabs */}
           <div className="flex flex-wrap gap-2">
             {categories.map((cat) => (
               <button
                 key={cat.value}
                 onClick={() => setSelectedCategory(cat.value)}
-                className={`px-4 py-2 text-xs font-display uppercase tracking-widest font-medium border transition-all duration-300 rounded-none cursor-pointer ${
+                className={`px-4 py-2 text-xs font-display uppercase tracking-widest font-medium border transition-all duration-300 rounded-md cursor-pointer ${
                   selectedCategory === cat.value
                     ? 'bg-brand-light text-brand-dark border-brand-light'
                     : 'bg-transparent text-brand-light/60 border-transparent hover:border-brand-light/20'
@@ -93,11 +96,17 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="bg-transparent border border-brand-light/20 text-xs font-display tracking-wider py-2 px-3 focus:outline-none focus:border-brand-light rounded-none uppercase text-brand-light w-full sm:w-auto cursor-pointer"
+              className="bg-transparent border border-brand-light/20 text-xs font-display tracking-wider py-2 px-3 focus:outline-none focus:border-brand-light rounded-md uppercase text-brand-light w-full sm:w-auto cursor-pointer"
             >
-              <option value="default" className="bg-brand-dark">Default</option>
-              <option value="price-asc" className="bg-brand-dark">Price: Low to High</option>
-              <option value="price-desc" className="bg-brand-dark">Price: High to Low</option>
+              <option value="default" className="bg-brand-dark">
+                Default
+              </option>
+              <option value="price-asc" className="bg-brand-dark">
+                Price: Low to High
+              </option>
+              <option value="price-desc" className="bg-brand-dark">
+                Price: High to Low
+              </option>
             </select>
           </div>
         </div>
@@ -134,7 +143,10 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
 
                 {/* Info and action details */}
                 <div className="pt-6 flex-grow flex flex-col justify-between">
-                  <div onClick={() => onProductClick(product)} className="cursor-pointer">
+                  <div
+                    onClick={() => onProductClick(product)}
+                    className="cursor-pointer"
+                  >
                     <h3 className="text-sm font-display uppercase tracking-widest font-semibold group-hover:opacity-75 transition-opacity">
                       {product.name}
                     </h3>
@@ -142,15 +154,15 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
                       {product.tagline}
                     </p>
                   </div>
-                  
+
                   <div className="mt-4 pt-4 border-t border-brand-light/5 flex items-center justify-between">
-                    <span className="text-xs font-mono font-semibold">
+                    <span className="text-md md:text-lg  font-semibold">
                       LKR {product.price.toLocaleString()}
                     </span>
-                    
+
                     <button
                       onClick={() => onQuickAdd(product, 'M')}
-                      className="text-[10px] uppercase tracking-widest font-display font-bold border border-brand-light px-3 py-1.5 hover:bg-brand-light hover:text-brand-dark transition-all duration-300 rounded-none cursor-pointer"
+                      className="text-[10px] uppercase -tracking-tighter font-display font-bold border border-brand-light px-3 py-1.5 hover:bg-brand-light hover:text-brand-dark transition-all duration-300 rounded-md cursor-pointer"
                     >
                       Quick Add
                     </button>
