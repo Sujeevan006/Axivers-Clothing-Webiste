@@ -122,7 +122,7 @@ export const Header: React.FC<HeaderProps> = ({
                 d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
               />
             </svg>
-            <span className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center rounded-none text-[9px] font-bold font-sans bg-brand-light text-brand-dark transition-all duration-300">
+            <span className="absolute -right-5 flex h-5 w-5 items-center justify-center rounded-md text-[12px] font-bold font-sans bg-brand-light text-brand-dark transition-all duration-300">
               {cartCount}
             </span>
           </button>

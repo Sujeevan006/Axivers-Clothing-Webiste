@@ -43,14 +43,19 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
     }
   }, [isOpen]);
 
-  const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const subtotal = cartItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0,
+  );
   const shippingFee = subtotal > 10000 ? 0 : 350;
   const total = subtotal === 0 ? 0 : subtotal + shippingFee;
 
   return (
     <div
       className={`fixed inset-0 z-50 overflow-hidden ${
-        shouldRender ? 'visible pointer-events-auto' : 'hidden pointer-events-none'
+        shouldRender
+          ? 'visible pointer-events-auto'
+          : 'hidden pointer-events-none'
       }`}
     >
       {/* Backdrop overlay */}
@@ -64,14 +69,18 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
       {/* Cart Panel */}
       <div
         className={`absolute top-0 right-0 h-full w-full max-w-md bg-brand-light text-brand-dark flex flex-col transition-all duration-300 ease-in-out ${
-          isTransitioned ? 'translate-x-0 shadow-2xl' : 'translate-x-full shadow-none'
+          isTransitioned
+            ? 'translate-x-0 shadow-2xl'
+            : 'translate-x-full shadow-none'
         }`}
       >
         {/* Header */}
         <div className="p-6 border-b border-brand-dark/10 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <span className="text-sm uppercase tracking-widest font-display font-semibold">Your Bag</span>
-            <span className="text-xs bg-brand-dark text-brand-light font-mono px-1.5 py-0.5 font-bold">
+            <span className="text-sm uppercase tracking-widest font-display font-semibold">
+              Your Bag
+            </span>
+            <span className="text-xs bg-brand-dark text-brand-light font-mono px-1.5 py-0.5 font-bold rounded-md">
               {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
             </span>
           </div>
@@ -80,8 +89,18 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             className="p-1 hover:opacity-60 transition-opacity focus:outline-none cursor-pointer"
             aria-label="Close Cart"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.5"
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -103,7 +122,9 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                   d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                 />
               </svg>
-              <h3 className="text-sm uppercase tracking-wider font-display font-semibold mb-1">Your bag is empty</h3>
+              <h3 className="text-sm uppercase tracking-wider font-display font-semibold mb-1">
+                Your bag is empty
+              </h3>
               <p className="text-xs text-brand-dark/50 font-light max-w-[240px] leading-relaxed">
                 Add premium essentials to start styling.
               </p>
@@ -116,12 +137,19 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             </div>
           ) : (
             cartItems.map((item) => (
-              <div key={`${item.id}-${item.size}`} className="flex gap-4 border-b border-brand-dark/5 pb-6">
+              <div
+                key={`${item.id}-${item.size}`}
+                className="flex gap-4 border-b border-brand-dark/5 pb-6"
+              >
                 {/* Product thumbnail */}
                 <div className="w-20 h-20 bg-white border border-brand-dark/5 aspect-square overflow-hidden flex-shrink-0">
-                  <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-                
+
                 {/* Details */}
                 <div className="flex-1 flex flex-col justify-between">
                   <div>
@@ -145,15 +173,29 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                   <div className="flex justify-between items-center mt-2">
                     <div className="flex items-center border border-brand-dark/20 rounded-md overflow-hidden">
                       <button
-                        onClick={() => onUpdateQuantity(item.id, item.size, item.quantity - 1)}
+                        onClick={() =>
+                          onUpdateQuantity(
+                            item.id,
+                            item.size,
+                            item.quantity - 1,
+                          )
+                        }
                         className="px-2 py-1 text-xs hover:bg-brand-dark/5 transition-colors focus:outline-none cursor-pointer"
                         disabled={item.quantity <= 1}
                       >
                         -
                       </button>
-                      <span className="px-2 text-xs font-mono font-medium">{item.quantity}</span>
+                      <span className="px-2 text-xs font-mono font-medium">
+                        {item.quantity}
+                      </span>
                       <button
-                        onClick={() => onUpdateQuantity(item.id, item.size, item.quantity + 1)}
+                        onClick={() =>
+                          onUpdateQuantity(
+                            item.id,
+                            item.size,
+                            item.quantity + 1,
+                          )
+                        }
                         className="px-2 py-1 text-xs hover:bg-brand-dark/5 transition-colors focus:outline-none cursor-pointer"
                       >
                         +
@@ -172,16 +214,19 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
         {/* Footer Summary (Sticky at bottom if items exist) */}
         {cartItems.length > 0 && (
           <div className="p-6 border-t border-brand-dark/10 bg-brand-light/95 backdrop-blur-md space-y-4">
-            
             {/* Calculation summary */}
             <div className="space-y-2 text-xs">
               <div className="flex justify-between font-light text-brand-dark/70">
                 <span>Subtotal</span>
-                <span className="font-mono">LKR {subtotal.toLocaleString()}</span>
+                <span className="font-mono">
+                  LKR {subtotal.toLocaleString()}
+                </span>
               </div>
               <div className="flex justify-between font-light text-brand-dark/70">
                 <span>Shipping (Islandwide)</span>
-                <span className="font-mono">{shippingFee === 0 ? 'FREE' : `LKR ${shippingFee}`}</span>
+                <span className="font-mono">
+                  {shippingFee === 0 ? 'FREE' : `LKR ${shippingFee}`}
+                </span>
               </div>
               <hr className="border-brand-dark/5" />
               <div className="flex justify-between text-sm font-semibold uppercase tracking-wider font-display pt-1">
@@ -192,21 +237,34 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
             {/* Local Payments Notice */}
             <div className="bg-brand-dark/5 p-3 text-[10px] leading-relaxed text-brand-dark/70 font-light border-l border-brand-dark/30">
-              <p className="font-medium mb-1 uppercase tracking-wider font-display">Local Gateway Integration Ready</p>
-              Checkout uses encrypted processing. Integrates seamlessly with local payment gateways (PayHere, Webxpay) supporting Visa, Mastercard, AMEX, Genie, and Koko.
+              <p className="font-medium mb-1 uppercase tracking-wider font-display">
+                Local Gateway Integration Ready
+              </p>
+              Checkout uses encrypted processing. Integrates seamlessly with
+              local payment gateways (PayHere, Webxpay) supporting Visa,
+              Mastercard, AMEX, Genie, and Koko.
             </div>
 
             {/* Checkout Action Button */}
             <button
-              onClick={() => alert('Proceeding to Checkout with secure gateway... (Mock Checkout)')}
+              onClick={() =>
+                alert(
+                  'Proceeding to Checkout with secure gateway... (Mock Checkout)',
+                )
+              }
               className="w-full py-4 bg-brand-dark text-brand-light text-xs font-display uppercase tracking-widest font-bold border border-brand-dark hover:bg-transparent hover:text-brand-dark transition-all duration-300 rounded-md cursor-pointer text-center"
             >
               Proceed to Checkout
             </button>
-            
+
             {/* Lock Secure Indicators */}
             <div className="flex items-center justify-center space-x-1 text-[9px] uppercase tracking-widest text-brand-dark/40 font-mono">
-              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className="w-3 h-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"

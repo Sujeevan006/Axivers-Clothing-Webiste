@@ -77,7 +77,7 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
               <button
                 key={cat.value}
                 onClick={() => setSelectedCategory(cat.value)}
-                className={`px-4 py-2 text-xs font-display uppercase tracking-widest font-medium border transition-all duration-300 rounded-md cursor-pointer ${
+                className={`px-4 py-2 text-xs font-display uppercase tracking-widest font-medium border transition-all duration-300 rounded-full cursor-pointer ${
                   selectedCategory === cat.value
                     ? 'bg-brand-light text-brand-dark border-brand-light'
                     : 'bg-transparent text-brand-light/60 border-transparent hover:border-brand-light/20'
@@ -123,12 +123,12 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
             {sortedProducts.map((product) => (
               <div
                 key={product.id}
-                className="group flex flex-col border border-brand-light/5 bg-black/5 p-4 transition-all duration-300 hover:shadow-lg relative"
+                className="group flex flex-col border border-brand-light/10 bg-white/[0.02] p-4 transition-all duration-300 hover:shadow-xl relative rounded-2xl overflow-hidden hover:border-brand-light/20"
               >
                 {/* Product Image Area */}
                 <div
                   onClick={() => onProductClick(product)}
-                  className="aspect-square bg-zinc-950 overflow-hidden relative cursor-pointer"
+                  className="aspect-square bg-zinc-950 overflow-hidden relative cursor-pointer rounded-xl"
                 >
                   <img
                     src={product.images[0]}
@@ -136,7 +136,7 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
                     className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                   />
                   {/* Category overlay */}
-                  <span className="absolute top-3 left-3 bg-brand-light/95 text-brand-dark text-[8px] uppercase tracking-widest font-display font-semibold px-2 py-0.5">
+                  <span className="absolute top-3 left-3 bg-brand-light/95 text-brand-dark text-[8px] uppercase tracking-widest font-display font-semibold px-2.5 py-1 rounded-md shadow-sm">
                     {product.categoryLabel}
                   </span>
                 </div>

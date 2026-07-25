@@ -34,8 +34,8 @@ export const Hero: React.FC<HeroProps> = ({ onShopClick }) => {
             </span>
           </div>
 
-          {/* Big Header Tagline - Fixed visibility of modern lifestyle and reduced font size for cleaner presentation */}
-          <h1 className="text-3xl sm:text-4xl md:text-6xl playball-regular leading-snug text-brand-light">
+          {/* Big Header Tagline - Clean modern presentation with Roboto */}
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-display font-semibold tracking-tight leading-tight text-brand-light">
             Elevated essentials <br />
             for the <span className="text-brand-light">modern lifestyle.</span>
           </h1>
