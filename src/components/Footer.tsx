@@ -66,14 +66,18 @@ export const Footer: React.FC = () => {
   return (
     <footer className="bg-brand-dark text-brand-light pt-20 pb-10 px-4 sm:px-6 lg:px-8 border-t border-brand-light/5">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 pb-16 border-b border-brand-light/10">
-        
         {/* Left Column: Brand & Tagline */}
         <div className="md:col-span-4 space-y-4">
           <div className="flex items-center">
-            <img src={logo2} alt="axivers" className="h-10 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300" />
+            <img
+              src={logo2}
+              alt="axivers"
+              className="h-10 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+            />
           </div>
           <p className="text-xs text-brand-light/60 font-light leading-relaxed max-w-sm tracking-wide">
-            Precision-crafted athletic luxury essentials designed for the modern lifestyle. Re-engineering basics from the yarns up.
+            Precision-crafted athletic luxury essentials designed for the modern
+            lifestyle. Re-engineering basics from the yarns up.
           </p>
           <div className="text-[10px] text-brand-light/40 font-mono">
             © {new Date().getFullYear()} AXIVERS CLOTHING PVT LTD. <br />
@@ -83,34 +87,76 @@ export const Footer: React.FC = () => {
 
         {/* Center Column 1: Shop Menu */}
         <div className="md:col-span-2 space-y-4">
-          <h4 className="text-xs uppercase tracking-widest font-display font-semibold text-white">Shop</h4>
+          <h4 className="text-xs uppercase tracking-widest font-display font-semibold text-white">
+            Shop
+          </h4>
           <ul className="space-y-2 text-xs font-light text-brand-light/60">
-            <li><a href="#shop" className="hover:text-white transition-colors">Flagship Crewneck</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">New Releases</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Collections</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Essentials</a></li>
+            <li>
+              <a href="#shop" className="hover:text-white transition-colors">
+                Flagship Crewneck
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-white transition-colors">
+                New Releases
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-white transition-colors">
+                Collections
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-white transition-colors">
+                Essentials
+              </a>
+            </li>
           </ul>
         </div>
 
         {/* Center Column 2: Information */}
         <div className="md:col-span-2 space-y-4">
-          <h4 className="text-xs uppercase tracking-widest font-display font-semibold text-white">Support</h4>
+          <h4 className="text-xs uppercase tracking-widest font-display font-semibold text-white">
+            Support
+          </h4>
           <ul className="space-y-2 text-xs font-light text-brand-light/60">
-            <li><a href="#" className="hover:text-white transition-colors">Size Guide</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Shipping & Delivery</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Return Policy</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
+            <li>
+              <a href="#" className="hover:text-white transition-colors">
+                Size Guide
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-white transition-colors">
+                Shipping & Delivery
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-white transition-colors">
+                Return Policy
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-white transition-colors">
+                Terms of Service
+              </a>
+            </li>
           </ul>
         </div>
 
         {/* Right Column: Newsletter Signup */}
         <div className="md:col-span-4 space-y-4">
-          <h4 className="text-xs uppercase tracking-widest font-display font-semibold text-white">Newsletter</h4>
+          <h4 className="text-xs uppercase tracking-widest font-display font-semibold text-white">
+            Newsletter
+          </h4>
           <p className="text-xs text-brand-light/60 font-light tracking-wide leading-relaxed">
-            Subscribe to receive priority access to limited edition drops and fabric research.
+            Subscribe to receive priority access to limited edition drops and
+            fabric research.
           </p>
-          
-          <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2 pt-2">
+
+          <form
+            onSubmit={handleSubscribe}
+            className="flex flex-col sm:flex-row gap-2 pt-2"
+          >
             <input
               type="email"
               value={email}
@@ -149,9 +195,9 @@ export const Footer: React.FC = () => {
             </a>
           ))}
         </div>
-        
+
         {/* Certifications & payments */}
-        <div className="flex items-center space-x-4 text-[9px] font-mono text-brand-light/40 tracking-wider">
+        {/* <div className="flex items-center space-x-4 text-[9px] font-mono text-brand-light/40 tracking-wider">
           <span>VISA</span>
           <span>•</span>
           <span>MASTERCARD</span>
@@ -163,7 +209,7 @@ export const Footer: React.FC = () => {
           <span>KOKO</span>
           <span>•</span>
           <span>PAYHERE</span>
-        </div>
+        </div> */}
       </div>
     </footer>
   );
