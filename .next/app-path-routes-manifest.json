@@ -1,0 +1,12 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/api/webhook/route": "/api/webhook",
+  "/api/products/route": "/api/products",
+  "/api/seed/route": "/api/seed",
+  "/api/checkout/route": "/api/checkout",
+  "/page": "/",
+  "/checkout/page": "/checkout",
+  "/product/[slug]/page": "/product/[slug]",
+  "/shop/page": "/shop",
+  "/products/page": "/products"
+}
