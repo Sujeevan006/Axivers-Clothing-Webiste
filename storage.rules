@@ -1,0 +1,22 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Helper function to check if requesting user is an admin
+    function isAdmin() {
+      return request.auth != null && (
+        request.auth.token.admin == true ||
+        request.auth.token.role == 'admin'
+      );
+    }
+
+    // Product Images Folder
+    match /products/{allPaths=**} {
+      // Anyone can view product images on the storefront
+      allow read: if true;
+      // Only authenticated admins can upload or delete product images
+      allow write, delete: if request.auth != null;
+    }
+  }
+}

@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from '../assets/Logo2.png';
 
 interface HeaderProps {
   cartCount: number;
@@ -89,16 +88,17 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Logo (Center) - Dynamic logo loading exclusively from Logo.png */}
         <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center">
-          <button
-            onClick={() => onNavigate('landing')}
+          <a 
+            href="#" 
+            onClick={(e) => { e.preventDefault(); onNavigate('landing'); }}
             className="flex items-center cursor-pointer focus:outline-none"
           >
-            <img
-              src={logo}
-              alt="axivers"
-              className="h-10 sm:h-12 w-auto object-contain hover:scale-95 transition-all duration-300 transform"
+            <img 
+              src="/Logo2.png" 
+              alt="axivers" 
+              className="h-10 sm:h-12 w-auto object-contain hover:scale-95 transition-all duration-300 transform" 
             />
-          </button>
+          </a>
         </div>
 
         {/* Shopping Cart & Actions (Right) */}

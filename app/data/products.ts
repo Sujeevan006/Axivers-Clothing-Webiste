@@ -1,20 +1,11 @@
-export interface Product {
-  id: string;
-  name: string;
-  price: number;
-  category: 'flagship' | 'minimalist' | 'technical';
-  categoryLabel: string;
-  tagline: string;
-  description: string;
-  images: string[];
-  fabricSpec: string;
-  careInstructions: string;
-  sizes: string[];
-}
+import { Product } from '@/types/product';
+
+export type { Product };
 
 export const productsDatabase: Product[] = [
   {
     id: 'piping-crewneck',
+    slug: 'piping-crewneck',
     name: 'Premium Piping Crewneck',
     price: 4000,
     category: 'flagship',
@@ -25,9 +16,13 @@ export const productsDatabase: Product[] = [
     fabricSpec: '60% Combed Ring-Spun Cotton / 40% Modal blend, heavy 190 GSM.',
     careInstructions: 'Machine wash cold inside out. Flat dry in shade. Iron low.',
     sizes: ['S', 'M', 'L', 'XL'],
+    stock: 50,
+    featured: true,
+    active: true,
   },
   {
     id: 'white-piping-crewneck',
+    slug: 'white-piping-crewneck',
     name: 'White Piping Crewneck',
     price: 4000,
     category: 'flagship',
@@ -38,9 +33,13 @@ export const productsDatabase: Product[] = [
     fabricSpec: '60% Combed Ring-Spun Cotton / 40% Modal blend, heavy 190 GSM.',
     careInstructions: 'Machine wash cold. Flat dry. Iron low.',
     sizes: ['S', 'M', 'L', 'XL'],
+    stock: 50,
+    featured: true,
+    active: true,
   },
   {
     id: 'boxy-black-tee',
+    slug: 'boxy-black-tee',
     name: 'Heavyweight Boxy Tee',
     price: 4200,
     category: 'minimalist',
@@ -51,9 +50,13 @@ export const productsDatabase: Product[] = [
     fabricSpec: '100% Combed Ring-Spun Cotton, 240 GSM ultra-heavy weight.',
     careInstructions: 'Machine wash cold, air dry, do not iron print.',
     sizes: ['S', 'M', 'L', 'XL'],
+    stock: 50,
+    featured: false,
+    active: true,
   },
   {
     id: 'polo-piping-black',
+    slug: 'polo-piping-black',
     name: 'Piping Collar Polo',
     price: 4800,
     category: 'flagship',
@@ -64,9 +67,13 @@ export const productsDatabase: Product[] = [
     fabricSpec: '60% Combed Cotton / 40% Modal knit blend, breathable and structured.',
     careInstructions: 'Machine wash cold, flat dry, iron low on reverse.',
     sizes: ['S', 'M', 'L', 'XL'],
+    stock: 50,
+    featured: true,
+    active: true,
   },
   {
     id: 'active-tech-tee',
+    slug: 'active-tech-tee',
     name: 'Active Modal Tech Tee',
     price: 4500,
     category: 'technical',
@@ -77,5 +84,8 @@ export const productsDatabase: Product[] = [
     fabricSpec: '30% Combed Cotton / 70% Micro-Modal yarn, quick-dry, 160 GSM lightweight.',
     careInstructions: 'Gentle wash cold, tumble dry low, do not iron logo.',
     sizes: ['S', 'M', 'L', 'XL'],
+    stock: 50,
+    featured: false,
+    active: true,
   }
 ];

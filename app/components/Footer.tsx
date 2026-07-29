@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import logo2 from '../../src/assets/Logo2.png';
 
 export const Footer: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -73,7 +72,13 @@ export const Footer: React.FC = () => {
         {/* Left Column: Brand & Tagline */}
         <div className="md:col-span-4 space-y-4">
           <div className="flex items-center">
-            <Image src={logo2} alt="axivers" className="h-10 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300" />
+            <Image
+              src="/Logo2.png"
+              alt="axivers"
+              width={120}
+              height={40}
+              className="h-10 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+            />
           </div>
           <p className="text-xs text-brand-light/60 font-light leading-relaxed max-w-sm tracking-wide">
             Precision-crafted athletic luxury essentials designed for the modern lifestyle. Re-engineering basics from the yarns up.

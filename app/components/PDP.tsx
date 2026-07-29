@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import type { Product } from '../data/products';
+import type { Product } from '@/types/product';
 import { useCart } from '../context/CartContext';
 
 interface PDPProps {
@@ -12,33 +12,40 @@ interface PDPProps {
 
 export const PDP: React.FC<PDPProps> = ({ product }) => {
   const [selectedSize, setSelectedSize] = useState<string>('M');
+  const [selectedColor, setSelectedColor] = useState<string>('Black');
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [addedSuccess, setAddedSuccess] = useState<boolean>(false);
   const [openAccordion, setOpenAccordion] = useState<string | null>('fabric');
+
   const { addToCart } = useCart();
 
   useEffect(() => {
     setActiveImageIndex(0);
     if (product.sizes && product.sizes.length > 0) {
       setSelectedSize(product.sizes[0]);
-    } else {
-      setSelectedSize('M');
+    }
+    if (product.colors && product.colors.length > 0) {
+      setSelectedColor(product.colors[0]);
     }
   }, [product]);
 
   const sizes = product.sizes || ['S', 'M', 'L', 'XL'];
+  const colors = product.colors || ['Black', 'White'];
+  const images = product.images && product.images.length > 0 ? product.images : ['/images/pdp_front.jpg'];
+  const isOutOfStock = product.stock !== undefined && product.stock <= 0;
 
   const handleAddToCart = () => {
+    if (isOutOfStock) return;
     setIsAdding(true);
     setTimeout(() => {
+      addToCart(product, selectedSize, selectedColor, 1);
       setIsAdding(false);
       setAddedSuccess(true);
-      addToCart(product, selectedSize);
       setTimeout(() => {
         setAddedSuccess(false);
       }, 2000);
-    }, 800);
+    }, 500);
   };
 
   const toggleAccordion = (section: string) => {
@@ -46,319 +53,245 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
   };
 
   return (
-    <section className="py-32 bg-brand-dark text-brand-light px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-28 bg-[#09090b] text-[#f4f4f5] px-4 sm:px-6 lg:px-8 min-h-screen">
+      <div className="max-w-7xl mx-auto space-y-8">
         {/* Back navigation button */}
         <Link
-          href="/products"
-          className="group flex items-center space-x-2 text-[10px] uppercase tracking-[0.2em] font-display font-bold mb-8 hover:opacity-70 transition-opacity focus:outline-none cursor-pointer text-brand-light inline-flex"
+          href="/shop"
+          className="group inline-flex items-center space-x-2 text-xs uppercase tracking-[0.2em] font-display font-semibold text-zinc-400 hover:text-amber-400 transition-colors"
         >
           <svg
-            className="w-3 h-3 transform transition-transform group-hover:-translate-x-1"
+            className="w-4 h-4 transform transition-transform group-hover:-translate-x-1"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2.5"
-              d="M15 19l-7-7 7-7"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
           </svg>
-          <span>Back to Collection</span>
+          <span>Back to Catalog</span>
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left Column: Image Gallery */}
-          <div className="lg:col-span-7 grid grid-cols-12 gap-4">
-            {/* Main Large Image Display */}
-            <div className="col-span-12 bg-zinc-950 border border-brand-light/5 aspect-square relative overflow-hidden group">
+          <div className="lg:col-span-7 space-y-4">
+            {/* Main Image Display */}
+            <div className="aspect-square bg-zinc-950 border border-zinc-800 relative overflow-hidden group rounded-2xl shadow-2xl">
               <Image
-                src={product.images[activeImageIndex]}
+                src={images[activeImageIndex] || images[0]}
                 alt={`${product.name} - View ${activeImageIndex + 1}`}
-                width={800}
-                height={800}
-                className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                width={900}
+                height={900}
+                className={`w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105 ${
+                  isOutOfStock ? 'opacity-50 grayscale' : ''
+                }`}
                 priority
               />
-              {/* Tag Overlay */}
-              <span className="absolute top-4 left-4 bg-brand-light text-brand-dark text-[9px] uppercase tracking-widest font-display font-semibold px-2 py-1">
-                {product.categoryLabel}
+
+              {/* Category Tag */}
+              <span className="absolute top-4 left-4 bg-zinc-950/90 backdrop-blur-md border border-zinc-800 text-amber-400 text-[10px] uppercase tracking-widest font-display font-semibold px-3 py-1 rounded-md">
+                {product.categoryLabel || product.category}
               </span>
+
+              {/* Stock Tag */}
+              {isOutOfStock ? (
+                <span className="absolute top-4 right-4 bg-rose-600 text-white text-[10px] uppercase tracking-widest font-display font-bold px-3 py-1 rounded-md shadow-lg border border-rose-500">
+                  Sold Out
+                </span>
+              ) : product.stock !== undefined ? (
+                <span className="absolute top-4 right-4 bg-amber-500 text-zinc-950 text-[10px] uppercase tracking-widest font-display font-bold px-3 py-1 rounded-md shadow-md">
+                  In Stock ({product.stock} units)
+                </span>
+              ) : null}
             </div>
 
             {/* Thumbnail Track */}
-            <div className="col-span-12 flex gap-4 mt-2">
-              {product.images.map((img, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveImageIndex(idx)}
-                  className={`flex-1 aspect-square bg-zinc-950 border cursor-pointer overflow-hidden transition-all duration-300 rounded-md relative ${
-                    activeImageIndex === idx
-                      ? 'border-brand-light opacity-100 ring-1 ring-brand-light'
-                      : 'border-brand-light/10 opacity-70 hover:opacity-100'
-                  }`}
-                >
-                  <Image
-                    src={img}
-                    alt={`${product.name} Thumbnail ${idx + 1}`}
-                    width={200}
-                    height={200}
-                    className="w-full h-full object-cover object-center"
-                  />
-                </button>
-              ))}
-            </div>
+            {images.length > 1 && (
+              <div className="grid grid-cols-4 gap-4">
+                {images.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveImageIndex(idx)}
+                    className={`aspect-square bg-zinc-950 border cursor-pointer overflow-hidden rounded-xl transition-all duration-300 relative ${
+                      activeImageIndex === idx
+                        ? 'border-amber-500 ring-2 ring-amber-500/50 opacity-100'
+                        : 'border-zinc-800 opacity-60 hover:opacity-100 hover:border-zinc-600'
+                    }`}
+                  >
+                    <Image
+                      src={img}
+                      alt={`${product.name} Thumbnail ${idx + 1}`}
+                      width={200}
+                      height={200}
+                      className="w-full h-full object-cover object-center"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
-          {/* Right Column: Product Actions & Details */}
-          <div className="lg:col-span-5 flex flex-col justify-start">
-            {/* Breadcrumbs */}
-            <div className="flex items-center space-x-2 text-[10px] uppercase tracking-wider text-brand-light/50 mb-4 font-display">
-              <Link href="/" className="hover:text-brand-light transition-colors">
-                axivers
-              </Link>
+          {/* Right Column: Product Info & Selectors */}
+          <div className="lg:col-span-5 space-y-6">
+            {/* Breadcrumb */}
+            <div className="flex items-center space-x-2 text-[10px] uppercase tracking-widest text-zinc-500 font-display">
+              <Link href="/" className="hover:text-zinc-300">Axivers</Link>
               <span>/</span>
-              <Link href="/products" className="hover:text-brand-light transition-colors">
-                Apparel
-              </Link>
+              <Link href="/shop" className="hover:text-zinc-300">Shop</Link>
               <span>/</span>
-              <span className="text-brand-light font-semibold">
+              <span className="text-amber-400 font-semibold">{product.category}</span>
+            </div>
+
+            {/* Title & Tagline */}
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-zinc-100 uppercase">
                 {product.name}
+              </h1>
+              {product.tagline && (
+                <p className="text-sm font-light italic text-amber-400/90 mt-1">
+                  {product.tagline}
+                </p>
+              )}
+            </div>
+
+            {/* Price Display */}
+            <div className="flex items-baseline space-x-4 pt-2">
+              <span className="text-2xl font-mono font-bold text-zinc-100">
+                LKR {product.price.toLocaleString()}
               </span>
+              {product.compareAtPrice && product.compareAtPrice > product.price && (
+                <span className="text-sm text-zinc-500 line-through font-mono">
+                  LKR {product.compareAtPrice.toLocaleString()}
+                </span>
+              )}
             </div>
 
-            {/* Product Header */}
-            <h2 className="text-3xl sm:text-4xl font-display font-semibold tracking-tight mb-2">
-              {product.name}
-            </h2>
-
-            {/* Price */}
-            <div className="text-2xl font-display font-bold mt-2 mb-6">
-              LKR {product.price.toLocaleString()}
-            </div>
-
-            <hr className="border-brand-light/10 mb-6" />
-
-            {/* Description */}
-            <p className="text-sm font-light text-brand-light/80 tracking-wide leading-relaxed mb-8">
+            <p className="text-xs font-light text-zinc-300 leading-relaxed pt-2">
               {product.description}
             </p>
 
             {/* Size Selector */}
-            <div className="mb-8">
-              <div className="flex justify-between items-center mb-3">
-                <span className="text-xs uppercase tracking-widest font-display font-semibold">
-                  Select Size
-                </span>
-                <span className="text-xs text-brand-light/50 underline cursor-pointer hover:text-brand-light transition-colors font-display">
-                  Size Guide
-                </span>
+            <div className="space-y-2 pt-2">
+              <div className="flex justify-between items-center text-xs font-display">
+                <span className="uppercase tracking-widest font-semibold text-zinc-300">Select Size:</span>
+                <span className="text-zinc-500 text-[10px] uppercase tracking-wider">Sri Lanka Standard Fit</span>
               </div>
-
               <div className="grid grid-cols-4 gap-3">
-                {sizes.map((size) => (
+                {sizes.map((sz) => (
                   <button
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={`py-3.5 border text-xs font-display font-semibold tracking-wider transition-all duration-300 rounded-md cursor-pointer ${
-                      selectedSize === size
-                        ? 'bg-brand-light text-brand-dark border-brand-light'
-                        : 'bg-transparent text-brand-light border-brand-light/20 hover:border-brand-light'
+                    key={sz}
+                    onClick={() => setSelectedSize(sz)}
+                    className={`py-3 text-xs font-mono font-bold rounded-lg border transition-all cursor-pointer ${
+                      selectedSize === sz
+                        ? 'bg-amber-500 text-zinc-950 border-amber-500 shadow-md shadow-amber-500/10'
+                        : 'bg-zinc-900 text-zinc-300 border-zinc-800 hover:border-zinc-600'
                     }`}
                   >
-                    {size}
+                    {sz}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Add to Cart CTA */}
-            <button
-              onClick={handleAddToCart}
-              disabled={isAdding}
-              className={`w-full py-4 text-xs font-display uppercase tracking-widest font-bold border transition-all duration-300 rounded-md cursor-pointer flex items-center justify-center gap-2 mb-8 ${
-                addedSuccess
-                  ? 'bg-emerald-600 text-white border-emerald-600'
-                  : 'bg-brand-light text-brand-dark border-brand-light hover:bg-transparent hover:text-brand-light'
-              }`}
-            >
-              {isAdding ? (
-                <>
-                  <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-brand-dark"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  Processing...
-                </>
-              ) : addedSuccess ? (
-                <>
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                  Added to Cart
-                </>
-              ) : (
-                'Add to Cart'
-              )}
-            </button>
+            {/* Color Selector */}
+            {colors && colors.length > 0 && (
+              <div className="space-y-2 pt-2">
+                <span className="block text-xs font-display uppercase tracking-widest font-semibold text-zinc-300">
+                  Select Color:
+                </span>
+                <div className="flex gap-3">
+                  {colors.map((c) => (
+                    <button
+                      key={c}
+                      onClick={() => setSelectedColor(c)}
+                      className={`px-4 py-2 text-xs font-display font-semibold rounded-lg border transition-all cursor-pointer ${
+                        selectedColor === c
+                          ? 'bg-amber-500 text-zinc-950 border-amber-500'
+                          : 'bg-zinc-900 text-zinc-300 border-zinc-800 hover:border-zinc-600'
+                      }`}
+                    >
+                      {c}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
-            {/* Product Specifications & Accordions */}
-            <div className="border-t border-brand-light/10">
-              {/* Accordion 1: Fabric Details */}
-              <div className="border-b border-brand-light/10">
+            {/* Add to Cart CTA */}
+            <div className="pt-4">
+              <button
+                onClick={handleAddToCart}
+                disabled={isAdding || isOutOfStock}
+                className={`w-full py-4 text-xs font-display uppercase tracking-widest font-bold rounded-xl border transition-all duration-300 cursor-pointer flex items-center justify-center space-x-2 shadow-lg ${
+                  isOutOfStock
+                    ? 'bg-zinc-900 text-zinc-600 border-zinc-800 cursor-not-allowed'
+                    : addedSuccess
+                    ? 'bg-emerald-600 text-white border-emerald-600'
+                    : 'bg-amber-500 text-zinc-950 border-amber-500 hover:bg-amber-400 shadow-amber-500/10'
+                }`}
+              >
+                {isOutOfStock ? (
+                  <span>Sold Out — Check Back Soon</span>
+                ) : isAdding ? (
+                  <span>Adding to Bag...</span>
+                ) : addedSuccess ? (
+                  <span>Added to Shopping Bag</span>
+                ) : (
+                  <span>Add to Cart — LKR {product.price.toLocaleString()}</span>
+                )}
+              </button>
+            </div>
+
+            {/* Accordions: Fabric Spec & Care Instructions */}
+            <div className="border-t border-zinc-800/80 pt-4 space-y-2">
+              {/* Accordion 1: Fabric Spec */}
+              <div className="border-b border-zinc-800/60 pb-2">
                 <button
                   onClick={() => toggleAccordion('fabric')}
-                  className="w-full py-4 flex justify-between items-center text-xs uppercase tracking-wider font-display font-semibold hover:opacity-75 transition-opacity cursor-pointer"
+                  className="w-full py-3 flex justify-between items-center text-xs uppercase tracking-wider font-display font-semibold text-zinc-200 hover:text-amber-400 transition-colors cursor-pointer"
                 >
-                  <span>Fabric & Fit Spec</span>
+                  <span>Fabric Specification</span>
                   <svg
-                    className={`w-3.5 h-3.5 transform transition-transform duration-300 ${
-                      openAccordion === 'fabric' ? 'rotate-180' : ''
+                    className={`w-4 h-4 transform transition-transform duration-300 ${
+                      openAccordion === 'fabric' ? 'rotate-180 text-amber-400' : 'text-zinc-500'
                     }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 9l-7 7-7-7"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-
-                <div
-                  className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                    openAccordion === 'fabric'
-                      ? 'max-h-60 pb-5 opacity-100'
-                      : 'max-h-0 opacity-0'
-                  }`}
-                >
-                  <div className="text-xs font-light text-brand-light/80 space-y-2 leading-relaxed tracking-wide">
-                    <p>
-                      <strong>Composition:</strong> {product.fabricSpec}
-                    </p>
-                    <p>
-                      <strong>Fit:</strong> Contemporary athletic fit. True to size with a clean structured drape.
-                    </p>
-                    <p>
-                      <strong>Feel:</strong> Cloud-soft handfeel. Lightweight, highly breathable, and moisture-wicking for premium, all-day comfort.
-                    </p>
-                    <p>
-                      <strong>Origin:</strong> Precision-knitted and crafted locally in Sri Lanka.
-                    </p>
+                {openAccordion === 'fabric' && (
+                  <div className="text-xs font-light text-zinc-400 leading-relaxed space-y-1 pb-3">
+                    <p><strong>Composition:</strong> {product.fabricSpec || '60% Combed Cotton / 40% Modal blend, 190 GSM.'}</p>
+                    <p><strong>Drape & Structure:</strong> Engineered for shape retention and soft hand feel.</p>
                   </div>
-                </div>
+                )}
               </div>
 
               {/* Accordion 2: Care Instructions */}
-              <div className="border-b border-brand-light/10">
+              <div className="border-b border-zinc-800/60 pb-2">
                 <button
                   onClick={() => toggleAccordion('care')}
-                  className="w-full py-4 flex justify-between items-center text-xs uppercase tracking-wider font-display font-semibold hover:opacity-75 transition-opacity cursor-pointer"
+                  className="w-full py-3 flex justify-between items-center text-xs uppercase tracking-wider font-display font-semibold text-zinc-200 hover:text-amber-400 transition-colors cursor-pointer"
                 >
                   <span>Care Instructions</span>
                   <svg
-                    className={`w-3.5 h-3.5 transform transition-transform duration-300 ${
-                      openAccordion === 'care' ? 'rotate-180' : ''
+                    className={`w-4 h-4 transform transition-transform duration-300 ${
+                      openAccordion === 'care' ? 'rotate-180 text-amber-400' : 'text-zinc-500'
                     }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 9l-7 7-7-7"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-
-                <div
-                  className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                    openAccordion === 'care'
-                      ? 'max-h-60 pb-5 opacity-100'
-                      : 'max-h-0 opacity-0'
-                  }`}
-                >
-                  <p className="text-xs font-light text-brand-light/80 leading-relaxed tracking-wide">
-                    {product.careInstructions} Machine wash cold (30°C) on a gentle cycle. Wash inside out with similar colors. Flat dry in shade. Do not iron prints or embroidery detail.
-                  </p>
-                </div>
-              </div>
-
-              {/* Accordion 3: Delivery & Returns */}
-              <div className="border-b border-brand-light/10">
-                <button
-                  onClick={() => toggleAccordion('shipping')}
-                  className="w-full py-4 flex justify-between items-center text-xs uppercase tracking-wider font-display font-semibold hover:opacity-75 transition-opacity cursor-pointer"
-                >
-                  <span>Shipping & Returns</span>
-                  <svg
-                    className={`w-3.5 h-3.5 transform transition-transform duration-300 ${
-                      openAccordion === 'shipping' ? 'rotate-180' : ''
-                    }`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-
-                <div
-                  className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                    openAccordion === 'shipping'
-                      ? 'max-h-60 pb-5 opacity-100'
-                      : 'max-h-0 opacity-0'
-                  }`}
-                >
-                  <div className="text-xs font-light text-brand-light/80 space-y-2 leading-relaxed tracking-wide">
-                    <p>
-                      <strong>Sri Lanka Delivery:</strong> 1-3 business days islandwide. Colombo next-day shipping available. LKR 350 flat shipping rate or free for orders over LKR 10,000.
-                    </p>
-                    <p>
-                      <strong>International Shipping:</strong> Express global DHL shipping calculated at checkout (4-7 business days).
-                    </p>
-                    <p>
-                      <strong>Returns:</strong> Returns accepted within 7 days of receipt for exchange or store credit in original unworn condition with tags attached.
-                    </p>
+                {openAccordion === 'care' && (
+                  <div className="text-xs font-light text-zinc-400 leading-relaxed pb-3">
+                    <p>{product.careInstructions || 'Machine wash cold inside out. Flat dry in shade. Do not iron directly on print or embroidery.'}</p>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>

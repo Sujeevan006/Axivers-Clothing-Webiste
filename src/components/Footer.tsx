@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import logo2 from '../assets/Logo2.png';
 
 export const Footer: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -70,7 +69,7 @@ export const Footer: React.FC = () => {
         <div className="md:col-span-4 space-y-4">
           <div className="flex items-center">
             <img
-              src={logo2}
+              src="/Logo2.png"
               alt="axivers"
               className="h-10 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
             />

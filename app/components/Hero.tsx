@@ -6,101 +6,102 @@ import Image from 'next/image';
 
 export const Hero: React.FC = () => {
   return (
-    <section className="relative min-h-screen bg-brand-dark text-brand-light flex items-center justify-center overflow-hidden pt-20">
-      {/* Ambient Radial Spotlight (glowing effect) */}
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-white/[0.02] rounded-full blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-white/[0.015] rounded-full blur-[140px] pointer-events-none"></div>
+    <section className="relative min-h-[90vh] bg-[#09090b] text-[#f4f4f5] flex items-center justify-center overflow-hidden pt-24 pb-16">
+      {/* Ambient Radial Spotlights */}
+      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-amber-500/5 rounded-full blur-[140px] pointer-events-none"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-amber-600/5 rounded-full blur-[160px] pointer-events-none"></div>
 
       {/* Subtle Technical Grid Lines */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:32px_32px] opacity-60"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:32px_32px] opacity-70"></div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         {/* Left Column: Typography & Call to Action */}
         <div className="lg:col-span-7 space-y-8 text-left">
           {/* Subtle tag */}
-          <div className="inline-flex items-center space-x-3 border border-brand-light/10 px-3 py-1 bg-white/[0.02] backdrop-blur-sm">
-            <span className="w-1.5 h-1.5 bg-brand-light animate-ping"></span>
-            <span className="text-[10px] uppercase tracking-[0.25em] text-brand-light/70 font-display font-medium">
-              Flagship Crewneck Available Now
+          <div className="inline-flex items-center space-x-3 border border-amber-500/30 px-3.5 py-1.5 bg-zinc-900/80 backdrop-blur-md rounded-full">
+            <span className="w-2 h-2 bg-amber-500 rounded-full animate-ping"></span>
+            <span className="text-[10px] uppercase tracking-[0.25em] text-amber-400 font-display font-semibold">
+              Axivers Luxury Garments
             </span>
           </div>
 
           {/* Big Header Tagline */}
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-display font-semibold tracking-tight leading-tight text-brand-light">
-            Elevated essentials <br />
-            for the <span className="text-brand-light">modern lifestyle.</span>
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-light tracking-tight leading-[1.1] text-zinc-100">
+            The Pinnacle of <br />
+            <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-500">
+              Athletic Luxury.
+            </span>
           </h1>
 
           {/* Detailed Paragraph */}
-          <p className="text-sm sm:text-base font-light text-brand-light/70 max-w-xl leading-relaxed tracking-wide">
-            Precision-crafted in Sri Lanka. Engineered with a heavy 190 GSM
-            Cotton-Modal blend for unmatched cooling breathability, moisture
-            management, and an elegant cloud-soft drape.
+          <p className="text-sm sm:text-base font-light text-zinc-400 max-w-xl leading-relaxed tracking-wide">
+            Precision-engineered garments crafted for high performance and modern silhouette. 
+            Structured with heavy combed cotton and modal fibers for an unparalleled soft drape and moisture control.
           </p>
 
           {/* Call to Actions */}
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row gap-4 pt-2">
             <Link
-              href="/products"
-              className="px-10 py-4 rounded-md bg-brand-light text-brand-dark font-display text-xs uppercase tracking-[0.05em] font-bold border border-brand-light hover:bg-transparent hover:text-brand-light transition-all duration-300 shadow-lg cursor-pointer text-center"
+              href="/shop"
+              className="px-8 py-4 rounded-lg bg-amber-500 text-zinc-950 font-display text-xs uppercase tracking-[0.15em] font-bold border border-amber-500 hover:bg-amber-400 hover:border-amber-400 transition-all duration-300 shadow-lg shadow-amber-500/10 text-center"
             >
-              Shop Collection
+              Explore Storefront
             </Link>
             <a
-              href="#fabric"
-              className="px-10 py-4 bg-transparent rounded-md text-brand-light font-display text-xs uppercase tracking-[0.05em] font-semibold border border-brand-light/25 hover:border-brand-light transition-all duration-300 text-center"
+              href="#categories"
+              className="px-8 py-4 bg-zinc-900/60 backdrop-blur-md rounded-lg text-zinc-200 font-display text-xs uppercase tracking-[0.15em] font-semibold border border-zinc-800 hover:border-zinc-600 transition-all duration-300 text-center"
             >
-              Fabric Research
+              Browse Categories
             </a>
           </div>
 
           {/* Technical properties summaries */}
-          <div className="grid grid-cols-3 gap-6 pt-10 border-t border-brand-light/10 max-w-lg">
+          <div className="grid grid-cols-3 gap-6 pt-8 border-t border-zinc-800/80 max-w-lg">
             <div>
-              <span className="text-xs font-mono text-brand-light/35 block mb-1">
-                01 / FIBERS
+              <span className="text-[10px] font-mono text-zinc-500 block mb-1">
+                01 / BRAND
               </span>
-              <span className="text-xs uppercase tracking-wider font-semibold">
-                Cotton-Modal
+              <span className="text-xs uppercase tracking-wider font-semibold text-zinc-200">
+                Axivers Garments
               </span>
             </div>
             <div>
-              <span className="text-xs font-mono text-brand-light/35 block mb-1">
-                02 / STRUCTURE
+              <span className="text-[10px] font-mono text-zinc-500 block mb-1">
+                02 / FABRIC
               </span>
-              <span className="text-xs uppercase tracking-wider font-semibold">
-                Custom Piping
+              <span className="text-xs uppercase tracking-wider font-semibold text-zinc-200">
+                Cotton-Modal Blend
               </span>
             </div>
             <div>
-              <span className="text-xs font-mono text-brand-light/35 block mb-1">
-                03 / WEIGHT
+              <span className="text-[10px] font-mono text-zinc-500 block mb-1">
+                03 / ESTABLISHED
               </span>
-              <span className="text-xs uppercase tracking-wider font-semibold">
-                190 GSM
+              <span className="text-xs uppercase tracking-wider font-semibold text-zinc-200">
+                Sri Lanka
               </span>
             </div>
           </div>
         </div>
 
-        {/* Right Column: High-Fashion Asymmetric Frame */}
-        <div className="lg:col-span-5 relative hidden md:block">
-          <div className="relative bg-zinc-950 border border-brand-light/10 p-6 z-10 shadow-2xl rounded-4xl">
-            <div className="aspect-[3/4] bg-white overflow-hidden relative group rounded-3xl">
+        {/* Right Column: High-Fashion Showcase Card */}
+        <div className="lg:col-span-5 relative hidden lg:block">
+          <div className="relative glass-card-gold p-5 z-10 shadow-2xl rounded-2xl">
+            <div className="aspect-[3/4] bg-zinc-950 overflow-hidden relative group rounded-xl">
               <Image
                 src="/images/pdp_front.jpg"
-                alt="axivers Premium Piping Crewneck"
+                alt="Axivers Athletic Luxury Garment"
                 width={600}
                 height={800}
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent flex items-end p-6">
                 <div className="space-y-1">
-                  <span className="text-[9px] uppercase tracking-widest text-brand-light/60">
-                    Flagship Item
+                  <span className="text-[10px] uppercase tracking-widest text-amber-400 font-semibold font-display">
+                    Flagship Collection
                   </span>
-                  <p className="text-xs uppercase tracking-wider font-bold text-white">
+                  <p className="text-sm uppercase tracking-wider font-bold text-white">
                     Premium Piping Crewneck
                   </p>
                 </div>
@@ -112,3 +113,4 @@ export const Hero: React.FC = () => {
     </section>
   );
 };
+
