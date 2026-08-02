@@ -93,8 +93,9 @@ export const Hero: React.FC = () => {
                 alt="Axivers Athletic Luxury Garment"
                 width={600}
                 height={800}
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                priority={true}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent flex items-end p-6">
                 <div className="space-y-1">

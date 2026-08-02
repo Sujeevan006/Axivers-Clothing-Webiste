@@ -1,1 +1,24 @@
-{"node":{},"edge":{},"encryptionKey":"jPKp/LyPDaY8JSsk/3HqJZ5cTnCne1LilyqyM938hqk="}
+{
+  "node": {
+    "70bef26a5ac6c1f4b342c17d8dcb11fd84c2a4dbe6": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22F%3A%5C%5CHELLO%20AXIS%5C%5CAxivers%20-%20Tech%5C%5CProjects%5C%5CAxivers%20Clothing%5C%5Caxivers-clothing%5C%5Capp%5C%5Cactions%5C%5Ccheckout.ts%22%2C%5B%7B%22id%22%3A%2270bef26a5ac6c1f4b342c17d8dcb11fd84c2a4dbe6%22%2C%22exportedName%22%3A%22processCheckout%22%2C%22filename%22%3A%22..%2FF%3A%5C%5CHELLO%20AXIS%5C%5CAxivers%20-%20Tech%5C%5CProjects%5C%5CAxivers%20Clothing%5C%5Caxivers-clothing%5C%5Capp%5C%5Cactions%5C%5Ccheckout.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": true
+        },
+        "app/shop/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22F%3A%5C%5CHELLO%20AXIS%5C%5CAxivers%20-%20Tech%5C%5CProjects%5C%5CAxivers%20Clothing%5C%5Caxivers-clothing%5C%5Capp%5C%5Cactions%5C%5Ccheckout.ts%22%2C%5B%7B%22id%22%3A%2270bef26a5ac6c1f4b342c17d8dcb11fd84c2a4dbe6%22%2C%22exportedName%22%3A%22processCheckout%22%2C%22filename%22%3A%22..%2FF%3A%5C%5CHELLO%20AXIS%5C%5CAxivers%20-%20Tech%5C%5CProjects%5C%5CAxivers%20Clothing%5C%5Caxivers-clothing%5C%5Capp%5C%5Cactions%5C%5Ccheckout.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": true
+        }
+      },
+      "layer": {
+        "app/page": "action-browser",
+        "app/shop/page": "action-browser"
+      },
+      "filename": "../F:\\HELLO AXIS\\Axivers - Tech\\Projects\\Axivers Clothing\\axivers-clothing\\app\\actions\\checkout.ts",
+      "exportedName": "processCheckout"
+    }
+  },
+  "edge": {},
+  "encryptionKey": "Qp+zA5AF47eL2LYdb7bLLVXNwTZfxyZBxL5zT57iE9w="
+}

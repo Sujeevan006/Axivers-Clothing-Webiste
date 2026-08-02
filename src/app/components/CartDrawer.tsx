@@ -52,40 +52,31 @@ export const CartDrawer: React.FC = () => {
 
     setIsSubmitting(true);
     try {
-      // 1. Try API Checkout endpoint first
-      const res = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          customer: {
-            name: customerName,
-            email: customerEmail,
-            phone: customerPhone,
-            address: shippingAddress,
-            city: city,
-            postalCode: postalCode,
-          },
-          items: cartItems.map(item => ({
-            id: item.id,
-            productId: item.id,
-            name: item.name,
-            image: item.image || (item.images && item.images[0]) || '',
-            size: item.selectedSize || item.size || 'M',
-            color: item.selectedColor || item.color || '',
-            quantity: item.quantity,
-            price: item.price,
-            unitPrice: item.price,
-            subtotal: item.price * item.quantity,
-          })),
-          paymentMethod: selectedPaymentMethod,
-          customerNotes,
-        }),
+      const { processCheckout } = await import('@/app/actions/checkout');
+      const result = await processCheckout({
+        cartItems: cartItems.map(item => ({
+          productId: item.id,
+          name: item.name,
+          image: item.image || (item.images && item.images[0]) || '',
+          size: item.selectedSize || item.size || 'M',
+          color: item.selectedColor || item.color || '',
+          quantity: item.quantity,
+          price: item.price,
+        })),
+        customerData: {
+          name: customerName,
+          email: customerEmail,
+          phone: customerPhone,
+          address: shippingAddress,
+          city,
+          postalCode,
+        },
+        paymentMethod: selectedPaymentMethod,
+        customerNotes,
       });
 
-      const data = await res.json();
-
-      if (res.ok && data.success) {
-        const generatedNum = data.orderNumber || data.order?.orderNumber || `AXV-${Math.floor(10000 + Math.random() * 90000)}`;
+      if (result.success && result.orderNumber) {
+        const generatedNum = result.orderNumber;
         setPlacedOrderNumber(generatedNum);
         setPlacedOrderDetails({
           orderNumber: generatedNum,
@@ -101,53 +92,7 @@ export const CartDrawer: React.FC = () => {
         return;
       }
 
-      // 2. Direct Firestore fallback client write if API route is unavailable
-      const fallbackOrderNumber = "AXV-" + Math.floor(10000 + Math.random() * 90000);
-      const fallbackOrderData = {
-        orderNumber: fallbackOrderNumber,
-        customer: {
-          name: customerName,
-          email: customerEmail,
-          phone: customerPhone,
-          address: shippingAddress,
-          city: city,
-          postalCode: postalCode,
-        },
-        items: cartItems.map(item => ({
-          productId: item.id,
-          name: item.name,
-          image: item.image || (item.images && item.images[0]) || '',
-          size: item.selectedSize || item.size || 'M',
-          color: item.selectedColor || item.color || '',
-          quantity: item.quantity,
-          unitPrice: item.price,
-          subtotal: item.price * item.quantity,
-        })),
-        subtotal,
-        deliveryFee,
-        total,
-        paymentMethod: selectedPaymentMethod,
-        paymentStatus: selectedPaymentMethod === 'payhere' ? 'paid' : 'pending',
-        orderStatus: 'pending',
-        customerNotes: customerNotes || '',
-        adminNotes: '',
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-      };
-
-      const docRef = await addDoc(collection(db, 'orders'), fallbackOrderData);
-      setPlacedOrderNumber(fallbackOrderNumber);
-      setPlacedOrderDetails({
-        orderNumber: fallbackOrderNumber,
-        customer: { name: customerName, phone: customerPhone, address: shippingAddress, city },
-        items: [...cartItems],
-        subtotal,
-        deliveryFee,
-        total,
-        paymentMethod: selectedPaymentMethod,
-      });
-      clearCart();
-      setCheckoutStep('success');
+      setErrorMessage(result.error || 'Failed to complete checkout. Out of stock or system error.');
     } catch (err: any) {
       console.error('Checkout error:', err);
       setErrorMessage(err?.message || 'Failed to place order. Please try again.');

@@ -259,6 +259,7 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
                       alt={product.name}
                       width={500}
                       height={500}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className={`w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105 ${
                         isOutOfStock ? 'opacity-40 grayscale' : ''
                       }`}

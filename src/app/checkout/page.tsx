@@ -44,51 +44,18 @@ export default function CheckoutPage() {
 
     setIsSubmitting(true);
     try {
-      // API call
-      const res = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          customer: {
-            name: customerName,
-            email: customerEmail,
-            phone: customerPhone,
-            address: shippingAddress,
-            city,
-            postalCode,
-          },
-          items: cartItems.map(item => ({
-            id: item.id,
-            productId: item.id,
-            name: item.name,
-            image: item.image || (item.images && item.images[0]) || '',
-            size: item.selectedSize || item.size || 'M',
-            color: item.selectedColor || item.color || '',
-            quantity: item.quantity,
-            price: item.price,
-            unitPrice: item.price,
-            subtotal: item.price * item.quantity,
-          })),
-          paymentMethod: selectedPaymentMethod,
-          customerNotes,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok && data.success) {
-        const generatedNum = data.orderNumber || data.order?.orderNumber || `AXV-${Math.floor(10000 + Math.random() * 90000)}`;
-        setPlacedOrderNumber(generatedNum);
-        clearCart();
-        setOrderComplete(true);
-        return;
-      }
-
-      // Firestore direct write fallback
-      const fallbackOrderNumber = "AXV-" + Math.floor(10000 + Math.random() * 90000);
-      await addDoc(collection(db, 'orders'), {
-        orderNumber: fallbackOrderNumber,
-        customer: {
+      const { processCheckout } = await import('@/app/actions/checkout');
+      const result = await processCheckout({
+        cartItems: cartItems.map(item => ({
+          productId: item.id,
+          name: item.name,
+          image: item.image || (item.images && item.images[0]) || '',
+          size: item.selectedSize || item.size || 'M',
+          color: item.selectedColor || item.color || '',
+          quantity: item.quantity,
+          price: item.price,
+        })),
+        customerData: {
           name: customerName,
           email: customerEmail,
           phone: customerPhone,
@@ -96,31 +63,18 @@ export default function CheckoutPage() {
           city,
           postalCode,
         },
-        items: cartItems.map(item => ({
-          productId: item.id,
-          name: item.name,
-          image: item.image || (item.images && item.images[0]) || '',
-          size: item.selectedSize || item.size || 'M',
-          color: item.selectedColor || item.color || '',
-          quantity: item.quantity,
-          unitPrice: item.price,
-          subtotal: item.price * item.quantity,
-        })),
-        subtotal,
-        deliveryFee,
-        total,
         paymentMethod: selectedPaymentMethod,
-        paymentStatus: selectedPaymentMethod === 'payhere' ? 'paid' : 'pending',
-        orderStatus: 'pending',
-        customerNotes: customerNotes || '',
-        adminNotes: '',
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
+        customerNotes,
       });
 
-      setPlacedOrderNumber(fallbackOrderNumber);
-      clearCart();
-      setOrderComplete(true);
+      if (result.success && result.orderNumber) {
+        setPlacedOrderNumber(result.orderNumber);
+        clearCart();
+        setOrderComplete(true);
+        return;
+      }
+
+      setErrorMessage(result.error || 'Failed to complete order. Insufficient stock or server error.');
     } catch (err: any) {
       console.error('Checkout failed:', err);
       setErrorMessage(err?.message || 'Failed to complete order. Please try again.');
