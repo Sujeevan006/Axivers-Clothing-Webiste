@@ -86,10 +86,10 @@ export const Header: React.FC = () => {
         <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center">
           <Link href="/" className="flex items-center cursor-pointer focus:outline-none">
             <Image
-              src="/Logo2.png"
+              src="/LogoOriginal.png"
               alt="Axivers Luxury Clothing"
-              width={120}
-              height={40}
+              width={140}
+              height={45}
               className="h-9 sm:h-11 w-auto object-contain hover:scale-95 transition-all duration-300 transform"
               priority
             />

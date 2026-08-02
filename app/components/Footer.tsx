@@ -73,10 +73,10 @@ export const Footer: React.FC = () => {
         <div className="md:col-span-4 space-y-4">
           <div className="flex items-center">
             <Image
-              src="/Logo2.png"
+              src="/LogoOriginal.png"
               alt="axivers"
-              width={120}
-              height={40}
+              width={140}
+              height={45}
               className="h-10 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
             />
           </div>
