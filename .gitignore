@@ -1,3 +1,17 @@
+# Next.js build output & cache
+.next/
+out/
+build/
+dist/
+dist-ssr/
+*.tsbuildinfo
+
+# Dependencies
+node_modules/
+
+# Environment variables
+.env*.local
+
 # Logs
 logs
 *.log
@@ -7,12 +21,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
+# Editor & OS files
 .vscode/*
 !.vscode/extensions.json
 .idea

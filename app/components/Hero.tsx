@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React from 'react';
 import Link from 'next/link';
@@ -29,14 +29,16 @@ export const Hero: React.FC = () => {
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-light tracking-tight leading-[1.1] text-white">
             The Pinnacle of <br />
             <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-400">
-              Athletic Luxury.
+              Everyday Luxury.
             </span>
           </h1>
 
           {/* Detailed Paragraph */}
           <p className="text-sm sm:text-base font-light text-zinc-400 max-w-xl leading-relaxed tracking-wide">
-            Precision-engineered garments crafted for high performance and modern silhouette. 
-            Structured with heavy combed cotton and modal fibers for an unparalleled soft drape and moisture control.
+            Precision-engineered for the modern silhouette. Crafted from our
+            signature 60/40 Combed Cotton-Modal blend for an unparalleled
+            cloud-soft drape, superior breathability, and lasting everyday
+            comfort.
           </p>
 
           {/* Call to Actions */}
@@ -45,13 +47,13 @@ export const Hero: React.FC = () => {
               href="/shop"
               className="px-8 py-4 rounded-lg bg-white text-black font-display text-xs uppercase tracking-[0.15em] font-bold border border-white hover:bg-zinc-200 transition-all duration-300 shadow-xl text-center"
             >
-              Explore Storefront
+              SHOP THE FLAGSHIP
             </Link>
             <a
               href="#categories"
               className="px-8 py-4 bg-zinc-900/80 backdrop-blur-md rounded-lg text-white font-display text-xs uppercase tracking-[0.15em] font-semibold border border-zinc-700 hover:border-white transition-all duration-300 text-center"
             >
-              Browse Categories
+              DISCOVER OUR FABRIC
             </a>
           </div>
 
@@ -59,26 +61,26 @@ export const Hero: React.FC = () => {
           <div className="grid grid-cols-3 gap-6 pt-8 border-t border-zinc-800 max-w-lg">
             <div>
               <span className="text-[10px] font-mono text-zinc-500 block mb-1">
-                01 / BRAND
+                BRAND
               </span>
               <span className="text-xs uppercase tracking-wider font-semibold text-white">
-                Axivers Garments
+                Axivers
               </span>
             </div>
             <div>
               <span className="text-[10px] font-mono text-zinc-500 block mb-1">
-                02 / FABRIC
+                FABRIC
               </span>
               <span className="text-xs uppercase tracking-wider font-semibold text-white">
-                Cotton-Modal Blend
+                60/40 COTTON-MODAL
               </span>
             </div>
             <div>
               <span className="text-[10px] font-mono text-zinc-500 block mb-1">
-                03 / ESTABLISHED
+                ORIGIN
               </span>
               <span className="text-xs uppercase tracking-wider font-semibold text-white">
-                Sri Lanka
+                CRAFTED IN SRI LANKA
               </span>
             </div>
           </div>
