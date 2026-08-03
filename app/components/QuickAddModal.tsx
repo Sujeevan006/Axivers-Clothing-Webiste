@@ -50,7 +50,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ product, onClose }
       {/* Backdrop */}
       <div
         onClick={onClose}
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm animate-fade-in cursor-pointer"
+        className="absolute inset-0 bg-black/85 backdrop-blur-sm animate-fade-in cursor-pointer"
       />
 
       {/* Modal Card */}
@@ -76,7 +76,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ product, onClose }
               className={`w-full h-full object-cover ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
             />
             {isOutOfStock && (
-              <span className="absolute top-2 left-2 bg-rose-600 text-white text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded">
+              <span className="absolute top-2 left-2 bg-zinc-900 border border-zinc-700 text-zinc-400 text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded">
                 Sold Out
               </span>
             )}
@@ -85,13 +85,13 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ product, onClose }
           {/* Details & Selectors */}
           <div className="sm:col-span-7 space-y-4">
             <div>
-              <span className="text-[10px] font-mono uppercase tracking-widest text-amber-400">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-400">
                 {product.category}
               </span>
-              <h3 className="text-base font-display font-semibold uppercase tracking-wider text-zinc-100">
+              <h3 className="text-base font-display font-semibold uppercase tracking-wider text-white">
                 {product.name}
               </h3>
-              <p className="text-xs font-mono font-semibold text-amber-400 mt-1">
+              <p className="text-xs font-mono font-bold text-white mt-1">
                 LKR {product.price.toLocaleString()}
               </p>
             </div>
@@ -107,9 +107,9 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ product, onClose }
                     key={s}
                     type="button"
                     onClick={() => setSelectedSize(s)}
-                    className={`px-3 py-1 text-xs font-mono rounded border transition-all ${
+                    className={`px-3 py-1 text-xs font-mono rounded border transition-all cursor-pointer ${
                       selectedSize === s
-                        ? 'bg-amber-500 text-zinc-950 border-amber-500 font-bold'
+                        ? 'bg-white text-black border-white font-bold'
                         : 'bg-zinc-800/80 text-zinc-300 border-zinc-700 hover:border-zinc-500'
                     }`}
                   >
@@ -131,9 +131,9 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ product, onClose }
                       key={c}
                       type="button"
                       onClick={() => setSelectedColor(c)}
-                      className={`px-3 py-1 text-xs font-display rounded border transition-all ${
+                      className={`px-3 py-1 text-xs font-display rounded border transition-all cursor-pointer ${
                         selectedColor === c
-                          ? 'bg-amber-500 text-zinc-950 border-amber-500 font-bold'
+                          ? 'bg-white text-black border-white font-bold'
                           : 'bg-zinc-800/80 text-zinc-300 border-zinc-700 hover:border-zinc-500'
                       }`}
                     >
@@ -153,8 +153,8 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ product, onClose }
                   isOutOfStock
                     ? 'bg-zinc-800 text-zinc-500 border border-zinc-700 cursor-not-allowed'
                     : addedSuccess
-                    ? 'bg-emerald-600 text-white'
-                    : 'bg-amber-500 text-zinc-950 hover:bg-amber-400 shadow-md shadow-amber-500/10'
+                    ? 'bg-white text-black font-bold'
+                    : 'bg-white text-black hover:bg-zinc-200 shadow-md font-bold'
                 }`}
               >
                 {isOutOfStock ? (
@@ -171,7 +171,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ product, onClose }
               <Link
                 href={`/product/${product.slug || product.id}`}
                 onClick={onClose}
-                className="block text-center text-[10px] uppercase tracking-widest font-display text-zinc-400 hover:text-amber-400 pt-1"
+                className="block text-center text-[10px] uppercase tracking-widest font-display text-zinc-400 hover:text-white pt-1"
               >
                 View Full Specifications &rarr;
               </Link>

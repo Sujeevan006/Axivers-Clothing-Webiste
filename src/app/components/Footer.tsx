@@ -66,33 +66,29 @@ export const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="bg-brand-dark text-brand-light pt-20 pb-10 px-4 sm:px-6 lg:px-8 border-t border-brand-light/5">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 pb-16 border-b border-brand-light/10">
+    <footer className="bg-[#09090b] text-[#ffffff] pt-16 border-t border-zinc-800/80">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-12 gap-12 pb-12 border-b border-zinc-800/60">
         
         {/* Left Column: Brand & Tagline */}
         <div className="md:col-span-4 space-y-4">
           <div className="flex items-center">
             <Image
-              src="/Logo2.png"
+              src="/LogoOriginal.png"
               alt="axivers"
-              width={120}
-              height={40}
-              className="h-10 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+              width={140}
+              height={45}
+              className="h-10 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
             />
           </div>
-          <p className="text-xs text-brand-light/60 font-light leading-relaxed max-w-sm tracking-wide">
+          <p className="text-xs text-zinc-400 font-light leading-relaxed max-w-sm tracking-wide">
             Precision-crafted athletic luxury essentials designed for the modern lifestyle. Re-engineering basics from the yarns up.
           </p>
-          <div className="text-[10px] text-brand-light/40 font-mono">
-            © {new Date().getFullYear()} AXIVERS CLOTHING PVT LTD. <br />
-            MADE IN SRI LANKA // FOR THE WORLD.
-          </div>
         </div>
 
         {/* Center Column 1: Shop Menu */}
         <div className="md:col-span-2 space-y-4">
-          <h4 className="text-xs uppercase tracking-widest font-display font-semibold text-white">Shop</h4>
-          <ul className="space-y-2 text-xs font-light text-brand-light/60">
+          <h4 className="text-xs uppercase tracking-widest font-display font-bold text-white">Shop</h4>
+          <ul className="space-y-2 text-xs font-light text-zinc-400">
             <li><a href="/products" className="hover:text-white transition-colors">Flagship Crewneck</a></li>
             <li><a href="/products" className="hover:text-white transition-colors">New Releases</a></li>
             <li><a href="/products" className="hover:text-white transition-colors">Collections</a></li>
@@ -102,8 +98,8 @@ export const Footer: React.FC = () => {
 
         {/* Center Column 2: Information */}
         <div className="md:col-span-2 space-y-4">
-          <h4 className="text-xs uppercase tracking-widest font-display font-semibold text-white">Support</h4>
-          <ul className="space-y-2 text-xs font-light text-brand-light/60">
+          <h4 className="text-xs uppercase tracking-widest font-display font-bold text-white">Support</h4>
+          <ul className="space-y-2 text-xs font-light text-zinc-400">
             <li><a href="#" className="hover:text-white transition-colors">Size Guide</a></li>
             <li><a href="#" className="hover:text-white transition-colors">Shipping & Delivery</a></li>
             <li><a href="#" className="hover:text-white transition-colors">Return Policy</a></li>
@@ -113,8 +109,8 @@ export const Footer: React.FC = () => {
 
         {/* Right Column: Newsletter Signup */}
         <div className="md:col-span-4 space-y-4">
-          <h4 className="text-xs uppercase tracking-widest font-display font-semibold text-white">Newsletter</h4>
-          <p className="text-xs text-brand-light/60 font-light tracking-wide leading-relaxed">
+          <h4 className="text-xs uppercase tracking-widest font-display font-bold text-white">Newsletter</h4>
+          <p className="text-xs text-zinc-400 font-light tracking-wide leading-relaxed">
             Subscribe to receive priority access to limited edition drops and fabric research.
           </p>
           
@@ -125,11 +121,11 @@ export const Footer: React.FC = () => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="ENTER EMAIL ADDRESS"
               required
-              className="bg-black/45 border border-brand-light/20 text-xs px-4 py-3 text-white placeholder-brand-light/40 focus:outline-none focus:border-brand-light rounded-md flex-1 tracking-wider font-mono uppercase"
+              className="bg-black/60 border border-zinc-800 text-xs px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:border-white rounded-md flex-1 tracking-wider font-mono uppercase"
             />
             <button
               type="submit"
-              className="px-6 py-3 bg-brand-light text-brand-dark font-display text-xs uppercase tracking-widest font-bold border border-brand-light hover:bg-transparent hover:text-brand-light transition-all duration-300 rounded-md cursor-pointer text-center"
+              className="px-6 py-3 bg-white text-black font-display text-xs uppercase tracking-widest font-bold border border-white hover:bg-zinc-200 transition-all duration-300 rounded-md cursor-pointer text-center"
             >
               {subscribed ? 'SUBSCRIBED' : 'JOIN'}
             </button>
@@ -137,10 +133,10 @@ export const Footer: React.FC = () => {
         </div>
       </div>
 
-      {/* Social & Bottom Info */}
-      <div className="max-w-7xl mx-auto pt-8 flex flex-col sm:flex-row justify-between items-center gap-6">
+      {/* Social Links & Payment Methods */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row justify-between items-center gap-6">
         {/* Social Links */}
-        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs tracking-widest font-display uppercase font-semibold text-brand-light/50">
+        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs tracking-widest font-display uppercase font-semibold text-zinc-400">
           {socialLinks.map((social) => (
             <a
               key={social.name}
@@ -158,8 +154,8 @@ export const Footer: React.FC = () => {
           ))}
         </div>
         
-        {/* Certifications & payments */}
-        <div className="flex items-center space-x-4 text-[9px] font-mono text-brand-light/40 tracking-wider">
+        {/* Payment Methods */}
+        <div className="flex items-center space-x-4 text-[9px] font-mono text-zinc-400 tracking-wider">
           <span>VISA</span>
           <span>•</span>
           <span>MASTERCARD</span>
@@ -171,6 +167,18 @@ export const Footer: React.FC = () => {
           <span>KOKO</span>
           <span>•</span>
           <span>PAYHERE</span>
+        </div>
+      </div>
+
+      {/* Differentiated Pure Black Sub-Footer Column */}
+      <div className="w-full bg-[#000000] border-t border-zinc-800 py-6 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+          <div className="text-xs font-mono tracking-widest text-white uppercase font-bold">
+            © 2026 AXIVERS CLOTHING PVT LTD.
+          </div>
+          <div className="text-xs font-mono tracking-widest text-zinc-400 uppercase font-medium">
+            MADE IN SRI LANKA // FOR THE WORLD.
+          </div>
         </div>
       </div>
     </footer>

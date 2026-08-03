@@ -3,8 +3,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useCart } from '../context/CartContext';
-import { db } from '@/lib/firebase/client';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 export const CartDrawer: React.FC = () => {
   const {
@@ -114,22 +112,22 @@ export const CartDrawer: React.FC = () => {
       {/* Backdrop */}
       <div
         onClick={handleClose}
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity animate-fade-in cursor-pointer"
+        className="absolute inset-0 bg-black/85 backdrop-blur-sm transition-opacity animate-fade-in cursor-pointer"
       />
 
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-6">
-        <div className="w-screen max-w-md bg-[#09090b] text-[#f4f4f5] border-l border-zinc-800 shadow-2xl flex flex-col justify-between animate-slide-left">
+        <div className="w-screen max-w-md bg-[#09090b] text-white border-l border-zinc-800 shadow-2xl flex flex-col justify-between animate-slide-left">
           
           {/* Drawer Header */}
-          <div className="px-6 py-5 border-b border-zinc-800 flex items-center justify-between bg-zinc-950/80 backdrop-blur-md">
+          <div className="px-6 py-5 border-b border-zinc-800 flex items-center justify-between bg-zinc-950/90 backdrop-blur-md">
             <div className="flex items-center space-x-2">
-              <span className="text-xs uppercase tracking-widest font-display font-bold text-amber-400">
+              <span className="text-xs uppercase tracking-widest font-display font-bold text-white">
                 {checkoutStep === 'cart' && 'Your Shopping Bag'}
                 {checkoutStep === 'details' && 'Shipping & Payment'}
                 {checkoutStep === 'success' && 'Order Confirmed'}
               </span>
               {checkoutStep === 'cart' && (
-                <span className="text-[10px] bg-amber-500 text-zinc-950 font-mono px-2 py-0.5 font-bold rounded-full">
+                <span className="text-[10px] bg-white text-black font-mono px-2 py-0.5 font-bold rounded-full">
                   {cartItems.reduce((acc, i) => acc + i.quantity, 0)}
                 </span>
               )}
@@ -150,7 +148,7 @@ export const CartDrawer: React.FC = () => {
               <div className="flex-1 overflow-y-auto p-6 space-y-4">
                 {cartItems.length === 0 ? (
                   <div className="h-full flex flex-col items-center justify-center text-center py-16 space-y-4">
-                    <div className="w-14 h-14 border border-zinc-800 rounded-full flex items-center justify-center bg-zinc-900 text-zinc-600">
+                    <div className="w-14 h-14 border border-zinc-800 rounded-full flex items-center justify-center bg-zinc-900 text-zinc-500">
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                       </svg>
@@ -161,7 +159,7 @@ export const CartDrawer: React.FC = () => {
                     </p>
                     <button
                       onClick={handleClose}
-                      className="px-6 py-3 bg-amber-500 text-zinc-950 text-xs font-display uppercase tracking-widest font-bold rounded-lg hover:bg-amber-400 cursor-pointer shadow-md"
+                      className="px-6 py-3 bg-white text-black text-xs font-display uppercase tracking-widest font-bold rounded-lg hover:bg-zinc-200 cursor-pointer shadow-md"
                     >
                       Explore Collection
                     </button>
@@ -209,7 +207,7 @@ export const CartDrawer: React.FC = () => {
                               >
                                 -
                               </button>
-                              <span className="px-2 text-xs font-mono font-bold text-amber-400">{item.quantity}</span>
+                              <span className="px-2 text-xs font-mono font-bold text-white">{item.quantity}</span>
                               <button
                                 onClick={() => updateQuantity(item.id, itemSize, itemColor, item.quantity + 1)}
                                 className="px-2 py-1 text-xs text-zinc-400 hover:text-white cursor-pointer"
@@ -218,7 +216,7 @@ export const CartDrawer: React.FC = () => {
                               </button>
                             </div>
 
-                            <div className="text-xs font-mono font-bold text-zinc-100">
+                            <div className="text-xs font-mono font-bold text-white">
                               LKR {(item.price * item.quantity).toLocaleString()}
                             </div>
                           </div>
@@ -230,7 +228,7 @@ export const CartDrawer: React.FC = () => {
               </div>
 
               {cartItems.length > 0 && (
-                <div className="p-6 border-t border-zinc-800 bg-zinc-950/90 space-y-4">
+                <div className="p-6 border-t border-zinc-800 bg-zinc-950/95 space-y-4">
                   <div className="space-y-2 text-xs">
                     <div className="flex justify-between text-zinc-400">
                       <span>Subtotal</span>
@@ -238,17 +236,17 @@ export const CartDrawer: React.FC = () => {
                     </div>
                     <div className="flex justify-between text-zinc-400">
                       <span>Delivery Fee</span>
-                      <span className="font-mono text-amber-400 font-bold">LKR {deliveryFee.toFixed(2)}</span>
+                      <span className="font-mono text-white font-bold">LKR {deliveryFee.toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between text-sm font-bold uppercase tracking-wider font-display pt-2 border-t border-zinc-800 text-zinc-100">
+                    <div className="flex justify-between text-sm font-bold uppercase tracking-wider font-display pt-2 border-t border-zinc-800 text-white">
                       <span>Total Amount</span>
-                      <span className="font-mono text-amber-400">LKR {total.toLocaleString()}</span>
+                      <span className="font-mono text-white">LKR {total.toLocaleString()}</span>
                     </div>
                   </div>
 
                   <button
                     onClick={() => setCheckoutStep('details')}
-                    className="w-full py-4 bg-amber-500 text-zinc-950 text-xs font-display uppercase tracking-widest font-bold rounded-xl hover:bg-amber-400 transition-all duration-300 shadow-lg shadow-amber-500/10 cursor-pointer text-center"
+                    className="w-full py-4 bg-white text-black text-xs font-display uppercase tracking-widest font-bold rounded-xl hover:bg-zinc-200 transition-all duration-300 shadow-lg cursor-pointer text-center"
                   >
                     Proceed to Checkout
                   </button>
@@ -277,7 +275,7 @@ export const CartDrawer: React.FC = () => {
                     value={customerName}
                     onChange={(e) => setCustomerName(e.target.value)}
                     placeholder="e.g. Kasun Perera"
-                    className="w-full px-3 py-2.5 text-xs border border-zinc-800 rounded-lg bg-zinc-900 text-zinc-100 focus:outline-none focus:border-amber-500"
+                    className="w-full px-3 py-2.5 text-xs border border-zinc-800 rounded-lg bg-zinc-900 text-white focus:outline-none focus:border-white"
                   />
                 </div>
 
@@ -292,7 +290,7 @@ export const CartDrawer: React.FC = () => {
                       value={customerPhone}
                       onChange={(e) => setCustomerPhone(e.target.value)}
                       placeholder="0771234567"
-                      className="w-full px-3 py-2.5 text-xs border border-zinc-800 rounded-lg bg-zinc-900 text-zinc-100 focus:outline-none focus:border-amber-500"
+                      className="w-full px-3 py-2.5 text-xs border border-zinc-800 rounded-lg bg-zinc-900 text-white focus:outline-none focus:border-white"
                     />
                   </div>
                   <div>
@@ -304,7 +302,7 @@ export const CartDrawer: React.FC = () => {
                       value={customerEmail}
                       onChange={(e) => setCustomerEmail(e.target.value)}
                       placeholder="kasun@example.com"
-                      className="w-full px-3 py-2.5 text-xs border border-zinc-800 rounded-lg bg-zinc-900 text-zinc-100 focus:outline-none focus:border-amber-500"
+                      className="w-full px-3 py-2.5 text-xs border border-zinc-800 rounded-lg bg-zinc-900 text-white focus:outline-none focus:border-white"
                     />
                   </div>
                 </div>
@@ -319,7 +317,7 @@ export const CartDrawer: React.FC = () => {
                     value={shippingAddress}
                     onChange={(e) => setShippingAddress(e.target.value)}
                     placeholder="Street address, apartment or house number"
-                    className="w-full px-3 py-2.5 text-xs border border-zinc-800 rounded-lg bg-zinc-900 text-zinc-100 focus:outline-none focus:border-amber-500"
+                    className="w-full px-3 py-2.5 text-xs border border-zinc-800 rounded-lg bg-zinc-900 text-white focus:outline-none focus:border-white"
                   />
                 </div>
 
@@ -334,7 +332,7 @@ export const CartDrawer: React.FC = () => {
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
                       placeholder="e.g. Colombo"
-                      className="w-full px-3 py-2.5 text-xs border border-zinc-800 rounded-lg bg-zinc-900 text-zinc-100 focus:outline-none focus:border-amber-500"
+                      className="w-full px-3 py-2.5 text-xs border border-zinc-800 rounded-lg bg-zinc-900 text-white focus:outline-none focus:border-white"
                     />
                   </div>
                   <div>
@@ -346,7 +344,7 @@ export const CartDrawer: React.FC = () => {
                       value={postalCode}
                       onChange={(e) => setPostalCode(e.target.value)}
                       placeholder="10100"
-                      className="w-full px-3 py-2.5 text-xs border border-zinc-800 rounded-lg bg-zinc-900 text-zinc-100 focus:outline-none focus:border-amber-500"
+                      className="w-full px-3 py-2.5 text-xs border border-zinc-800 rounded-lg bg-zinc-900 text-white focus:outline-none focus:border-white"
                     />
                   </div>
                 </div>
@@ -362,7 +360,7 @@ export const CartDrawer: React.FC = () => {
                       onClick={() => setSelectedPaymentMethod('cash_on_delivery')}
                       className={`p-3 rounded-xl border text-left flex flex-col justify-between cursor-pointer transition-all ${
                         selectedPaymentMethod === 'cash_on_delivery'
-                          ? 'bg-amber-500/10 border-amber-500 text-amber-400'
+                          ? 'bg-zinc-800 border-white text-white font-bold'
                           : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-700'
                       }`}
                     >
@@ -375,7 +373,7 @@ export const CartDrawer: React.FC = () => {
                       onClick={() => setSelectedPaymentMethod('payhere')}
                       className={`p-3 rounded-xl border text-left flex flex-col justify-between cursor-pointer transition-all ${
                         selectedPaymentMethod === 'payhere'
-                          ? 'bg-amber-500/10 border-amber-500 text-amber-400'
+                          ? 'bg-zinc-800 border-white text-white font-bold'
                           : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-700'
                       }`}
                     >
@@ -394,25 +392,25 @@ export const CartDrawer: React.FC = () => {
                     value={customerNotes}
                     onChange={(e) => setCustomerNotes(e.target.value)}
                     placeholder="Delivery instructions, gate code, etc."
-                    className="w-full px-3 py-2 text-xs border border-zinc-800 rounded-lg bg-zinc-900 text-zinc-100 focus:outline-none focus:border-amber-500"
+                    className="w-full px-3 py-2 text-xs border border-zinc-800 rounded-lg bg-zinc-900 text-white focus:outline-none focus:border-white"
                   />
                 </div>
               </div>
 
-              <div className="p-6 border-t border-zinc-800 bg-zinc-950/90 space-y-3">
+              <div className="p-6 border-t border-zinc-800 bg-zinc-950/95 space-y-3">
                 <div className="flex justify-between text-xs font-bold uppercase tracking-wider font-display">
                   <span className="text-zinc-400">Total Payable</span>
-                  <span className="font-mono text-amber-400 text-sm">LKR {total.toLocaleString()}</span>
+                  <span className="font-mono text-white text-sm font-bold">LKR {total.toLocaleString()}</span>
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-4 bg-amber-500 text-zinc-950 text-xs font-display uppercase tracking-widest font-bold rounded-xl hover:bg-amber-400 transition-all duration-300 shadow-lg shadow-amber-500/10 cursor-pointer flex items-center justify-center"
+                  className="w-full py-4 bg-white text-black text-xs font-display uppercase tracking-widest font-bold rounded-xl hover:bg-zinc-200 transition-all duration-300 shadow-lg cursor-pointer flex items-center justify-center"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center space-x-2">
-                      <svg className="animate-spin h-4 w-4 text-zinc-950" fill="none" viewBox="0 0 24 24">
+                      <svg className="animate-spin h-4 w-4 text-black" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                       </svg>
@@ -426,7 +424,7 @@ export const CartDrawer: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setCheckoutStep('cart')}
-                  className="w-full text-[10px] uppercase tracking-wider font-display text-zinc-400 hover:text-amber-400 py-1 text-center cursor-pointer"
+                  className="w-full text-[10px] uppercase tracking-wider font-display text-zinc-400 hover:text-white py-1 text-center cursor-pointer"
                 >
                   &larr; Back to Bag
                 </button>
@@ -438,14 +436,14 @@ export const CartDrawer: React.FC = () => {
           {checkoutStep === 'success' && (
             <div className="flex-1 p-6 flex flex-col justify-between items-center text-center overflow-y-auto">
               <div className="my-auto space-y-5 max-w-sm">
-                <div className="w-16 h-16 bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 rounded-full flex items-center justify-center mx-auto shadow-lg">
+                <div className="w-16 h-16 bg-white/10 border border-white/40 text-white rounded-full flex items-center justify-center mx-auto shadow-lg">
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
 
                 <div className="space-y-1">
-                  <h3 className="text-xl font-display uppercase tracking-wider font-bold text-zinc-100">
+                  <h3 className="text-xl font-display uppercase tracking-wider font-bold text-white">
                     Order Submitted!
                   </h3>
                   <p className="text-xs text-zinc-400 leading-relaxed">
@@ -454,26 +452,26 @@ export const CartDrawer: React.FC = () => {
                 </div>
 
                 {/* Generated Order Number Highlight */}
-                <div className="bg-zinc-900 p-4 rounded-xl border border-amber-500/30 text-center space-y-1 shadow-inner">
-                  <span className="text-[10px] uppercase tracking-widest text-zinc-500 font-display block">
+                <div className="bg-zinc-900 p-4 rounded-xl border border-white/30 text-center space-y-1 shadow-inner">
+                  <span className="text-[10px] uppercase tracking-widest text-zinc-400 font-display block">
                     Order Number
                   </span>
-                  <span className="font-mono text-lg font-bold text-amber-400 tracking-wider">
+                  <span className="font-mono text-lg font-bold text-white tracking-wider">
                     {placedOrderNumber}
                   </span>
                 </div>
 
                 <div className="text-left bg-zinc-900/50 p-4 rounded-xl border border-zinc-800 text-xs space-y-2">
                   <p className="font-semibold text-zinc-300 uppercase tracking-wider font-display">Order Breakdown:</p>
-                  <p className="text-zinc-400">Customer: <strong className="text-zinc-200">{placedOrderDetails?.customer?.name}</strong></p>
-                  <p className="text-zinc-400">Payment: <strong className="text-amber-400 uppercase">{placedOrderDetails?.paymentMethod}</strong></p>
-                  <p className="text-zinc-400 font-mono">Total Paid: <strong className="text-zinc-100">LKR {placedOrderDetails?.total?.toLocaleString()}</strong></p>
+                  <p className="text-zinc-400">Customer: <strong className="text-white">{placedOrderDetails?.customer?.name}</strong></p>
+                  <p className="text-zinc-400">Payment: <strong className="text-white uppercase">{placedOrderDetails?.paymentMethod}</strong></p>
+                  <p className="text-zinc-400 font-mono">Total Paid: <strong className="text-white">LKR {placedOrderDetails?.total?.toLocaleString()}</strong></p>
                 </div>
               </div>
 
               <button
                 onClick={handleClose}
-                className="w-full py-4 bg-amber-500 text-zinc-950 text-xs font-display uppercase tracking-widest font-bold rounded-xl hover:bg-amber-400 cursor-pointer shadow-lg shadow-amber-500/10 mt-6"
+                className="w-full py-4 bg-white text-black text-xs font-display uppercase tracking-widest font-bold rounded-xl hover:bg-zinc-200 cursor-pointer shadow-lg mt-6"
               >
                 Continue Shopping
               </button>

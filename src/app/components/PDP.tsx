@@ -53,12 +53,12 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
   };
 
   return (
-    <section className="py-28 bg-[#09090b] text-[#f4f4f5] px-4 sm:px-6 lg:px-8 min-h-screen">
+    <section className="py-28 bg-[#09090b] text-[#ffffff] px-4 sm:px-6 lg:px-8 min-h-screen">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Back navigation button */}
         <Link
           href="/shop"
-          className="group inline-flex items-center space-x-2 text-xs uppercase tracking-[0.2em] font-display font-semibold text-zinc-400 hover:text-amber-400 transition-colors"
+          className="group inline-flex items-center space-x-2 text-xs uppercase tracking-[0.2em] font-display font-semibold text-zinc-400 hover:text-white transition-colors"
         >
           <svg
             className="w-4 h-4 transform transition-transform group-hover:-translate-x-1"
@@ -88,17 +88,17 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
               />
 
               {/* Category Tag */}
-              <span className="absolute top-4 left-4 bg-zinc-950/90 backdrop-blur-md border border-zinc-800 text-amber-400 text-[10px] uppercase tracking-widest font-display font-semibold px-3 py-1 rounded-md">
+              <span className="absolute top-4 left-4 bg-black/90 backdrop-blur-md border border-zinc-700 text-white text-[10px] uppercase tracking-widest font-display font-semibold px-3 py-1 rounded-md">
                 {product.categoryLabel || product.category}
               </span>
 
               {/* Stock Tag */}
               {isOutOfStock ? (
-                <span className="absolute top-4 right-4 bg-rose-600 text-white text-[10px] uppercase tracking-widest font-display font-bold px-3 py-1 rounded-md shadow-lg border border-rose-500">
+                <span className="absolute top-4 right-4 bg-zinc-900 text-zinc-400 text-[10px] uppercase tracking-widest font-display font-bold px-3 py-1 rounded-md border border-zinc-700 shadow-md">
                   Sold Out
                 </span>
               ) : product.stock !== undefined ? (
-                <span className="absolute top-4 right-4 bg-amber-500 text-zinc-950 text-[10px] uppercase tracking-widest font-display font-bold px-3 py-1 rounded-md shadow-md">
+                <span className="absolute top-4 right-4 bg-white text-black text-[10px] uppercase tracking-widest font-display font-bold px-3 py-1 rounded-md shadow-md">
                   In Stock ({product.stock} units)
                 </span>
               ) : null}
@@ -113,7 +113,7 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
                     onClick={() => setActiveImageIndex(idx)}
                     className={`aspect-square bg-zinc-950 border cursor-pointer overflow-hidden rounded-xl transition-all duration-300 relative ${
                       activeImageIndex === idx
-                        ? 'border-amber-500 ring-2 ring-amber-500/50 opacity-100'
+                        ? 'border-white ring-2 ring-white/50 opacity-100'
                         : 'border-zinc-800 opacity-60 hover:opacity-100 hover:border-zinc-600'
                     }`}
                   >
@@ -138,16 +138,16 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
               <span>/</span>
               <Link href="/shop" className="hover:text-zinc-300">Shop</Link>
               <span>/</span>
-              <span className="text-amber-400 font-semibold">{product.category}</span>
+              <span className="text-white font-semibold">{product.category}</span>
             </div>
 
             {/* Title & Tagline */}
             <div>
-              <h1 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-zinc-100 uppercase">
+              <h1 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-white uppercase">
                 {product.name}
               </h1>
               {product.tagline && (
-                <p className="text-sm font-light italic text-amber-400/90 mt-1">
+                <p className="text-sm font-light italic text-zinc-400 mt-1">
                   {product.tagline}
                 </p>
               )}
@@ -155,7 +155,7 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
 
             {/* Price Display */}
             <div className="flex items-baseline space-x-4 pt-2">
-              <span className="text-2xl font-mono font-bold text-zinc-100">
+              <span className="text-2xl font-mono font-bold text-white">
                 LKR {product.price.toLocaleString()}
               </span>
               {product.compareAtPrice && product.compareAtPrice > product.price && (
@@ -182,7 +182,7 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
                     onClick={() => setSelectedSize(sz)}
                     className={`py-3 text-xs font-mono font-bold rounded-lg border transition-all cursor-pointer ${
                       selectedSize === sz
-                        ? 'bg-amber-500 text-zinc-950 border-amber-500 shadow-md shadow-amber-500/10'
+                        ? 'bg-white text-black border-white shadow-md font-bold'
                         : 'bg-zinc-900 text-zinc-300 border-zinc-800 hover:border-zinc-600'
                     }`}
                   >
@@ -205,7 +205,7 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
                       onClick={() => setSelectedColor(c)}
                       className={`px-4 py-2 text-xs font-display font-semibold rounded-lg border transition-all cursor-pointer ${
                         selectedColor === c
-                          ? 'bg-amber-500 text-zinc-950 border-amber-500'
+                          ? 'bg-white text-black border-white font-bold'
                           : 'bg-zinc-900 text-zinc-300 border-zinc-800 hover:border-zinc-600'
                       }`}
                     >
@@ -225,8 +225,8 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
                   isOutOfStock
                     ? 'bg-zinc-900 text-zinc-600 border-zinc-800 cursor-not-allowed'
                     : addedSuccess
-                    ? 'bg-emerald-600 text-white border-emerald-600'
-                    : 'bg-amber-500 text-zinc-950 border-amber-500 hover:bg-amber-400 shadow-amber-500/10'
+                    ? 'bg-white text-black border-white'
+                    : 'bg-white text-black border-white hover:bg-zinc-200 font-bold'
                 }`}
               >
                 {isOutOfStock ? (
@@ -247,12 +247,12 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
               <div className="border-b border-zinc-800/60 pb-2">
                 <button
                   onClick={() => toggleAccordion('fabric')}
-                  className="w-full py-3 flex justify-between items-center text-xs uppercase tracking-wider font-display font-semibold text-zinc-200 hover:text-amber-400 transition-colors cursor-pointer"
+                  className="w-full py-3 flex justify-between items-center text-xs uppercase tracking-wider font-display font-semibold text-zinc-200 hover:text-white transition-colors cursor-pointer"
                 >
                   <span>Fabric Specification</span>
                   <svg
                     className={`w-4 h-4 transform transition-transform duration-300 ${
-                      openAccordion === 'fabric' ? 'rotate-180 text-amber-400' : 'text-zinc-500'
+                      openAccordion === 'fabric' ? 'rotate-180 text-white' : 'text-zinc-500'
                     }`}
                     fill="none"
                     stroke="currentColor"
@@ -273,12 +273,12 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
               <div className="border-b border-zinc-800/60 pb-2">
                 <button
                   onClick={() => toggleAccordion('care')}
-                  className="w-full py-3 flex justify-between items-center text-xs uppercase tracking-wider font-display font-semibold text-zinc-200 hover:text-amber-400 transition-colors cursor-pointer"
+                  className="w-full py-3 flex justify-between items-center text-xs uppercase tracking-wider font-display font-semibold text-zinc-200 hover:text-white transition-colors cursor-pointer"
                 >
                   <span>Care Instructions</span>
                   <svg
                     className={`w-4 h-4 transform transition-transform duration-300 ${
-                      openAccordion === 'care' ? 'rotate-180 text-amber-400' : 'text-zinc-500'
+                      openAccordion === 'care' ? 'rotate-180 text-white' : 'text-zinc-500'
                     }`}
                     fill="none"
                     stroke="currentColor"

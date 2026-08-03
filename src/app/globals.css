@@ -9,8 +9,8 @@
     'Roboto', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   --color-brand-dark: #09090b;
-  --color-brand-light: #f4f4f5;
-  --color-brand-gold: #f59e0b;
+  --color-brand-light: #ffffff;
+  --color-brand-accent: #ffffff;
   --color-brand-border: #27272a;
 
   --animate-fade-in: fade-in 0.5s ease-out forwards;
@@ -57,7 +57,7 @@
   }
 }
 
-/* Custom global rules for luxury dark athletic aesthetic */
+/* Custom global rules for minimalist monochrome athletic luxury aesthetic */
 @layer base {
   html,
   body {
@@ -70,20 +70,20 @@
     max-width: 100%;
   }
 
-  /* Selection styling */
+  /* High contrast selection styling */
   ::selection {
-    background-color: var(--color-brand-gold);
+    background-color: #ffffff;
     color: #000000;
   }
 
-  /* Premium scrollbar */
+  /* Minimalist monochrome scrollbar */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    background: var(--color-brand-dark);
+    background: #09090b;
   }
 
   ::-webkit-scrollbar-thumb {
@@ -92,27 +92,34 @@
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-brand-gold);
+    background: #ffffff;
   }
 }
 
-/* Glassmorphism utility */
+/* Glassmorphism utilities */
 .glass-card {
-  background: rgba(24, 24, 27, 0.65);
+  background: rgba(18, 18, 20, 0.75);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
+.glass-card-white {
+  background: rgba(24, 24, 27, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* Backwards compatibility helper class name */
 .glass-card-gold {
-  background: rgba(24, 24, 27, 0.7);
+  background: rgba(24, 24, 27, 0.8);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(245, 158, 11, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
-.text-stroke-gold {
-  -webkit-text-stroke: 1px var(--color-brand-gold);
+.text-stroke-white {
+  -webkit-text-stroke: 1px #ffffff;
   color: transparent;
 }
-
