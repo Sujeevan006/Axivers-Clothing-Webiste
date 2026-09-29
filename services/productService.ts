@@ -5,29 +5,25 @@ import {
   getDocs, 
   getDoc, 
   doc, 
-  setDoc, 
-  addDoc, 
-  updateDoc, 
-  deleteDoc, 
   query, 
   where, 
-  orderBy, 
-  serverTimestamp,
   limit,
-  onSnapshot,
-  Unsubscribe
+  onSnapshot, 
+  Unsubscribe 
 } from 'firebase/firestore';
 import { productsDatabase } from '@/app/data/products';
 
 const PRODUCTS_COLLECTION = 'products';
 
 /**
- * Safely converts Firestore Timestamp objects into plain serializable primitives for RSC compliance
+ * Normalizes and safely serializes Firestore document data into a clean Product object.
+ * Maps legacy/variant fields, guards against missing arrays, and converts Timestamps to ISO strings.
  */
-export function serializeProduct(data: any): Product {
+export function normalizeProduct(data: any, fallbackId?: string): Product {
   if (!data) return data;
   const raw = { ...data };
 
+  // Convert Timestamps to serializable string or null
   if (raw.createdAt && typeof raw.createdAt === 'object') {
     if (typeof raw.createdAt.toDate === 'function') {
       raw.createdAt = raw.createdAt.toDate().toISOString();
@@ -48,41 +44,73 @@ export function serializeProduct(data: any): Product {
     }
   }
 
-  // Double-pass JSON cycle to ensure absolute plain object (no toJSON methods or class prototypes)
-  return JSON.parse(JSON.stringify(raw)) as Product;
+  // Schema normalization
+  const id = raw.id || fallbackId || '';
+  const images = Array.isArray(raw.images) && raw.images.length > 0 
+    ? raw.images 
+    : Array.isArray(raw.imagePaths) && raw.imagePaths.length > 0
+    ? raw.imagePaths
+    : ['/images/pdp_front.jpg'];
+
+  const active = Boolean(raw.active ?? raw.isActive ?? (raw.status === 'active'));
+  const price = Number(raw.price ?? raw.priceMinor) || 0;
+  const priceMinor = Number(raw.priceMinor ?? raw.price) || price;
+  const compareAtPrice = Number(raw.compareAtPrice ?? raw.compareAtPriceMinor) || 0;
+  const compareAtPriceMinor = Number(raw.compareAtPriceMinor ?? raw.compareAtPrice) || compareAtPrice;
+  const category = raw.category || raw.categoryId || 'general';
+  const categoryLabel = raw.categoryLabel || (typeof category === 'string' ? category.charAt(0).toUpperCase() + category.slice(1) : 'General');
+  const sizes = Array.isArray(raw.sizes) && raw.sizes.length > 0 ? raw.sizes : ['S', 'M', 'L', 'XL'];
+  const colors = Array.isArray(raw.colors) ? raw.colors : [];
+  const stock = typeof raw.stock === 'number' ? raw.stock : 0;
+  const currency = raw.currency || 'LKR';
+
+  const normalized: Product = {
+    id,
+    name: raw.name || 'Axivers Garment',
+    slug: raw.slug || id,
+    description: raw.description || '',
+    tagline: raw.tagline || '',
+    category,
+    categoryLabel,
+    currency,
+    price,
+    priceMinor,
+    compareAtPrice,
+    compareAtPriceMinor,
+    sizes,
+    colors,
+    stock,
+    images,
+    material: raw.material || '',
+    fabricSpec: raw.fabricSpec || '',
+    careInstructions: raw.careInstructions || '',
+    featured: Boolean(raw.featured),
+    active,
+    status: raw.status || (active ? 'active' : 'draft'),
+    createdAt: raw.createdAt || null,
+    updatedAt: raw.updatedAt || null,
+  };
+
+  return JSON.parse(JSON.stringify(normalized)) as Product;
 }
 
 /**
- * Seed initial products into Firestore if the collection is empty
+ * Serialize helper (alias of normalizeProduct for backward compatibility)
  */
-export async function seedProductsIfEmpty(): Promise<void> {
-  try {
-    const colRef = collection(db, PRODUCTS_COLLECTION);
-    const snap = await getDocs(query(colRef, limit(1)));
-    if (snap.empty) {
-      console.log('Seeding initial products into Firestore...');
-      for (const p of productsDatabase) {
-        const { id, ...data } = p;
-        await setDoc(doc(db, PRODUCTS_COLLECTION, id), {
-          ...data,
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp(),
-        });
-      }
-    }
-  } catch (err) {
-    console.warn('Auto-seed attempt failed or skipped:', err);
-  }
+export function serializeProduct(data: any): Product {
+  return normalizeProduct(data);
 }
 
 /**
- * Real-time listener for active products
+ * Real-time listener for active products.
+ * CRITICAL: Every query MUST include where('active', '==', true) to comply with Firestore security rules.
  */
 export function subscribeToActiveProducts(
   onProductsChange: (products: Product[]) => void,
   options?: { category?: string; featuredOnly?: boolean }
 ): Unsubscribe {
   const colRef = collection(db, PRODUCTS_COLLECTION);
+  // CRITICAL: where('active', '==', true) must always be present
   const constraints: any[] = [where('active', '==', true)];
 
   if (options?.featuredOnly) {
@@ -99,19 +127,26 @@ export function subscribeToActiveProducts(
     (snapshot) => {
       const products: Product[] = [];
       snapshot.forEach((docSnap) => {
-        products.push(serializeProduct({ id: docSnap.id, ...docSnap.data() }));
+        products.push(normalizeProduct(docSnap.data(), docSnap.id));
       });
       onProductsChange(products);
     },
     (error) => {
       console.error('Error listening to products snapshot:', error);
-      onProductsChange(productsDatabase.filter(p => p.active).map(serializeProduct));
+      // Fallback to local products
+      const fallback = productsDatabase
+        .filter(p => p.active)
+        .filter(p => (options?.featuredOnly ? p.featured : true))
+        .filter(p => (options?.category && options.category !== 'all' ? p.category === options.category : true))
+        .map(p => normalizeProduct(p));
+      onProductsChange(fallback);
     }
   );
 }
 
 /**
- * Fetch products from Firestore with optional filtering
+ * Fetch products from Firestore with optional filtering.
+ * CRITICAL: Every query explicitly filters where('active', '==', true) to prevent permission-denied errors.
  */
 export async function getProducts(options?: {
   category?: string;
@@ -120,11 +155,9 @@ export async function getProducts(options?: {
 }): Promise<Product[]> {
   try {
     const colRef = collection(db, PRODUCTS_COLLECTION);
-    const constraints: any[] = [];
+    // CRITICAL: Always filter active == true on the storefront
+    const constraints: any[] = [where('active', '==', true)];
 
-    if (options?.activeOnly) {
-      constraints.push(where('active', '==', true));
-    }
     if (options?.featuredOnly) {
       constraints.push(where('featured', '==', true));
     }
@@ -137,116 +170,65 @@ export async function getProducts(options?: {
 
     const products: Product[] = [];
     snapshot.forEach((docSnap) => {
-      products.push(serializeProduct({ id: docSnap.id, ...docSnap.data() }));
+      products.push(normalizeProduct(docSnap.data(), docSnap.id));
     });
 
-    if (products.length === 0 && (!options?.category || options.category === 'all')) {
-      seedProductsIfEmpty();
+    if (products.length === 0) {
+      // Return local database fallback (normalized)
       return productsDatabase
-        .filter(p => options?.activeOnly ? p.active : true)
-        .map(serializeProduct);
+        .filter(p => p.active)
+        .filter(p => (options?.featuredOnly ? p.featured : true))
+        .filter(p => (options?.category && options.category !== 'all' ? p.category === options.category : true))
+        .map(p => normalizeProduct(p));
     }
 
     return products;
   } catch (error) {
-    console.error('Error fetching products:', error);
+    console.error('Error fetching products from Firestore:', error);
     return productsDatabase
-      .filter(p => options?.activeOnly ? p.active : true)
-      .map(serializeProduct);
+      .filter(p => p.active)
+      .filter(p => (options?.featuredOnly ? p.featured : true))
+      .filter(p => (options?.category && options.category !== 'all' ? p.category === options.category : true))
+      .map(p => normalizeProduct(p));
   }
 }
 
 /**
- * Fetch a single product by ID or slug
+ * Fetch a single product by ID or slug.
+ * Explicitly guards with active == true to adhere to Firestore Security Rules.
  */
 export async function getProductByIdOrSlug(idOrSlug: string): Promise<Product | null> {
   try {
-    // First try document ID lookup
+    // 1. Try document ID lookup
     const docRef = doc(db, PRODUCTS_COLLECTION, idOrSlug);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      return serializeProduct({ id: docSnap.id, ...docSnap.data() });
+      const data = docSnap.data();
+      if (data.active !== false) {
+        return normalizeProduct(data, docSnap.id);
+      }
     }
 
-    // Secondary try slug lookup
-    const q = query(collection(db, PRODUCTS_COLLECTION), where('slug', '==', idOrSlug), limit(1));
+    // 2. Try slug query with MANDATORY where('active', '==', true) constraint
+    const q = query(
+      collection(db, PRODUCTS_COLLECTION),
+      where('active', '==', true),
+      where('slug', '==', idOrSlug),
+      limit(1)
+    );
     const slugSnap = await getDocs(q);
     if (!slugSnap.empty) {
       const firstDoc = slugSnap.docs[0];
-      return serializeProduct({ id: firstDoc.id, ...firstDoc.data() });
+      return normalizeProduct(firstDoc.data(), firstDoc.id);
     }
 
-    // Fallback to local productsDatabase
-    const local = productsDatabase.find(p => p.id === idOrSlug || p.slug === idOrSlug);
-    return local ? serializeProduct(local) : null;
+    // 3. Fallback to local productsDatabase
+    const local = productsDatabase.find(p => (p.id === idOrSlug || p.slug === idOrSlug) && p.active);
+    return local ? normalizeProduct(local) : null;
   } catch (error) {
     console.error(`Error fetching product ${idOrSlug}:`, error);
-    const local = productsDatabase.find(p => p.id === idOrSlug || p.slug === idOrSlug);
-    return local ? serializeProduct(local) : null;
+    const local = productsDatabase.find(p => (p.id === idOrSlug || p.slug === idOrSlug) && p.active);
+    return local ? normalizeProduct(local) : null;
   }
 }
-
-/**
- * Create a new product in Firestore
- */
-export async function createProduct(productData: Omit<Product, 'id'>, customId?: string): Promise<string> {
-  try {
-    const dataToSave = {
-      ...productData,
-      featured: productData.featured ?? false,
-      active: productData.active ?? true,
-      stock: Number(productData.stock) || 0,
-      price: Number(productData.price) || 0,
-      compareAtPrice: productData.compareAtPrice ? Number(productData.compareAtPrice) : null,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
-    };
-
-    if (customId) {
-      await setDoc(doc(db, PRODUCTS_COLLECTION, customId), dataToSave);
-      return customId;
-    } else {
-      const docRef = await addDoc(collection(db, PRODUCTS_COLLECTION), dataToSave);
-      return docRef.id;
-    }
-  } catch (error) {
-    console.error('Error creating product:', error);
-    throw error;
-  }
-}
-
-/**
- * Update an existing product
- */
-export async function updateProduct(id: string, productData: Partial<Product>): Promise<void> {
-  try {
-    const docRef = doc(db, PRODUCTS_COLLECTION, id);
-    const dataToUpdate = {
-      ...productData,
-      updatedAt: serverTimestamp(),
-    };
-    if (dataToUpdate.stock !== undefined) dataToUpdate.stock = Number(dataToUpdate.stock);
-    if (dataToUpdate.price !== undefined) dataToUpdate.price = Number(dataToUpdate.price);
-
-    await updateDoc(docRef, dataToUpdate);
-  } catch (error) {
-    console.error(`Error updating product ${id}:`, error);
-    throw error;
-  }
-}
-
-/**
- * Delete a product from Firestore
- */
-export async function deleteProduct(id: string): Promise<void> {
-  try {
-    const docRef = doc(db, PRODUCTS_COLLECTION, id);
-    await deleteDoc(docRef);
-  } catch (error) {
-    console.error(`Error deleting product ${id}:`, error);
-    throw error;
-  }
-}
-
-

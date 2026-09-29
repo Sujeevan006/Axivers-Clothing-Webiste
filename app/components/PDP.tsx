@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import type { Product } from '@/types/product';
 import { useCart } from '../context/CartContext';
+import { formatCurrency } from '@/lib/utils/formatters';
 
 interface PDPProps {
   product: Product;
@@ -30,10 +31,11 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
     }
   }, [product]);
 
-  const sizes = product.sizes || ['S', 'M', 'L', 'XL'];
-  const colors = product.colors || ['Black', 'White'];
+  const sizes = product.sizes && product.sizes.length > 0 ? product.sizes : ['S', 'M', 'L', 'XL'];
+  const colors = product.colors && product.colors.length > 0 ? product.colors : [];
   const images = product.images && product.images.length > 0 ? product.images : ['/images/pdp_front.jpg'];
   const isOutOfStock = product.stock !== undefined && product.stock <= 0;
+  const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
 
   const handleAddToCart = () => {
     if (isOutOfStock) return;
@@ -45,7 +47,7 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
       setTimeout(() => {
         setAddedSuccess(false);
       }, 2000);
-    }, 500);
+    }, 400);
   };
 
   const toggleAccordion = (section: string) => {
@@ -99,14 +101,14 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
                 </span>
               ) : product.stock !== undefined ? (
                 <span className="absolute top-4 right-4 bg-white text-black text-[10px] uppercase tracking-widest font-display font-bold px-3 py-1 rounded-md shadow-md">
-                  In Stock ({product.stock} units)
+                  {product.stock <= 5 ? `Low Stock (${product.stock} units)` : `In Stock (${product.stock} units)`}
                 </span>
               ) : null}
             </div>
 
             {/* Thumbnail Track */}
             {images.length > 1 && (
-              <div className="grid grid-cols-4 gap-4">
+              <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
                 {images.map((img, idx) => (
                   <button
                     key={idx}
@@ -138,7 +140,7 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
               <span>/</span>
               <Link href="/shop" className="hover:text-zinc-300">Shop</Link>
               <span>/</span>
-              <span className="text-white font-semibold">{product.category}</span>
+              <span className="text-white font-semibold">{product.categoryLabel || product.category}</span>
             </div>
 
             {/* Title & Tagline */}
@@ -156,11 +158,11 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
             {/* Price Display */}
             <div className="flex items-baseline space-x-4 pt-2">
               <span className="text-2xl font-mono font-bold text-white">
-                LKR {product.price.toLocaleString()}
+                {formatCurrency(product.price, product.currency || 'LKR', true)}
               </span>
-              {product.compareAtPrice && product.compareAtPrice > product.price && (
+              {hasDiscount && (
                 <span className="text-sm text-zinc-500 line-through font-mono">
-                  LKR {product.compareAtPrice.toLocaleString()}
+                  {formatCurrency(product.compareAtPrice!, product.currency || 'LKR', true)}
                 </span>
               )}
             </div>
@@ -198,7 +200,7 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
                 <span className="block text-xs font-display uppercase tracking-widest font-semibold text-zinc-300">
                   Select Color:
                 </span>
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-3">
                   {colors.map((c) => (
                     <button
                       key={c}
@@ -236,7 +238,7 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
                 ) : addedSuccess ? (
                   <span>Added to Shopping Bag</span>
                 ) : (
-                  <span>Add to Cart — LKR {product.price.toLocaleString()}</span>
+                  <span>Add to Cart — {formatCurrency(product.price, product.currency || 'LKR', true)}</span>
                 )}
               </button>
             </div>

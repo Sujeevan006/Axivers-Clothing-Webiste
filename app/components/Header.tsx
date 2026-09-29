@@ -5,14 +5,29 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useCart } from '../context/CartContext';
+import { StoreSettings } from '@/types/settings';
+import { DEFAULT_STORE_SETTINGS, getStoreSettings, subscribeToStoreSettings } from '@/services/settingsService';
 
 export const Header: React.FC = () => {
   const pathname = usePathname();
   const { totalCartCount, setIsCartOpen } = useCart();
   const [isHeroVisible, setIsHeroVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [storeSettings, setStoreSettings] = useState<StoreSettings>(DEFAULT_STORE_SETTINGS);
 
   const isLanding = pathname === '/';
+
+  useEffect(() => {
+    getStoreSettings().then((settings) => {
+      if (settings) setStoreSettings(settings);
+    });
+
+    const unsubscribe = subscribeToStoreSettings((settings) => {
+      if (settings) setStoreSettings(settings);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,8 +53,20 @@ export const Header: React.FC = () => {
 
   return (
     <>
+      {/* Maintenance Alert Banner if orders are disabled */}
+      {!storeSettings.ordersEnabled && (
+        <div className="fixed top-0 left-0 right-0 z-50 bg-amber-500 text-black text-xs font-display font-bold py-2 px-4 text-center tracking-wider shadow-lg flex items-center justify-center space-x-2">
+          <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+          </svg>
+          <span>Store Notice: Checkouts are temporarily paused for scheduled maintenance. Browse-only mode.</span>
+        </div>
+      )}
+
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed left-0 right-0 z-40 transition-all duration-300 ${
+          !storeSettings.ordersEnabled ? 'top-8' : 'top-0'
+        } ${
           isOverHero
             ? 'bg-transparent text-white border-b border-transparent py-4 sm:py-5'
             : 'bg-[#09090b]/95 backdrop-blur-md text-white border-b border-zinc-800 py-3.5 sm:py-4 shadow-2xl'
@@ -56,7 +83,7 @@ export const Header: React.FC = () => {
                   : 'text-zinc-300'
               }`}
             >
-              Axivers Home
+              Catalog
               <span
                 className={`absolute bottom-0 left-0 w-full h-[2px] bg-white transform ${
                   pathname === '/shop' || pathname === '/products'
@@ -81,6 +108,20 @@ export const Header: React.FC = () => {
               Fabric Tech
               <span className="absolute bottom-0 left-0 w-full h-[2px] bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
             </a>
+
+            <Link
+              href="/track-order"
+              className={`hover:text-white transition-colors relative group py-2 cursor-pointer ${
+                pathname === '/track-order' ? 'text-white font-bold' : 'text-zinc-300'
+              }`}
+            >
+              Track Order
+              <span
+                className={`absolute bottom-0 left-0 w-full h-[2px] bg-white transform ${
+                  pathname === '/track-order' ? 'scale-x-100' : 'scale-x-0'
+                } group-hover:scale-x-100 transition-transform duration-300 origin-left`}
+              ></span>
+            </Link>
           </nav>
 
           {/* Mobile Menu Hamburger Button (Left) */}
@@ -149,7 +190,7 @@ export const Header: React.FC = () => {
 
       {/* Slide-out Mobile Menu Drawer */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-40 md:hidden">
+        <div className="fixed inset-0 z-50 md:hidden">
           <div
             onClick={() => setIsMobileMenuOpen(false)}
             className="absolute inset-0 bg-black/80 backdrop-blur-sm animate-fade-in cursor-pointer"
@@ -175,11 +216,19 @@ export const Header: React.FC = () => {
               <a
                 href="/#fabric"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-zinc-300 hover:text-white py-2 flex items-center justify-between"
+                className="text-zinc-300 hover:text-white py-2 border-b border-zinc-800/80 flex items-center justify-between"
               >
                 <span>Fabric Tech</span>
                 <span className="font-mono text-xs text-zinc-500">&rarr;</span>
               </a>
+              <Link
+                href="/track-order"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-zinc-300 hover:text-white py-2 flex items-center justify-between"
+              >
+                <span>Track Order</span>
+                <span className="font-mono text-xs text-zinc-500">&rarr;</span>
+              </Link>
             </nav>
           </div>
         </div>

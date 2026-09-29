@@ -1,8 +1,13 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '../context/CartContext';
+import { StoreSettings } from '@/types/settings';
+import { DEFAULT_STORE_SETTINGS, getStoreSettings, subscribeToStoreSettings, calculateDeliveryFee } from '@/services/settingsService';
+import { formatCurrency, fromMinorUnits, toMinorUnits } from '@/lib/utils/formatters';
+import type { PaymentMethod } from '@/types/order';
 
 export const CartDrawer: React.FC = () => {
   const {
@@ -14,6 +19,7 @@ export const CartDrawer: React.FC = () => {
     clearCart,
   } = useCart();
 
+  const [storeSettings, setStoreSettings] = useState<StoreSettings>(DEFAULT_STORE_SETTINGS);
   const [checkoutStep, setCheckoutStep] = useState<'cart' | 'details' | 'success'>('cart');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -27,21 +33,41 @@ export const CartDrawer: React.FC = () => {
   const [shippingAddress, setShippingAddress] = useState('');
   const [city, setCity] = useState('Colombo');
   const [postalCode, setPostalCode] = useState('');
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<'cash_on_delivery' | 'payhere'>('cash_on_delivery');
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod>('cash_on_delivery');
   const [customerNotes, setCustomerNotes] = useState('');
+
+  useEffect(() => {
+    getStoreSettings().then((settings) => {
+      if (settings) setStoreSettings(settings);
+    });
+
+    const unsubscribe = subscribeToStoreSettings((settings) => {
+      if (settings) setStoreSettings(settings);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   if (!isCartOpen) return null;
 
-  const subtotal = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
-  const deliveryFee = 15.00;
-  const total = subtotal + deliveryFee;
+  // Subtotal in minor units
+  const subtotalMinor = cartItems.reduce((acc, item) => {
+    const itemPriceMinor = toMinorUnits(fromMinorUnits(item.price));
+    return acc + itemPriceMinor * item.quantity;
+  }, 0);
+
+  const deliveryFeeMinor = calculateDeliveryFee(subtotalMinor, storeSettings);
+  const totalMinor = subtotalMinor + deliveryFeeMinor;
+  const isFreeDelivery = deliveryFeeMinor === 0;
 
   const handleCheckoutSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
+
+    if (!storeSettings.ordersEnabled) {
+      setErrorMessage('We are currently not accepting new orders due to maintenance.');
+      return;
+    }
 
     if (!customerName.trim() || !customerPhone.trim() || !shippingAddress.trim() || !city.trim()) {
       setErrorMessage('Please complete all required fields (Name, Phone, Address, City).');
@@ -80,9 +106,9 @@ export const CartDrawer: React.FC = () => {
           orderNumber: generatedNum,
           customer: { name: customerName, phone: customerPhone, address: shippingAddress, city },
           items: [...cartItems],
-          subtotal,
-          deliveryFee,
-          total,
+          subtotal: subtotalMinor,
+          deliveryFee: deliveryFeeMinor,
+          total: totalMinor,
           paymentMethod: selectedPaymentMethod,
         });
         clearCart();
@@ -90,7 +116,7 @@ export const CartDrawer: React.FC = () => {
         return;
       }
 
-      setErrorMessage(result.error || 'Failed to complete checkout. Out of stock or system error.');
+      setErrorMessage(result.error || 'Failed to complete checkout. Out of stock or server error.');
     } catch (err: any) {
       console.error('Checkout error:', err);
       setErrorMessage(err?.message || 'Failed to place order. Please try again.');
@@ -168,6 +194,8 @@ export const CartDrawer: React.FC = () => {
                   cartItems.map((item) => {
                     const itemSize = item.selectedSize || item.size;
                     const itemColor = item.selectedColor || item.color || '';
+                    const itemPriceMinor = toMinorUnits(fromMinorUnits(item.price));
+
                     return (
                       <div key={`${item.id}-${itemSize}-${itemColor}`} className="flex space-x-4 pb-4 border-b border-zinc-800/80">
                         <div className="w-20 h-20 bg-zinc-950 overflow-hidden relative rounded-xl border border-zinc-800 flex-shrink-0">
@@ -217,7 +245,7 @@ export const CartDrawer: React.FC = () => {
                             </div>
 
                             <div className="text-xs font-mono font-bold text-white">
-                              LKR {(item.price * item.quantity).toLocaleString()}
+                              {formatCurrency(itemPriceMinor * item.quantity, 'LKR', true)}
                             </div>
                           </div>
                         </div>
@@ -232,15 +260,21 @@ export const CartDrawer: React.FC = () => {
                   <div className="space-y-2 text-xs">
                     <div className="flex justify-between text-zinc-400">
                       <span>Subtotal</span>
-                      <span className="font-mono text-zinc-200">LKR {subtotal.toLocaleString()}</span>
+                      <span className="font-mono text-zinc-200">{formatCurrency(subtotalMinor, 'LKR', true)}</span>
                     </div>
                     <div className="flex justify-between text-zinc-400">
                       <span>Delivery Fee</span>
-                      <span className="font-mono text-white font-bold">LKR {deliveryFee.toFixed(2)}</span>
+                      <span className="font-mono text-white font-bold">
+                        {isFreeDelivery ? (
+                          <span className="text-emerald-400 uppercase font-display font-bold">FREE</span>
+                        ) : (
+                          formatCurrency(deliveryFeeMinor, 'LKR', true)
+                        )}
+                      </span>
                     </div>
                     <div className="flex justify-between text-sm font-bold uppercase tracking-wider font-display pt-2 border-t border-zinc-800 text-white">
                       <span>Total Amount</span>
-                      <span className="font-mono text-white">LKR {total.toLocaleString()}</span>
+                      <span className="font-mono text-white">{formatCurrency(totalMinor, 'LKR', true)}</span>
                     </div>
                   </div>
 
@@ -354,31 +388,44 @@ export const CartDrawer: React.FC = () => {
                   <label className="block text-[10px] uppercase font-display font-semibold text-zinc-400">
                     Select Payment Method:
                   </label>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-3 gap-2">
                     <button
                       type="button"
                       onClick={() => setSelectedPaymentMethod('cash_on_delivery')}
-                      className={`p-3 rounded-xl border text-left flex flex-col justify-between cursor-pointer transition-all ${
+                      className={`p-2.5 rounded-lg border text-left flex flex-col justify-between cursor-pointer transition-all ${
                         selectedPaymentMethod === 'cash_on_delivery'
                           ? 'bg-zinc-800 border-white text-white font-bold'
                           : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-700'
                       }`}
                     >
-                      <span className="text-xs font-bold font-display uppercase">Cash on Delivery</span>
-                      <span className="text-[10px] opacity-75 mt-1">Pay when item arrives</span>
+                      <span className="text-[11px] font-bold font-display uppercase">COD</span>
+                      <span className="text-[9px] opacity-75 mt-0.5">Pay at door</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setSelectedPaymentMethod('bank_transfer')}
+                      className={`p-2.5 rounded-lg border text-left flex flex-col justify-between cursor-pointer transition-all ${
+                        selectedPaymentMethod === 'bank_transfer'
+                          ? 'bg-zinc-800 border-white text-white font-bold'
+                          : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-700'
+                      }`}
+                    >
+                      <span className="text-[11px] font-bold font-display uppercase">Bank Transfer</span>
+                      <span className="text-[9px] opacity-75 mt-0.5">Slip transfer</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setSelectedPaymentMethod('payhere')}
-                      className={`p-3 rounded-xl border text-left flex flex-col justify-between cursor-pointer transition-all ${
+                      className={`p-2.5 rounded-lg border text-left flex flex-col justify-between cursor-pointer transition-all ${
                         selectedPaymentMethod === 'payhere'
                           ? 'bg-zinc-800 border-white text-white font-bold'
                           : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-700'
                       }`}
                     >
-                      <span className="text-xs font-bold font-display uppercase">PayHere Gateway</span>
-                      <span className="text-[10px] opacity-75 mt-1">Instant online payment</span>
+                      <span className="text-[11px] font-bold font-display uppercase">PayHere</span>
+                      <span className="text-[9px] opacity-75 mt-0.5">Online card</span>
                     </button>
                   </div>
                 </div>
@@ -400,12 +447,12 @@ export const CartDrawer: React.FC = () => {
               <div className="p-6 border-t border-zinc-800 bg-zinc-950/95 space-y-3">
                 <div className="flex justify-between text-xs font-bold uppercase tracking-wider font-display">
                   <span className="text-zinc-400">Total Payable</span>
-                  <span className="font-mono text-white text-sm font-bold">LKR {total.toLocaleString()}</span>
+                  <span className="font-mono text-white text-sm font-bold">{formatCurrency(totalMinor, 'LKR', true)}</span>
                 </div>
 
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !storeSettings.ordersEnabled}
                   className="w-full py-4 bg-white text-black text-xs font-display uppercase tracking-widest font-bold rounded-xl hover:bg-zinc-200 transition-all duration-300 shadow-lg cursor-pointer flex items-center justify-center"
                 >
                   {isSubmitting ? (
@@ -414,10 +461,10 @@ export const CartDrawer: React.FC = () => {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                       </svg>
-                      <span>Writing Order to Firestore...</span>
+                      <span>Processing Order...</span>
                     </span>
                   ) : (
-                    <span>Submit Order ({selectedPaymentMethod === 'payhere' ? 'PayHere' : 'Cash on Delivery'})</span>
+                    <span>Submit Order ({formatCurrency(totalMinor, 'LKR', true)})</span>
                   )}
                 </button>
 
@@ -436,7 +483,7 @@ export const CartDrawer: React.FC = () => {
           {checkoutStep === 'success' && (
             <div className="flex-1 p-6 flex flex-col justify-between items-center text-center overflow-y-auto">
               <div className="my-auto space-y-5 max-w-sm">
-                <div className="w-16 h-16 bg-white/10 border border-white/40 text-white rounded-full flex items-center justify-center mx-auto shadow-lg">
+                <div className="w-16 h-16 bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 rounded-full flex items-center justify-center mx-auto shadow-lg">
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
                   </svg>
@@ -447,7 +494,7 @@ export const CartDrawer: React.FC = () => {
                     Order Submitted!
                   </h3>
                   <p className="text-xs text-zinc-400 leading-relaxed">
-                    Thank you for your order with Axivers. Your garment request has been recorded in our Firestore database.
+                    Thank you for ordering with Axivers. Your order has been placed in our unified system.
                   </p>
                 </div>
 
@@ -465,16 +512,26 @@ export const CartDrawer: React.FC = () => {
                   <p className="font-semibold text-zinc-300 uppercase tracking-wider font-display">Order Breakdown:</p>
                   <p className="text-zinc-400">Customer: <strong className="text-white">{placedOrderDetails?.customer?.name}</strong></p>
                   <p className="text-zinc-400">Payment: <strong className="text-white uppercase">{placedOrderDetails?.paymentMethod}</strong></p>
-                  <p className="text-zinc-400 font-mono">Total Paid: <strong className="text-white">LKR {placedOrderDetails?.total?.toLocaleString()}</strong></p>
+                  <p className="text-zinc-400 font-mono">Total: <strong className="text-white">{formatCurrency(placedOrderDetails?.total || 0, 'LKR', true)}</strong></p>
+                </div>
+
+                <div className="pt-2 space-y-2">
+                  <Link
+                    href={`/track-order?orderNumber=${placedOrderNumber}&phone=${encodeURIComponent(customerPhone)}`}
+                    onClick={handleClose}
+                    className="block w-full py-3 bg-white text-black text-xs font-display uppercase tracking-widest font-bold rounded-xl hover:bg-zinc-200 transition-colors shadow-lg"
+                  >
+                    Track Order Status &rarr;
+                  </Link>
+
+                  <button
+                    onClick={handleClose}
+                    className="w-full py-2.5 text-xs text-zinc-400 hover:text-white uppercase tracking-wider font-display font-semibold cursor-pointer"
+                  >
+                    Continue Shopping
+                  </button>
                 </div>
               </div>
-
-              <button
-                onClick={handleClose}
-                className="w-full py-4 bg-white text-black text-xs font-display uppercase tracking-widest font-bold rounded-xl hover:bg-zinc-200 cursor-pointer shadow-lg mt-6"
-              >
-                Continue Shopping
-              </button>
             </div>
           )}
 

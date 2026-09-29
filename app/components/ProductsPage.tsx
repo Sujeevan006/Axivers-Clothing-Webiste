@@ -3,9 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 import type { Product } from '@/types/product';
+import type { Category } from '@/types/category';
 import { useCart } from '../context/CartContext';
 import { getProducts, subscribeToActiveProducts } from '@/services/productService';
+import { getCategories, subscribeToCategories, BASELINE_CATEGORIES } from '@/services/categoryService';
+import { formatCurrency, fromMinorUnits } from '@/lib/utils/formatters';
 import { QuickAddModal } from './QuickAddModal';
 
 interface ProductsPageProps {
@@ -13,17 +17,46 @@ interface ProductsPageProps {
 }
 
 export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = [] }) => {
+  const searchParams = useSearchParams();
+  const categoryParam = searchParams.get('category');
+
   const [products, setProducts] = useState<Product[]>(initialProducts);
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [categories, setCategories] = useState<Category[]>(BASELINE_CATEGORIES);
+  const [selectedCategory, setSelectedCategory] = useState<string>(categoryParam || 'all');
   const [selectedSizeFilter, setSelectedSizeFilter] = useState<string>('all');
-  const [maxPriceFilter, setMaxPriceFilter] = useState<number>(10000);
+  const [maxPriceFilter, setMaxPriceFilter] = useState<number>(25000);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sortBy, setSortBy] = useState<string>('default');
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(initialProducts.length === 0);
   const [quickAddProduct, setQuickAddProduct] = useState<Product | null>(null);
 
   const { addToCart } = useCart();
 
+  // Sync category filter if URL query param changes
+  useEffect(() => {
+    if (categoryParam) {
+      setSelectedCategory(categoryParam);
+    }
+  }, [categoryParam]);
+
+  // Load dynamic categories
+  useEffect(() => {
+    getCategories().then((cats) => {
+      if (cats && cats.length > 0) {
+        setCategories(cats);
+      }
+    });
+
+    const unsubscribeCategories = subscribeToCategories((cats) => {
+      if (cats && cats.length > 0) {
+        setCategories(cats);
+      }
+    });
+
+    return () => unsubscribeCategories();
+  }, []);
+
+  // Load and subscribe to active products
   useEffect(() => {
     getProducts({ activeOnly: true }).then((fetched) => {
       if (fetched && fetched.length > 0) {
@@ -32,23 +65,19 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
       setIsLoading(false);
     });
 
-    const unsubscribe = subscribeToActiveProducts((updatedProducts) => {
+    const unsubscribeProducts = subscribeToActiveProducts((updatedProducts) => {
       if (updatedProducts && updatedProducts.length > 0) {
         setProducts(updatedProducts);
       }
       setIsLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => unsubscribeProducts();
   }, []);
 
-  const categories = [
+  const categoryOptions = [
     { value: 'all', label: 'All Garments' },
-    { value: 'flagship', label: 'Flagship' },
-    { value: 'men', label: "Men's" },
-    { value: 'women', label: "Women's" },
-    { value: 'minimalist', label: 'Minimalist' },
-    { value: 'technical', label: 'Technical' },
+    ...categories.map((c) => ({ value: c.slug, label: c.name })),
   ];
 
   const sizeOptions = ['all', 'S', 'M', 'L', 'XL'];
@@ -56,13 +85,15 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
   const filteredProducts = products.filter((product) => {
     const matchesCategory =
       selectedCategory === 'all' ||
-      product.category === selectedCategory;
+      product.category === selectedCategory ||
+      product.category?.toLowerCase() === selectedCategory.toLowerCase();
 
     const matchesSize =
       selectedSizeFilter === 'all' ||
       (product.sizes && product.sizes.includes(selectedSizeFilter));
 
-    const matchesPrice = product.price <= maxPriceFilter;
+    const majorPrice = fromMinorUnits(product.price);
+    const matchesPrice = majorPrice <= maxPriceFilter;
 
     const matchesSearch =
       searchQuery === '' ||
@@ -74,8 +105,11 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
   });
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
-    if (sortBy === 'price-asc') return a.price - b.price;
-    if (sortBy === 'price-desc') return b.price - a.price;
+    const priceA = fromMinorUnits(a.price);
+    const priceB = fromMinorUnits(b.price);
+    if (sortBy === 'price-asc') return priceA - priceB;
+    if (sortBy === 'price-desc') return priceB - priceA;
+    if (sortBy === 'featured') return (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
     return 0;
   });
 
@@ -126,13 +160,13 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
 
         {/* Filters & Sorting Section */}
         <div className="bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-2xl p-5 space-y-5">
-          {/* Category Tabs */}
+          {/* Dynamic Category Tabs */}
           <div>
             <span className="text-[10px] uppercase tracking-widest text-zinc-400 font-display font-semibold block mb-2.5">
               Categories:
             </span>
             <div className="flex flex-wrap gap-2">
-              {categories.map((cat) => (
+              {categoryOptions.map((cat) => (
                 <button
                   key={cat.value}
                   onClick={() => setSelectedCategory(cat.value)}
@@ -175,12 +209,12 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
             <div className="space-y-1">
               <div className="flex justify-between text-[10px] font-display text-zinc-400">
                 <span>Max Price:</span>
-                <span className="font-mono text-white font-bold">LKR {maxPriceFilter.toLocaleString()}</span>
+                <span className="font-mono text-white font-bold">{formatCurrency(maxPriceFilter, 'LKR', false)}</span>
               </div>
               <input
                 type="range"
                 min={2000}
-                max={15000}
+                max={25000}
                 step={500}
                 value={maxPriceFilter}
                 onChange={(e) => setMaxPriceFilter(Number(e.target.value))}
@@ -198,7 +232,8 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
                 onChange={(e) => setSortBy(e.target.value)}
                 className="bg-zinc-900 border border-zinc-800 text-xs font-display py-2 px-3 focus:outline-none focus:border-white rounded-lg text-white cursor-pointer"
               >
-                <option value="default">Featured First</option>
+                <option value="default">Default</option>
+                <option value="featured">Featured First</option>
                 <option value="price-asc">Price: Low to High</option>
                 <option value="price-desc">Price: High to Low</option>
               </select>
@@ -206,7 +241,7 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
           </div>
         </div>
 
-        {/* 1 Product Card per Row on Mobile, 2 on Tablet, 3-4 on Desktop */}
+        {/* Product Cards Grid */}
         {isLoading ? (
           <div className="text-center py-20 space-y-3">
             <svg className="animate-spin h-7 w-7 text-white mx-auto" fill="none" viewBox="0 0 24 24">
@@ -226,7 +261,7 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
               onClick={() => {
                 setSelectedCategory('all');
                 setSelectedSizeFilter('all');
-                setMaxPriceFilter(10000);
+                setMaxPriceFilter(25000);
                 setSearchQuery('');
               }}
               className="px-5 py-2 bg-white text-black font-display text-xs uppercase tracking-wider font-bold rounded-lg hover:bg-zinc-200 cursor-pointer"
@@ -239,13 +274,14 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
             {sortedProducts.map((product) => {
               const isOutOfStock = product.stock !== undefined && product.stock <= 0;
               const displayImage = product.images?.[0] || '/images/pdp_front.jpg';
+              const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
 
               return (
                 <div
                   key={product.id}
                   className="group flex flex-col bg-zinc-900/80 backdrop-blur-md border border-zinc-800 p-4 sm:p-5 transition-all duration-300 hover:border-white/50 hover:shadow-2xl rounded-2xl overflow-hidden relative w-full"
                 >
-                  {/* Image Container with full-garment view without cuts */}
+                  {/* Image Container with full-garment view */}
                   <Link
                     href={`/product/${product.slug || product.id}`}
                     className="aspect-[3/4] bg-[#050507] overflow-hidden relative cursor-pointer rounded-xl block border border-zinc-800/80"
@@ -272,7 +308,7 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
                       </span>
                     ) : product.stock && product.stock <= 5 ? (
                       <span className="absolute top-3 right-3 bg-white text-black text-[9px] uppercase tracking-widest font-display font-bold px-2.5 py-1 rounded-md shadow-md">
-                        Low Stock ({product.stock})
+                        Low Stock ({product.stock} units remaining)
                       </span>
                     ) : null}
                   </Link>
@@ -295,11 +331,11 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
                     <div className="pt-3 border-t border-zinc-800/80 flex items-center justify-between">
                       <div>
                         <span className="text-sm sm:text-base font-bold font-mono text-white">
-                          LKR {product.price.toLocaleString()}
+                          {formatCurrency(product.price, product.currency || 'LKR', true)}
                         </span>
-                        {product.compareAtPrice && product.compareAtPrice > product.price && (
+                        {hasDiscount && (
                           <span className="text-xs text-zinc-500 line-through ml-2 font-mono">
-                            LKR {product.compareAtPrice.toLocaleString()}
+                            {formatCurrency(product.compareAtPrice!, product.currency || 'LKR', true)}
                           </span>
                         )}
                       </div>

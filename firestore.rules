@@ -20,12 +20,30 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
+    // Categories Collection
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Settings Collection
+    match /settings/{settingDoc} {
+      allow read: if settingDoc in ['store', 'shipping'] || isAdmin();
+      allow write: if isAdmin();
+    }
+
     // Orders Collection
     match /orders/{orderId} {
-      // Customers cannot directly read all orders or edit orders
-      // Orders are created safely via Server API Route with Firebase Admin SDK
-      allow read, update, delete: if isAdmin();
-      allow create: if true; // Allows server/client creation validation
+      allow read: if isAdmin() || (request.auth != null && request.auth.uid == resource.data.customerId);
+      allow create: if request.resource.data.items is list && request.resource.data.items.size() > 0 && request.resource.data.total is number && request.resource.data.total >= 0;
+      allow update, delete: if isAdmin();
+
+      // Order events subcollection
+      match /events/{eventId} {
+        allow read: if resource.data.customerVisible == true || isAdmin();
+        allow create: if true;
+        allow update, delete: if isAdmin();
+      }
     }
 
     // Admins Collection

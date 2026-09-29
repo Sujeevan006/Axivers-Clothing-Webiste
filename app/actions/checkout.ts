@@ -3,16 +3,26 @@
 import { initializeApp, getApps, cert, getApp } from 'firebase-admin/app';
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 import { db as clientDb } from '@/lib/firebase/client';
-import { runTransaction as clientRunTransaction, doc as clientDoc, collection as clientCollection, serverTimestamp } from 'firebase/firestore';
+import { 
+  doc as clientDoc, 
+  collection as clientCollection, 
+  setDoc as clientSetDoc, 
+  addDoc as clientAddDoc, 
+  getDoc as clientGetDoc,
+  serverTimestamp as clientServerTimestamp 
+} from 'firebase/firestore';
+import { toMinorUnits, fromMinorUnits } from '@/lib/utils/formatters';
+import { DEFAULT_STORE_SETTINGS, normalizeStoreSettings, calculateDeliveryFee } from '@/services/settingsService';
+import type { PaymentMethod, OrderStatus, PaymentStatus } from '@/types/order';
 
 // -----------------------------------------------------------------------------
-// 1. Firebase Admin SDK Initialization (Single-Instance Pattern for Hot-Reload)
+// 1. Firebase Admin SDK Initialization (Single-Instance Pattern)
 // -----------------------------------------------------------------------------
 function getAdminDb() {
   if (getApps().length === 0) {
-    const projectId = process.env.FIREBASE_ADMIN_PROJECT_ID || process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'axivers-clothing-65138';
-    const clientEmail = process.env.FIREBASE_ADMIN_CLIENT_EMAIL;
-    const rawPrivateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY;
+    const projectId = process.env.FIREBASE_ADMIN_PROJECT_ID || process.env.FIREBASE_PROJECT_ID || process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+    const clientEmail = process.env.FIREBASE_ADMIN_CLIENT_EMAIL || process.env.FIREBASE_CLIENT_EMAIL;
+    const rawPrivateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY || process.env.FIREBASE_PRIVATE_KEY;
 
     if (projectId && clientEmail && rawPrivateKey) {
       try {
@@ -27,11 +37,8 @@ function getAdminDb() {
         console.error('Firebase Admin cert initialization error:', error);
       }
     } else {
-      try {
-        initializeApp({ projectId });
-      } catch (error) {
-        console.warn('Firebase Admin default initialization skipped:', error);
-      }
+      // If full credentials are not provided, do not crash; return null to trigger safe fallback
+      return null;
     }
   }
 
@@ -75,7 +82,7 @@ export interface ProcessCheckoutOptions {
   cartItems: CartItemInput[];
   customerData?: CustomerInput;
   userId?: string;
-  paymentMethod?: 'cash_on_delivery' | 'payhere';
+  paymentMethod?: PaymentMethod;
   customerNotes?: string;
 }
 
@@ -98,9 +105,9 @@ export async function processCheckout(
   try {
     // Normalize parameters for flexible calling signatures
     let cartItems: CartItemInput[] = [];
-    let customerData: CustomerInput = { name: 'Guest', phone: '0770000000', address: 'Delivery Address', city: 'Colombo' };
-    let userId = 'anonymous';
-    let paymentMethod: 'cash_on_delivery' | 'payhere' = 'cash_on_delivery';
+    let customerData: CustomerInput = { name: 'Guest', phone: '', address: '', city: 'Colombo' };
+    let userId: string | null = null;
+    let paymentMethod: PaymentMethod = 'cash_on_delivery';
     let customerNotes = '';
 
     if (Array.isArray(cartItemsOrOptions)) {
@@ -114,7 +121,7 @@ export async function processCheckout(
     } else if (cartItemsOrOptions && typeof cartItemsOrOptions === 'object') {
       cartItems = cartItemsOrOptions.cartItems || [];
       customerData = cartItemsOrOptions.customerData || customerData;
-      userId = cartItemsOrOptions.userId || userId;
+      userId = cartItemsOrOptions.userId || null;
       paymentMethod = cartItemsOrOptions.paymentMethod || 'cash_on_delivery';
       customerNotes = cartItemsOrOptions.customerNotes || '';
     }
@@ -123,14 +130,49 @@ export async function processCheckout(
       return { success: false, error: 'Cart is empty. Please add items before checking out.' };
     }
 
+    if (!customerData.name?.trim() || !customerData.phone?.trim() || !customerData.address?.trim()) {
+      return { success: false, error: 'Please provide required contact and shipping details.' };
+    }
+
     const adminDb = getAdminDb();
 
     // -------------------------------------------------------------------------
-    // A. Server-Side Firebase Admin SDK Pessimistic Transaction
+    // Step 1: Read Store Settings & Verify ordersEnabled
+    // -------------------------------------------------------------------------
+    let storeSettings = DEFAULT_STORE_SETTINGS;
+    if (adminDb) {
+      try {
+        const settingsSnap = await adminDb.collection('settings').doc('store').get();
+        if (settingsSnap.exists) {
+          storeSettings = normalizeStoreSettings(settingsSnap.data());
+        }
+      } catch (err) {
+        console.warn('Error reading store settings via Admin SDK:', err);
+      }
+    } else {
+      try {
+        const settingsSnap = await clientGetDoc(clientDoc(clientDb, 'settings', 'store'));
+        if (settingsSnap.exists()) {
+          storeSettings = normalizeStoreSettings(settingsSnap.data());
+        }
+      } catch (err) {
+        console.warn('Error reading store settings via Client SDK:', err);
+      }
+    }
+
+    if (storeSettings.ordersEnabled === false) {
+      return {
+        success: false,
+        error: 'We are currently not accepting new orders due to maintenance.',
+      };
+    }
+
+    // -------------------------------------------------------------------------
+    // Path A: Server-Side Firebase Admin SDK Pessimistic Stock Transaction
     // -------------------------------------------------------------------------
     if (adminDb) {
       const order = await adminDb.runTransaction(async (transaction) => {
-        // STEP 1: READ PHASE (All reads MUST occur before any writes)
+        // READ PHASE: Read all product documents first
         const productSnapshots: Array<{
           ref: FirebaseFirestore.DocumentReference;
           docSnap: FirebaseFirestore.DocumentSnapshot;
@@ -147,7 +189,7 @@ export async function processCheckout(
           productSnapshots.push({ ref: productRef, docSnap, item });
         }
 
-        // STEP 2: VALIDATION PHASE (Stock Check)
+        // VALIDATION PHASE: Verify inventory & calculate integer minor unit totals
         let subtotal = 0;
         const verifiedItems = [];
 
@@ -155,7 +197,7 @@ export async function processCheckout(
           const productId = item.productId || (item as any).id;
 
           if (!docSnap.exists) {
-            throw new Error(`Out of stock: Product "${item.name || productId}" no longer exists in store.`);
+            throw new Error(`Product "${item.name || productId}" is no longer available in store.`);
           }
 
           const productData = docSnap.data();
@@ -163,14 +205,19 @@ export async function processCheckout(
           const requestedQty = Number(item.quantity || 1);
 
           if (productData?.active === false) {
-            throw new Error(`Product "${productData?.name || item.name}" is currently unavailable.`);
+            throw new Error(`Product "${productData?.name || item.name}" is currently inactive.`);
           }
 
           if (currentStock < requestedQty) {
-            throw new Error(`Out of stock: Insufficient inventory for "${productData?.name || item.name}". Only ${currentStock} remaining.`);
+            throw new Error(`Insufficient inventory for "${productData?.name || item.name}". Only ${currentStock} remaining.`);
           }
 
-          const unitPrice = Number(productData?.price ?? item.price ?? item.unitPrice ?? 0);
+          // Price stored in minor units (e.g. 400000 = LKR 4,000.00)
+          let unitPrice = Number(productData?.price ?? productData?.priceMinor ?? item.unitPrice ?? item.price ?? 0);
+          if (unitPrice > 0 && unitPrice < 10000) {
+            unitPrice = unitPrice * 100; // normalize to minor units if legacy major units
+          }
+
           const itemSubtotal = unitPrice * requestedQty;
           subtotal += itemSubtotal;
 
@@ -186,51 +233,69 @@ export async function processCheckout(
           });
         }
 
-        // STEP 3: WRITE PHASE (Updates & Order Creation)
+        // WRITE PHASE: Atomic Stock Deductions
         for (const { ref, docSnap, item } of productSnapshots) {
           const productData = docSnap.data();
           const currentStock = Number(productData?.stock ?? 0);
           const requestedQty = Number(item.quantity || 1);
 
           transaction.update(ref, {
-            stock: currentStock - requestedQty,
-            updatedAt: new Date(),
+            stock: Math.max(0, currentStock - requestedQty),
+            updatedAt: FieldValue.serverTimestamp(),
           });
         }
 
-        const deliveryFee = 15.00;
+        // Calculate dynamic delivery fee (in minor units)
+        const deliveryFee = calculateDeliveryFee(subtotal, storeSettings);
         const total = subtotal + deliveryFee;
+
         const orderRef = adminDb.collection('orders').doc();
         const orderNumber = generateOrderNumber();
-
-        const paymentStatus = paymentMethod === 'payhere' ? 'paid' : 'pending';
+        const initialPaymentStatus: PaymentStatus = paymentMethod === 'payhere' ? 'paid' : 'pending';
+        const initialOrderStatus: OrderStatus = 'pending';
 
         const newOrder = {
           id: orderRef.id,
           orderNumber,
-          userId: userId || 'anonymous',
+          customerId: userId,
+          userId: userId || null,
+          isGuest: !userId || userId === 'guest' || userId === 'anonymous',
           customer: {
-            name: customerData.name || 'Guest',
-            email: customerData.email || '',
-            phone: customerData.phone || '',
-            address: customerData.address || '',
-            city: customerData.city || '',
-            postalCode: customerData.postalCode || '',
+            name: customerData.name.trim(),
+            email: customerData.email?.trim() || '',
+            phone: customerData.phone.trim(),
+            address: customerData.address.trim(),
+            city: customerData.city?.trim() || 'Colombo',
+            postalCode: customerData.postalCode?.trim() || '',
           },
           items: verifiedItems,
+          currency: 'LKR',
           subtotal,
           deliveryFee,
           total,
           paymentMethod,
-          paymentStatus,
-          orderStatus: 'pending',
-          customerNotes: customerNotes || '',
+          paymentStatus: initialPaymentStatus,
+          orderStatus: initialOrderStatus,
+          customerNotes: customerNotes?.trim() || '',
           adminNotes: '',
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          createdAt: FieldValue.serverTimestamp(),
+          updatedAt: FieldValue.serverTimestamp(),
         };
 
         transaction.set(orderRef, newOrder);
+
+        // Initial Lifecycle Event
+        const eventRef = orderRef.collection('events').doc();
+        transaction.set(eventRef, {
+          orderId: orderRef.id,
+          status: initialOrderStatus,
+          description: `Order placed by customer on web storefront (${paymentMethod === 'bank_transfer' ? 'Bank Transfer' : paymentMethod === 'payhere' ? 'PayHere Online' : 'Cash on Delivery'}).`,
+          actor: customerData.name.trim(),
+          actorRole: 'customer',
+          customerVisible: true,
+          timestamp: FieldValue.serverTimestamp(),
+        });
+
         return { orderId: orderRef.id, orderNumber };
       });
 
@@ -238,124 +303,123 @@ export async function processCheckout(
         success: true,
         orderId: order.orderId,
         orderNumber: order.orderNumber,
-        message: 'Order processed successfully with atomic inventory update.',
+        message: 'Order placed successfully with verified inventory.',
       };
     }
 
     // -------------------------------------------------------------------------
-    // B. Client SDK Fallback Transaction (If Admin SDK Service Account not configured)
+    // Path B: Client/Server Fallback (If Firebase Admin Credentials not in .env.local)
+    // CRITICAL: Clients cannot write to /products/{id}.
+    // We record the order in /orders (allowed by rules) and flag it for admin confirmation.
     // -------------------------------------------------------------------------
-    const orderResult = await clientRunTransaction(clientDb, async (transaction) => {
-      // STEP 1: READ PHASE
-      const productSnapshots = [];
-      for (const item of cartItems) {
-        const productId = item.productId || (item as any).id;
-        const productRef = clientDoc(clientDb, 'products', productId);
-        const docSnap = await transaction.get(productRef);
-        productSnapshots.push({ ref: productRef, docSnap, item });
+    let subtotal = 0;
+    const verifiedItems = [];
+
+    for (const item of cartItems) {
+      const productId = item.productId || (item as any).id;
+      let unitPrice = Number(item.price || item.unitPrice || 4000);
+      if (unitPrice > 0 && unitPrice < 10000) {
+        unitPrice = unitPrice * 100; // convert to minor units
       }
 
-      // STEP 2: VALIDATION PHASE
-      let subtotal = 0;
-      const verifiedItems = [];
-
-      for (const { ref, docSnap, item } of productSnapshots) {
-        const productId = item.productId || (item as any).id;
-
-        if (!docSnap.exists()) {
-          // Fallback calculation if doc doesn't exist yet in client Firestore
-          const unitPrice = Number(item.price || item.unitPrice || 4000);
-          const itemSubtotal = unitPrice * item.quantity;
-          subtotal += itemSubtotal;
-          verifiedItems.push({
-            productId,
-            name: item.name || 'Garment',
-            image: item.image || '',
-            size: item.size || 'M',
-            color: item.color || '',
-            quantity: item.quantity,
-            unitPrice,
-            subtotal: itemSubtotal,
-          });
-          continue;
+      // Check if product document is readable to get real price and active status
+      try {
+        const prodSnap = await clientGetDoc(clientDoc(clientDb, 'products', productId));
+        if (prodSnap.exists()) {
+          const pData = prodSnap.data();
+          if (pData.active === false) {
+            throw new Error(`Product "${pData.name || item.name}" is currently inactive.`);
+          }
+          let fetchedPrice = Number(pData.price ?? pData.priceMinor ?? unitPrice);
+          if (fetchedPrice > 0 && fetchedPrice < 10000) fetchedPrice = fetchedPrice * 100;
+          unitPrice = fetchedPrice;
         }
-
-        const productData = docSnap.data();
-        const currentStock = Number(productData?.stock ?? 0);
-        const requestedQty = Number(item.quantity || 1);
-
-        if (productData?.active === false) {
-          throw new Error(`Product "${productData?.name || item.name}" is currently unavailable.`);
-        }
-
-        if (currentStock < requestedQty) {
-          throw new Error(`Out of stock: Insufficient inventory for "${productData?.name || item.name}". Only ${currentStock} remaining.`);
-        }
-
-        const unitPrice = Number(productData?.price ?? item.price ?? item.unitPrice ?? 0);
-        const itemSubtotal = unitPrice * requestedQty;
-        subtotal += itemSubtotal;
-
-        verifiedItems.push({
-          productId,
-          name: productData?.name || item.name || 'Garment',
-          image: productData?.images?.[0] || item.image || '',
-          size: item.size || 'M',
-          color: item.color || '',
-          quantity: requestedQty,
-          unitPrice,
-          subtotal: itemSubtotal,
-        });
-
-        transaction.update(ref, {
-          stock: currentStock - requestedQty,
-          updatedAt: serverTimestamp(),
-        });
+      } catch (e: any) {
+        if (e?.message?.includes('inactive')) throw e;
+        console.warn('Could not read product via client SDK during fallback checkout:', e);
       }
 
-      const deliveryFee = 15.00;
-      const total = subtotal + deliveryFee;
-      const orderRef = clientDoc(clientCollection(clientDb, 'orders'));
-      const orderNumber = generateOrderNumber();
+      const itemQty = Number(item.quantity || 1);
+      const itemSubtotal = unitPrice * itemQty;
+      subtotal += itemSubtotal;
 
-      const newOrder = {
-        id: orderRef.id,
-        orderNumber,
-        userId: userId || 'anonymous',
-        customer: {
-          name: customerData.name || 'Guest',
-          email: customerData.email || '',
-          phone: customerData.phone || '',
-          address: customerData.address || '',
-          city: customerData.city || '',
-          postalCode: customerData.postalCode || '',
-        },
-        items: verifiedItems,
-        subtotal,
-        deliveryFee,
-        total,
-        paymentMethod,
-        paymentStatus: paymentMethod === 'payhere' ? 'paid' : 'pending',
-        orderStatus: 'pending',
-        customerNotes: customerNotes || '',
-        adminNotes: '',
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-      };
+      verifiedItems.push({
+        productId,
+        name: item.name || 'Garment',
+        image: item.image || '',
+        size: item.size || 'M',
+        color: item.color || '',
+        quantity: itemQty,
+        unitPrice,
+        subtotal: itemSubtotal,
+      });
+    }
 
-      transaction.set(orderRef, newOrder);
-      return { orderId: orderRef.id, orderNumber };
-    });
+    const deliveryFee = calculateDeliveryFee(subtotal, storeSettings);
+    const total = subtotal + deliveryFee;
+
+    const orderRef = clientDoc(clientCollection(clientDb, 'orders'));
+    const orderNumber = generateOrderNumber();
+    const initialPaymentStatus: PaymentStatus = paymentMethod === 'payhere' ? 'paid' : 'pending';
+    const initialOrderStatus: OrderStatus = 'pending';
+
+    const newOrder = {
+      id: orderRef.id,
+      orderNumber,
+      customerId: userId,
+      userId: userId || null,
+      isGuest: !userId || userId === 'guest' || userId === 'anonymous',
+      customer: {
+        name: customerData.name.trim(),
+        email: customerData.email?.trim() || '',
+        phone: customerData.phone.trim(),
+        address: customerData.address.trim(),
+        city: customerData.city?.trim() || 'Colombo',
+        postalCode: customerData.postalCode?.trim() || '',
+      },
+      items: verifiedItems,
+      currency: 'LKR' as const,
+      subtotal,
+      deliveryFee,
+      total,
+      paymentMethod,
+      paymentStatus: initialPaymentStatus,
+      orderStatus: initialOrderStatus,
+      customerNotes: customerNotes?.trim() || '',
+      adminNotes: 'Order created via storefront client fallback. Stock deduction pending manual confirmation.',
+      stockDeductionPending: true,
+      createdAt: clientServerTimestamp(),
+      updatedAt: clientServerTimestamp(),
+    };
+
+    // Write the order document
+    await clientSetDoc(orderRef, newOrder);
+
+    // Write the initial event in /orders/{orderId}/events subcollection
+    try {
+      const eventColRef = clientCollection(clientDb, 'orders', orderRef.id, 'events');
+      await clientAddDoc(eventColRef, {
+        orderId: orderRef.id,
+        status: initialOrderStatus,
+        description: `Order placed by customer on web storefront (${paymentMethod === 'bank_transfer' ? 'Bank Transfer' : paymentMethod === 'payhere' ? 'PayHere Online' : 'Cash on Delivery'}).`,
+        actor: customerData.name.trim(),
+        actorRole: 'customer',
+        customerVisible: true,
+        timestamp: clientServerTimestamp(),
+      });
+    } catch (eventErr) {
+      console.warn('Could not record initial event in subcollection:', eventErr);
+    }
 
     return {
       success: true,
-      orderId: orderResult.orderId,
-      orderNumber: orderResult.orderNumber,
-      message: 'Order processed successfully.',
+      orderId: orderRef.id,
+      orderNumber,
+      message: 'Order placed successfully.',
     };
 
   } catch (error: any) {
-    console.error('Atomic processCheckout error:', error);
+    console.error('Checkout processing error:', error);
     return {
       success: false,
       error: error?.message || 'Out of stock or system error occurred during checkout processing.',

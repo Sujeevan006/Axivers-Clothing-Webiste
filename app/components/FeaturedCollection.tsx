@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import type { Product } from '@/types/product';
 import { subscribeToActiveProducts, getProducts } from '@/services/productService';
+import { formatCurrency } from '@/lib/utils/formatters';
 import { useCart } from '../context/CartContext';
 import { QuickAddModal } from './QuickAddModal';
 
@@ -69,11 +70,12 @@ export const FeaturedCollection: React.FC = () => {
           </Link>
         </div>
 
-        {/* 1 Product Card per Row on Mobile, 2 on Tablet, 3-4 on Desktop */}
+        {/* Product Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
           {featuredProducts.map((product) => {
             const isOutOfStock = product.stock !== undefined && product.stock <= 0;
             const displayImage = product.images?.[0] || '/images/pdp_front.jpg';
+            const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
 
             return (
               <div
@@ -123,9 +125,16 @@ export const FeaturedCollection: React.FC = () => {
                   </div>
 
                   <div className="pt-3 border-t border-zinc-800 flex items-center justify-between">
-                    <span className="text-sm sm:text-base font-bold font-mono text-white">
-                      LKR {product.price.toLocaleString()}
-                    </span>
+                    <div>
+                      <span className="text-sm sm:text-base font-bold font-mono text-white">
+                        {formatCurrency(product.price, product.currency || 'LKR', true)}
+                      </span>
+                      {hasDiscount && (
+                        <span className="text-xs text-zinc-500 line-through ml-2 font-mono">
+                          {formatCurrency(product.compareAtPrice!, product.currency || 'LKR', true)}
+                        </span>
+                      )}
+                    </div>
 
                     <button
                       onClick={() => setQuickAddProduct(product)}

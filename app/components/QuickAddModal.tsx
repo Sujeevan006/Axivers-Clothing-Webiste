@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { Product } from '@/types/product';
 import { useCart } from '../context/CartContext';
+import { formatCurrency } from '@/lib/utils/formatters';
 
 interface QuickAddModalProps {
   product: Product | null;
@@ -28,7 +29,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ product, onClose }
 
   const isOutOfStock = product.stock !== undefined && product.stock <= 0;
   const sizes = product.sizes && product.sizes.length > 0 ? product.sizes : ['S', 'M', 'L', 'XL'];
-  const colors = product.colors && product.colors.length > 0 ? product.colors : ['Black', 'White'];
+  const colors = product.colors && product.colors.length > 0 ? product.colors : [];
   const displayImage = product.images?.[0] || '/images/pdp_front.jpg';
 
   const handleAdd = () => {
@@ -86,13 +87,13 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ product, onClose }
           <div className="sm:col-span-7 space-y-4">
             <div>
               <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-400">
-                {product.category}
+                {product.categoryLabel || product.category}
               </span>
               <h3 className="text-base font-display font-semibold uppercase tracking-wider text-white">
                 {product.name}
               </h3>
               <p className="text-xs font-mono font-bold text-white mt-1">
-                LKR {product.price.toLocaleString()}
+                {formatCurrency(product.price, product.currency || 'LKR', true)}
               </p>
             </div>
 
