@@ -6,8 +6,13 @@ export interface Product {
   slug: string;
   description: string;
   tagline?: string;
-  category: string;             // Category slug (e.g., "flagship", "men")
+  category: string;             // Category slug (e.g., "flagship", "men", "women", "minimalist", "technical")
   categoryLabel?: string;        // Human-readable (e.g., "Flagship Outerwear")
+  gender?: 'men' | 'women' | 'unisex';
+  collectionSlug?: string;       // Collection identifier
+  isNewArrival?: boolean;
+  isBestSeller?: boolean;
+  tags?: string[];
   currency?: string;             // "LKR"
   price: number;                 // Stored in minor units (e.g. 400000 = LKR 4,000.00)
   priceMinor?: number;           // Mirror of price
@@ -16,7 +21,7 @@ export interface Product {
   sizes: string[];               // ["S", "M", "L", "XL"]
   colors?: string[];             // ["Onyx Black", "Slate Grey"]
   stock: number;                 // Total stock
-  images: string[];              // Array of Firebase Storage image URLs
+  images: string[];              // Array of image URLs
   material?: string;
   fabricSpec?: string;
   careInstructions?: string;

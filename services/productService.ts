@@ -63,6 +63,11 @@ export function normalizeProduct(data: any, fallbackId?: string): Product {
   const colors = Array.isArray(raw.colors) ? raw.colors : [];
   const stock = typeof raw.stock === 'number' ? raw.stock : 0;
   const currency = raw.currency || 'LKR';
+  const gender = raw.gender || (category === 'women' ? 'women' : category === 'men' ? 'men' : 'unisex');
+  const isNewArrival = Boolean(raw.isNewArrival ?? raw.newArrival ?? raw.featured);
+  const isBestSeller = Boolean(raw.isBestSeller ?? raw.bestSeller);
+  const collectionSlug = raw.collectionSlug || raw.collection || category;
+  const tags = Array.isArray(raw.tags) ? raw.tags : [];
 
   const normalized: Product = {
     id,
@@ -72,6 +77,11 @@ export function normalizeProduct(data: any, fallbackId?: string): Product {
     tagline: raw.tagline || '',
     category,
     categoryLabel,
+    gender,
+    collectionSlug,
+    isNewArrival,
+    isBestSeller,
+    tags,
     currency,
     price,
     priceMinor,
@@ -107,7 +117,13 @@ export function serializeProduct(data: any): Product {
  */
 export function subscribeToActiveProducts(
   onProductsChange: (products: Product[]) => void,
-  options?: { category?: string; featuredOnly?: boolean }
+  options?: {
+    category?: string;
+    featuredOnly?: boolean;
+    gender?: string;
+    isNewArrival?: boolean;
+    isBestSeller?: boolean;
+  }
 ): Unsubscribe {
   const colRef = collection(db, PRODUCTS_COLLECTION);
   // CRITICAL: where('active', '==', true) must always be present
@@ -125,20 +141,39 @@ export function subscribeToActiveProducts(
   return onSnapshot(
     q,
     (snapshot) => {
-      const products: Product[] = [];
+      let products: Product[] = [];
       snapshot.forEach((docSnap) => {
         products.push(normalizeProduct(docSnap.data(), docSnap.id));
       });
+      if (options?.gender && options.gender !== 'all') {
+        products = products.filter(p => p.gender === options.gender || p.gender === 'unisex');
+      }
+      if (options?.isNewArrival) {
+        products = products.filter(p => p.isNewArrival);
+      }
+      if (options?.isBestSeller) {
+        products = products.filter(p => p.isBestSeller);
+      }
       onProductsChange(products);
     },
     (error) => {
       console.error('Error listening to products snapshot:', error);
       // Fallback to local products
-      const fallback = productsDatabase
+      let fallback = productsDatabase
         .filter(p => p.active)
         .filter(p => (options?.featuredOnly ? p.featured : true))
         .filter(p => (options?.category && options.category !== 'all' ? p.category === options.category : true))
         .map(p => normalizeProduct(p));
+
+      if (options?.gender && options.gender !== 'all') {
+        fallback = fallback.filter(p => p.gender === options.gender || p.gender === 'unisex');
+      }
+      if (options?.isNewArrival) {
+        fallback = fallback.filter(p => p.isNewArrival);
+      }
+      if (options?.isBestSeller) {
+        fallback = fallback.filter(p => p.isBestSeller);
+      }
       onProductsChange(fallback);
     }
   );
@@ -152,6 +187,9 @@ export async function getProducts(options?: {
   category?: string;
   activeOnly?: boolean;
   featuredOnly?: boolean;
+  gender?: string;
+  isNewArrival?: boolean;
+  isBestSeller?: boolean;
 }): Promise<Product[]> {
   try {
     const colRef = collection(db, PRODUCTS_COLLECTION);
@@ -168,18 +206,39 @@ export async function getProducts(options?: {
     const q = query(colRef, ...constraints);
     const snapshot = await getDocs(q);
 
-    const products: Product[] = [];
+    let products: Product[] = [];
     snapshot.forEach((docSnap) => {
       products.push(normalizeProduct(docSnap.data(), docSnap.id));
     });
 
     if (products.length === 0) {
       // Return local database fallback (normalized)
-      return productsDatabase
+      let fallback = productsDatabase
         .filter(p => p.active)
         .filter(p => (options?.featuredOnly ? p.featured : true))
         .filter(p => (options?.category && options.category !== 'all' ? p.category === options.category : true))
         .map(p => normalizeProduct(p));
+
+      if (options?.gender && options.gender !== 'all') {
+        fallback = fallback.filter(p => p.gender === options.gender || p.gender === 'unisex');
+      }
+      if (options?.isNewArrival) {
+        fallback = fallback.filter(p => p.isNewArrival);
+      }
+      if (options?.isBestSeller) {
+        fallback = fallback.filter(p => p.isBestSeller);
+      }
+      return fallback;
+    }
+
+    if (options?.gender && options.gender !== 'all') {
+      products = products.filter(p => p.gender === options.gender || p.gender === 'unisex');
+    }
+    if (options?.isNewArrival) {
+      products = products.filter(p => p.isNewArrival);
+    }
+    if (options?.isBestSeller) {
+      products = products.filter(p => p.isBestSeller);
     }
 
     return products;

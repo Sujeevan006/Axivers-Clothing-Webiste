@@ -52,16 +52,11 @@ export function formatCurrency(
   }
 
   try {
-    return new Intl.NumberFormat('en-LK', {
-      style: 'currency',
-      currency: currency || 'LKR',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(majorAmount);
-  } catch {
-    return `${currency || 'LKR'} ${majorAmount.toLocaleString('en-LK', {
+    return `${currency || 'LKR'} ${majorAmount.toLocaleString('en-US', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     })}`;
+  } catch {
+    return `${currency || 'LKR'} ${majorAmount.toFixed(2)}`;
   }
 }

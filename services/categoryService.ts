@@ -1,66 +1,65 @@
 import { db } from '@/lib/firebase/client';
 import { Category } from '@/types/category';
-import { 
-  collection, 
-  getDocs, 
-  query, 
-  where, 
-  orderBy, 
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  orderBy,
   onSnapshot,
-  Unsubscribe 
+  Unsubscribe,
 } from 'firebase/firestore';
 
 const CATEGORIES_COLLECTION = 'categories';
 
 /**
- * Baseline fallback categories to ensure storefront UI remains fully functional
- * if the Firestore categories collection is initially empty.
+ * Baseline fallback categories matching the storefront UI design.
  */
 export const BASELINE_CATEGORIES: Category[] = [
   {
     id: 'men',
     slug: 'men',
     name: "Men's Collection",
-    description: 'Tailored athletic fit & heavy drape',
+    description: 'Shop Men →',
     active: true,
     sortOrder: 1,
-    image: '/images/pdp_front.jpg',
+    image: '/images/cat-men-bg.png',
   },
   {
     id: 'women',
     slug: 'women',
     name: "Women's Collection",
-    description: 'Sculpted silhouettes & breathable modal',
+    description: 'Shop Women →',
     active: true,
     sortOrder: 2,
-    image: '/images/pdp_white_piping.jpg',
+    image: '/images/cat-women-bg.png',
   },
   {
     id: 'flagship',
     slug: 'flagship',
     name: 'Flagship Piping',
-    description: 'Signature inserted piping & crewneck cuts',
+    description: 'Shop Piping →',
     active: true,
     sortOrder: 3,
-    image: '/images/pdp_detail.jpg',
+    image: '/images/cat-piping-bg.png',
   },
   {
     id: 'minimalist',
     slug: 'minimalist',
     name: 'Minimalist Essentials',
-    description: 'Subtle branding, monochrome aesthetics',
+    description: 'Shop Essentials →',
     active: true,
     sortOrder: 4,
-    image: '/images/pdp_boxy_black.jpg',
+    image: '/images/cat-essentials-bg.png',
   },
   {
     id: 'technical',
     slug: 'technical',
     name: 'Technical Garments',
-    description: 'Moisture-wicking modal & high GSM structure',
+    description: 'Shop Technical →',
     active: true,
     sortOrder: 5,
-    image: '/images/pdp_polo_black.jpg',
+    image: '/images/cat-technical-bg.png',
   },
 ];
 
@@ -75,7 +74,7 @@ export function normalizeCategory(data: any, docId: string): Category {
     description: data.description || '',
     active: data.active !== undefined ? Boolean(data.active) : true,
     sortOrder: typeof data.sortOrder === 'number' ? data.sortOrder : 99,
-    image: data.image || '/images/pdp_front.jpg',
+    image: data.image || '/images/cat-men-bg.png',
   };
 }
 
@@ -85,7 +84,11 @@ export function normalizeCategory(data: any, docId: string): Category {
 export async function getCategories(): Promise<Category[]> {
   try {
     const colRef = collection(db, CATEGORIES_COLLECTION);
-    const q = query(colRef, where('active', '==', true), orderBy('sortOrder', 'asc'));
+    const q = query(
+      colRef,
+      where('active', '==', true),
+      orderBy('sortOrder', 'asc'),
+    );
     const snapshot = await getDocs(q);
 
     if (snapshot.empty) {
@@ -99,7 +102,10 @@ export async function getCategories(): Promise<Category[]> {
 
     return categories.length > 0 ? categories : BASELINE_CATEGORIES;
   } catch (error) {
-    console.warn('Error fetching categories from Firestore, falling back to baseline:', error);
+    console.warn(
+      'Error fetching categories from Firestore, falling back to baseline:',
+      error,
+    );
     return BASELINE_CATEGORIES;
   }
 }
@@ -108,11 +114,15 @@ export async function getCategories(): Promise<Category[]> {
  * Subscribe to real-time updates for active categories
  */
 export function subscribeToCategories(
-  onCategoriesChange: (categories: Category[]) => void
+  onCategoriesChange: (categories: Category[]) => void,
 ): Unsubscribe {
   try {
     const colRef = collection(db, CATEGORIES_COLLECTION);
-    const q = query(colRef, where('active', '==', true), orderBy('sortOrder', 'asc'));
+    const q = query(
+      colRef,
+      where('active', '==', true),
+      orderBy('sortOrder', 'asc'),
+    );
 
     return onSnapshot(
       q,
@@ -125,12 +135,17 @@ export function subscribeToCategories(
         snapshot.forEach((docSnap) => {
           categories.push(normalizeCategory(docSnap.data(), docSnap.id));
         });
-        onCategoriesChange(categories.length > 0 ? categories : BASELINE_CATEGORIES);
+        onCategoriesChange(
+          categories.length > 0 ? categories : BASELINE_CATEGORIES,
+        );
       },
       (error) => {
-        console.warn('Categories subscription error, using baseline fallback:', error);
+        console.warn(
+          'Categories subscription error, using baseline fallback:',
+          error,
+        );
         onCategoriesChange(BASELINE_CATEGORIES);
-      }
+      },
     );
   } catch (error) {
     console.warn('Failed to initialize categories snapshot listener:', error);

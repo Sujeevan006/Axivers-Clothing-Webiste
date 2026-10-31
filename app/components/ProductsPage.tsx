@@ -19,13 +19,14 @@ interface ProductsPageProps {
 export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = [] }) => {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get('category');
+  const queryParam = searchParams.get('q');
 
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [categories, setCategories] = useState<Category[]>(BASELINE_CATEGORIES);
   const [selectedCategory, setSelectedCategory] = useState<string>(categoryParam || 'all');
   const [selectedSizeFilter, setSelectedSizeFilter] = useState<string>('all');
   const [maxPriceFilter, setMaxPriceFilter] = useState<number>(25000);
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>(queryParam || '');
   const [sortBy, setSortBy] = useState<string>('default');
   const [isLoading, setIsLoading] = useState<boolean>(initialProducts.length === 0);
   const [quickAddProduct, setQuickAddProduct] = useState<Product | null>(null);
@@ -38,6 +39,12 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
       setSelectedCategory(categoryParam);
     }
   }, [categoryParam]);
+
+  useEffect(() => {
+    if (queryParam !== null) {
+      setSearchQuery(queryParam);
+    }
+  }, [queryParam]);
 
   // Load dynamic categories
   useEffect(() => {
@@ -270,7 +277,7 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
             {sortedProducts.map((product) => {
               const isOutOfStock = product.stock !== undefined && product.stock <= 0;
               const displayImage = product.images?.[0] || '/images/pdp_front.jpg';
@@ -279,62 +286,61 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
               return (
                 <div
                   key={product.id}
-                  className="group flex flex-col bg-zinc-900/80 backdrop-blur-md border border-zinc-800 p-4 sm:p-5 transition-all duration-300 hover:border-white/50 hover:shadow-2xl rounded-2xl overflow-hidden relative w-full"
+                  className="group relative flex flex-col justify-between bg-[#111113] hover:bg-[#141417] border border-zinc-800/80 hover:border-zinc-700/90 rounded-2xl p-3.5 sm:p-4 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.7)]"
                 >
-                  {/* Image Container with full-garment view */}
+                  {/* Landscape Image Container (16:10) */}
                   <Link
                     href={`/product/${product.slug || product.id}`}
-                    className="aspect-[3/4] bg-[#050507] overflow-hidden relative cursor-pointer rounded-xl block border border-zinc-800/80"
+                    className="aspect-[16/10] bg-[#161618] rounded-xl overflow-hidden relative block border border-zinc-800/60 group-hover:border-zinc-700/80 transition-colors cursor-pointer"
                   >
                     <Image
                       src={displayImage}
                       alt={product.name}
-                      width={600}
-                      height={800}
+                      fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className={`w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105 ${
+                      className={`object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105 ${
                         isOutOfStock ? 'opacity-40 grayscale' : ''
                       }`}
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 opacity-40 pointer-events-none" />
+
                     {/* Category Tag */}
-                    <span className="absolute top-3 left-3 bg-black/85 backdrop-blur-md border border-zinc-700 text-white text-[9px] uppercase tracking-widest font-display font-semibold px-2.5 py-1 rounded-md shadow-sm">
+                    <span className="absolute top-2.5 left-2.5 bg-black/60 backdrop-blur-md border border-white/10 text-white/90 text-[9px] uppercase tracking-[0.2em] font-display font-medium px-2.5 py-1 rounded-full shadow-sm">
                       {product.categoryLabel || product.category}
                     </span>
 
                     {/* Stock Status Badge */}
                     {isOutOfStock ? (
-                      <span className="absolute top-3 right-3 bg-zinc-900/90 text-zinc-400 text-[9px] uppercase tracking-widest font-display font-bold px-2.5 py-1 rounded-md border border-zinc-700 shadow-md">
+                      <span className="absolute top-2.5 right-2.5 bg-zinc-900/90 text-zinc-400 text-[9px] uppercase tracking-wider font-display font-semibold px-2.5 py-1 rounded-full border border-zinc-700/80 shadow-md">
                         Sold Out
                       </span>
                     ) : product.stock && product.stock <= 5 ? (
-                      <span className="absolute top-3 right-3 bg-white text-black text-[9px] uppercase tracking-widest font-display font-bold px-2.5 py-1 rounded-md shadow-md">
-                        Low Stock ({product.stock} units remaining)
+                      <span className="absolute top-2.5 right-2.5 bg-white text-black text-[9px] uppercase tracking-wider font-display font-bold px-2.5 py-0.5 rounded-full shadow-md">
+                        Low Stock
                       </span>
                     ) : null}
                   </Link>
 
                   {/* Product Details */}
-                  <div className="pt-4 flex-grow flex flex-col justify-between space-y-4">
-                    <div>
-                      <Link href={`/product/${product.slug || product.id}`} className="cursor-pointer block">
-                        <h3 className="text-sm sm:text-base font-display uppercase tracking-wider font-semibold text-white group-hover:text-zinc-300 transition-colors line-clamp-1">
+                  <div className="pt-3.5 flex flex-col justify-between flex-grow space-y-3">
+                    <div className="space-y-1">
+                      <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 font-display font-medium block">
+                        {product.categoryLabel || 'Premium Garment'}
+                      </span>
+                      <Link href={`/product/${product.slug || product.id}`} className="block">
+                        <h3 className="text-sm sm:text-base font-display font-semibold uppercase tracking-wider text-white group-hover:text-zinc-300 transition-colors line-clamp-1">
                           {product.name}
                         </h3>
-                        {product.tagline && (
-                          <p className="text-xs text-zinc-400 mt-1 line-clamp-1 italic font-light">
-                            {product.tagline}
-                          </p>
-                        )}
                       </Link>
                     </div>
 
-                    <div className="pt-3 border-t border-zinc-800/80 flex items-center justify-between">
-                      <div>
+                    <div className="pt-2 flex items-center justify-between gap-2">
+                      <div className="flex items-baseline space-x-2">
                         <span className="text-sm sm:text-base font-bold font-mono text-white">
                           {formatCurrency(product.price, product.currency || 'LKR', true)}
                         </span>
                         {hasDiscount && (
-                          <span className="text-xs text-zinc-500 line-through ml-2 font-mono">
+                          <span className="text-[11px] text-zinc-500 line-through font-mono">
                             {formatCurrency(product.compareAtPrice!, product.currency || 'LKR', true)}
                           </span>
                         )}
@@ -343,13 +349,16 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
                       <button
                         onClick={() => setQuickAddProduct(product)}
                         disabled={isOutOfStock}
-                        className={`text-[10px] uppercase tracking-wider font-display font-bold px-3.5 py-2 transition-all duration-300 rounded-lg cursor-pointer ${
+                        className={`inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-display font-semibold transition-all duration-300 cursor-pointer ${
                           isOutOfStock
-                            ? 'bg-zinc-800 text-zinc-600 border border-zinc-700 cursor-not-allowed'
-                            : 'bg-white text-black border border-white hover:bg-zinc-200 shadow-sm font-bold'
+                            ? 'bg-zinc-800/60 text-zinc-500 border border-zinc-800 cursor-not-allowed'
+                            : 'bg-zinc-800/80 hover:bg-white text-zinc-200 hover:text-black border border-zinc-700/60 hover:border-white shadow-sm'
                         }`}
                       >
-                        {isOutOfStock ? 'Sold Out' : 'Quick Add'}
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                        <span>ADD TO CART</span>
                       </button>
                     </div>
                   </div>
