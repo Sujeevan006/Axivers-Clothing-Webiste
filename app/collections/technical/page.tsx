@@ -8,13 +8,13 @@ export const metadata: Metadata = {
 };
 
 const config: CollectionConfig = {
+  collectionKey: 'technical',
   title: 'Technical Garments',
   tagline: 'High Performance. Seamless Athletic Drape.',
   description:
     'Textile engineering meets athletic luxury. Built with micro-mesh breathability, high yarn resilience, and thermoregulating modal fibers suited for active metropolitan life.',
   bannerImage: '/images/cat-technical-bg.png',
   badge: 'Performance Knit',
-  filterPredicate: (p) => p.category === 'technical' || p.collectionSlug === 'technical' || p.tags?.includes('technical') || false,
 };
 
 export default function TechnicalCollectionPage() {

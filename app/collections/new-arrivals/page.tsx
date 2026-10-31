@@ -8,13 +8,13 @@ export const metadata: Metadata = {
 };
 
 const config: CollectionConfig = {
+  collectionKey: 'new-arrivals',
   title: 'New Arrivals',
   tagline: 'Fresh Drops. Contemporary Silhouettes.',
   description:
     'Explore the newest garments to emerge from our Colombo design studio. Fresh colorways, refined cuts, and limited seasonal runs engineered to elevate everyday wear.',
   bannerImage: '/images/HeroBg.png',
   badge: 'Seasonal Releases',
-  filterPredicate: (p) => Boolean(p.isNewArrival || p.featured),
 };
 
 export default function NewArrivalsPage() {

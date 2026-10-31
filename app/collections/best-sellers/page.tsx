@@ -8,13 +8,13 @@ export const metadata: Metadata = {
 };
 
 const config: CollectionConfig = {
+  collectionKey: 'best-sellers',
   title: 'Best Sellers',
   tagline: 'Most Celebrated. Tested & Proven.',
   description:
     'The foundational pieces our community returns to time and again. Enduring quality, timeless athletic proportions, and proven durability in real-world wear.',
   bannerImage: '/images/cat-piping-bg.png',
   badge: 'Customer Favorites',
-  filterPredicate: (p) => Boolean(p.isBestSeller || p.featured),
 };
 
 export default function BestSellersPage() {

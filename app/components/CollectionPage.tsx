@@ -8,18 +8,48 @@ import { getProducts, subscribeToActiveProducts } from '@/services/productServic
 import { formatCurrency, fromMinorUnits } from '@/lib/utils/formatters';
 import { QuickAddModal } from './QuickAddModal';
 
+export type CollectionKey =
+  | 'men'
+  | 'women'
+  | 'flagship-piping'
+  | 'minimalist-essentials'
+  | 'technical'
+  | 'new-arrivals'
+  | 'best-sellers';
+
 export interface CollectionConfig {
+  collectionKey: CollectionKey;
   title: string;
   tagline: string;
   description: string;
   bannerImage: string;
   badge?: string;
-  filterPredicate?: (product: Product) => boolean;
 }
 
 interface CollectionPageProps {
   config: CollectionConfig;
 }
+
+const filterByCollection = (product: Product, key: CollectionKey): boolean => {
+  switch (key) {
+    case 'men':
+      return product.gender === 'men' || product.gender === 'unisex' || product.category === 'men' || Boolean(product.tags?.includes('men'));
+    case 'women':
+      return product.gender === 'women' || product.gender === 'unisex' || product.category === 'women' || Boolean(product.tags?.includes('women'));
+    case 'flagship-piping':
+      return product.category === 'flagship' || product.collectionSlug === 'flagship-piping' || Boolean(product.tags?.includes('piping'));
+    case 'minimalist-essentials':
+      return product.category === 'minimalist' || product.collectionSlug === 'minimalist-essentials' || Boolean(product.tags?.includes('minimalist'));
+    case 'technical':
+      return product.category === 'technical' || product.collectionSlug === 'technical' || Boolean(product.tags?.includes('technical'));
+    case 'new-arrivals':
+      return Boolean(product.isNewArrival || product.featured);
+    case 'best-sellers':
+      return Boolean(product.isBestSeller || product.featured);
+    default:
+      return true;
+  }
+};
 
 export const CollectionPage: React.FC<CollectionPageProps> = ({ config }) => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -33,7 +63,7 @@ export const CollectionPage: React.FC<CollectionPageProps> = ({ config }) => {
   useEffect(() => {
     getProducts({ activeOnly: true }).then((all) => {
       if (all && all.length > 0) {
-        const filtered = config.filterPredicate ? all.filter(config.filterPredicate) : all;
+        const filtered = all.filter((p) => filterByCollection(p, config.collectionKey));
         setProducts(filtered);
       }
       setIsLoading(false);
@@ -41,14 +71,14 @@ export const CollectionPage: React.FC<CollectionPageProps> = ({ config }) => {
 
     const unsubscribe = subscribeToActiveProducts((all) => {
       if (all && all.length > 0) {
-        const filtered = config.filterPredicate ? all.filter(config.filterPredicate) : all;
+        const filtered = all.filter((p) => filterByCollection(p, config.collectionKey));
         setProducts(filtered);
       }
       setIsLoading(false);
     });
 
     return () => unsubscribe();
-  }, [config]);
+  }, [config.collectionKey]);
 
   // Extract available unique sizes and colors
   const availableColors = useMemo(() => {

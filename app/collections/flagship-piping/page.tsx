@@ -8,13 +8,13 @@ export const metadata: Metadata = {
 };
 
 const config: CollectionConfig = {
+  collectionKey: 'flagship-piping',
   title: 'Flagship Piping Collection',
   tagline: 'Signature Detail. Precision Craftsmanship.',
   description:
     'Our defining silhouette. Masterfully engineered with custom-inserted contrast piping on sleeve cuffs and hem, finished with low-profile embroidery and a sculpted drape.',
   bannerImage: '/images/cat-piping-bg.png',
   badge: 'Signature Collection',
-  filterPredicate: (p) => p.category === 'flagship' || p.collectionSlug === 'flagship-piping' || p.tags?.includes('piping') || false,
 };
 
 export default function FlagshipPipingCollectionPage() {

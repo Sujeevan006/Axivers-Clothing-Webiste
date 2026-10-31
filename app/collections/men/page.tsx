@@ -8,13 +8,13 @@ export const metadata: Metadata = {
 };
 
 const config: CollectionConfig = {
+  collectionKey: 'men',
   title: "Men's Collection",
   tagline: "Tailored Athletic Fit. Uncompromised Comfort.",
   description:
     "Engineered for the modern masculine silhouette. Tapered through the torso with freedom across the chest and shoulders, crafted from our signature 60/40 cotton-modal blend.",
   bannerImage: '/images/cat-men-bg.png',
   badge: "Men's Apparel",
-  filterPredicate: (p) => p.gender === 'men' || p.gender === 'unisex' || p.category === 'men' || p.tags?.includes('men') || false,
 };
 
 export default function MensCollectionPage() {
