@@ -4,7 +4,7 @@ import { CollectionPage, CollectionConfig } from '@/app/components/CollectionPag
 export const metadata: Metadata = {
   title: "Men's Collection — Axivers Athletic Luxury",
   description:
-    "Explore the Axivers Men's Collection. Engineered with an athletic drape, tailored shoulder lines, and our signature 60/40 cotton-modal blend for unmatched everyday comfort.",
+    "Explore the Axivers Men's Collection. Engineered with an athletic drape, tailored shoulder lines, and our signature 180 GSM mercerized cotton for refined everyday comfort.",
 };
 
 const config: CollectionConfig = {
@@ -12,8 +12,8 @@ const config: CollectionConfig = {
   title: "Men's Collection",
   tagline: "Tailored Athletic Fit. Uncompromised Comfort.",
   description:
-    "Engineered for the modern masculine silhouette. Tapered through the torso with freedom across the chest and shoulders, crafted from our signature 60/40 cotton-modal blend.",
-  bannerImage: '/images/cat-men-bg.png',
+    "Engineered for the modern masculine silhouette. Clean through the torso with freedom across the chest and shoulders, crafted from 180 GSM mercerized cotton single jersey knit.",
+  bannerImage: '/images/editorial-men-black.jpg',
   badge: "Men's Apparel",
 };
 

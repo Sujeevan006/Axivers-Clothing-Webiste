@@ -8,7 +8,7 @@ export default function AccountPage() {
   const [phone, setPhone] = useState('');
 
   return (
-    <div className="min-h-screen bg-[#09090b] text-[#ffffff] pt-28 sm:pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#060606] text-[#ffffff] pt-28 sm:pt-32 pb-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-xl mx-auto space-y-8">
         {/* Header */}
         <div className="text-center space-y-3">
@@ -95,7 +95,7 @@ export default function AccountPage() {
             </li>
             <li className="flex items-center space-x-2">
               <span className="text-white">•</span>
-              <span>Invitations to limited-run 60/40 cotton-modal seasonal drops.</span>
+              <span>Invitations to limited-run 180 GSM mercerized cotton seasonal drops.</span>
             </li>
           </ul>
         </div>

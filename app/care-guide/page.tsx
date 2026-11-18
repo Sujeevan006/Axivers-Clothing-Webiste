@@ -3,66 +3,63 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Garment Care Guide — Axivers Clothing',
+  title: 'Garment Care Guide — Preserving Mercerized Cotton Essentials',
   description:
-    'Master garment care guide for Axivers 60/40 cotton-modal and heavyweight combed cotton. Washing, drying, ironing, and longevity preservation.',
+    'Care guidelines for Axivers 180 GSM mercerized cotton garments. Washing, drying, and ironing recommendations to preserve print and collar shape.',
 };
 
 export default function CareGuidePage() {
   const careSections = [
     {
       title: '1. Machine Washing',
-      icon: '🌊',
       rules: [
-        'Always wash in cold water (30°C or below). Hot water breaks down the delicate cellulose filaments of beechwood modal.',
-        'Turn garments inside out prior to washing to protect contrast piping, chest embroidery, and outer yarn surface from friction.',
-        'Use mild liquid detergents without chlorine bleach or harsh optical brighteners.',
-        'Wash with similar dark or optic white colors to prevent dye transfer.',
+        'Turn garments inside out prior to washing to protect the reflective metallic-gold chest print and outer ribbing.',
+        'Wash in cold water on a gentle cycle with similar dark colors.',
+        'Use mild liquid detergents free from optical brighteners and chlorine bleach.',
+        'Avoid overloading the drum to reduce unnecessary friction against the cotton fibers.',
       ],
     },
     {
       title: '2. Drying Protocol',
-      icon: '💨',
       rules: [
-        'Do NOT tumble dry on high heat. Excessive tumble drying is the primary cause of fiber shrinkage and seam warping.',
-        'Gently reshape the garment while damp, paying close attention to neck ribbing and bottom hemline.',
-        'Lay flat to dry on a drying rack or towel in a shaded, well-ventilated area.',
-        'Avoid hanging heavy wet garments by thin wire hangers, which can stretch out shoulder seams.',
+        'Gently reshape the contrasting gray collar and tipped sleeve cuffs while the garment is damp.',
+        'Lay flat to dry in a shaded, well-ventilated area away from direct harsh sunlight.',
+        'Avoid high-heat machine tumble drying, which can subject cotton fibers and collar spandex to unnecessary stress.',
+        'Do not wring or twist wet garments forcefully.',
       ],
     },
     {
       title: '3. Ironing & Steaming',
-      icon: '♨️',
       rules: [
-        'Modal responds exceptionally well to garment steaming; steam releases creases effortlessly without pressing fibers.',
-        'If using a conventional flat iron, set to low or medium heat (cotton/modal blend setting).',
-        'Always iron inside out, and avoid direct iron contact on silicone labels, chest prints, and piping seams.',
+        'Garment steaming is recommended to release fabric creases naturally without pressing down on the single jersey knit.',
+        'If using a flat iron, use a low-to-medium heat setting.',
+        'Always iron the garment inside out, and never apply direct iron heat over the metallic-gold chest print or tagless inner label.',
       ],
     },
     {
-      title: '4. Storage & Longevity',
-      icon: '👔',
+      title: '4. Wardrobe Storage',
       rules: [
-        'Fold garments neatly and store in a clean, dry closet away from direct sunlight.',
-        'If hanging, use wide contoured wooden or padded hangers to maintain the sculpted shoulder profile.',
-        'Avoid over-stuffing drawers to keep the 190 GSM knit aerated and free from deep pressure creases.',
+        'Fold neatly and store in a cool, dry wardrobe.',
+        'If hanging, use wide contoured wooden or padded hangers to maintain the sculpted shoulder silhouette.',
+        'Avoid hanging damp garments on thin wire hangers.',
       ],
     },
   ];
 
   return (
-    <div className="min-h-screen bg-[#09090b] text-[#ffffff] pt-24 sm:pt-28 pb-24 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#060606] text-[#ffffff] pt-24 sm:pt-28 pb-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-12">
         {/* Header */}
         <div className="text-center space-y-3 pt-6">
-          <span className="text-[10px] uppercase tracking-[0.3em] text-zinc-400 font-display font-semibold block">
-            Garment Longevity
-          </span>
+          <div className="inline-flex items-center space-x-2 text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059]" />
+            <span>Garment Longevity</span>
+          </div>
           <h1 className="text-3xl sm:text-5xl font-display font-light uppercase tracking-tight text-white">
             Axivers <span className="font-bold">Care Guide</span>
           </h1>
-          <p className="text-xs sm:text-sm font-light text-zinc-400 max-w-lg mx-auto">
-            Our 60/40 cotton-modal blend is engineered for exceptional durability. Follow these simple practices to preserve the cloud-soft hand feel and rich color saturation for years to come.
+          <p className="text-xs sm:text-sm font-light text-zinc-300 max-w-lg mx-auto leading-relaxed">
+            Follow these considered practices to preserve the smooth hand feel, collar resilience, and metallic-gold finish of your Axivers essentials.
           </p>
         </div>
 
@@ -71,19 +68,16 @@ export default function CareGuidePage() {
           {careSections.map((sec) => (
             <div
               key={sec.title}
-              className="bg-[#111114] border border-zinc-800/80 rounded-2xl p-6 sm:p-7 space-y-4 shadow-xl"
+              className="bg-[#0b0b0e] border border-zinc-800/80 rounded-3xl p-6 sm:p-7 space-y-4 shadow-xl"
             >
-              <div className="flex items-center space-x-3">
-                <span className="text-2xl">{sec.icon}</span>
-                <h3 className="text-base font-display font-bold uppercase text-white tracking-wider">
-                  {sec.title}
-                </h3>
-              </div>
+              <h3 className="text-base font-display font-bold uppercase text-white tracking-wider border-b border-zinc-900 pb-2">
+                {sec.title}
+              </h3>
 
               <ul className="space-y-2.5 text-xs text-zinc-300 font-light leading-relaxed">
                 {sec.rules.map((rule, idx) => (
                   <li key={idx} className="flex items-start space-x-2">
-                    <span className="text-zinc-500 font-mono text-[10px] mt-0.5">•</span>
+                    <span className="text-[#c5a059] font-mono text-[11px] mt-0.5">&bull;</span>
                     <span>{rule}</span>
                   </li>
                 ))}
@@ -92,42 +86,26 @@ export default function CareGuidePage() {
           ))}
         </div>
 
-        {/* Quick Reference Table */}
-        <div className="bg-[#101013] border border-zinc-800/80 rounded-2xl p-6 sm:p-8 space-y-4 text-xs font-light text-zinc-300">
-          <h3 className="text-base font-display font-bold uppercase text-white tracking-wider">
-            Quick Care Symbols Summary
-          </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-            <div className="p-4 bg-zinc-900/60 rounded-xl border border-zinc-800 space-y-1">
-              <span className="text-lg">30°C</span>
-              <div className="font-display font-semibold text-white text-[11px]">Cold Wash</div>
-              <p className="text-[10px] text-zinc-500">Max 30°C gentle cycle</p>
-            </div>
-            <div className="p-4 bg-zinc-900/60 rounded-xl border border-zinc-800 space-y-1">
-              <span className="text-lg">🚫</span>
-              <div className="font-display font-semibold text-white text-[11px]">Do Not Bleach</div>
-              <p className="text-[10px] text-zinc-500">Preserves modal bio-fibers</p>
-            </div>
-            <div className="p-4 bg-zinc-900/60 rounded-xl border border-zinc-800 space-y-1">
-              <span className="text-lg">☁️</span>
-              <div className="font-display font-semibold text-white text-[11px]">Flat Dry</div>
-              <p className="text-[10px] text-zinc-500">Dry flat in shade</p>
-            </div>
-            <div className="p-4 bg-zinc-900/60 rounded-xl border border-zinc-800 space-y-1">
-              <span className="text-lg">🌡️</span>
-              <div className="font-display font-semibold text-white text-[11px]">Low Iron</div>
-              <p className="text-[10px] text-zinc-500">Iron inside out on low heat</p>
-            </div>
-          </div>
+        {/* Care Guidance Notice */}
+        <div className="bg-[#0a0a0d] border border-zinc-800/80 rounded-2xl p-6 text-xs text-zinc-400 space-y-2">
+          <h4 className="font-display uppercase tracking-wider font-bold text-white text-xs">
+            Approved Fabric Care Standards
+          </h4>
+          <p className="leading-relaxed">
+            These guidelines represent best practices for 180 GSM mercerized cotton single jersey knit and reflective metallic-gold screen prints. Always check the tagless heat-transfer label printed inside your garment for specific care symbols.
+          </p>
         </div>
 
-        {/* Explore Fabric Link */}
-        <div className="text-center pt-4">
+        {/* Bottom CTA */}
+        <div className="border-t border-zinc-900 pt-8 text-center space-y-3">
+          <p className="text-xs text-zinc-400">
+            Need further guidance regarding textile maintenance?
+          </p>
           <Link
-            href="/fabric-technology"
-            className="inline-flex items-center space-x-2 text-xs font-display uppercase tracking-widest text-zinc-400 hover:text-white transition-colors"
+            href="/contact"
+            className="inline-flex items-center space-x-1.5 text-xs font-display uppercase tracking-wider font-semibold text-white underline hover:text-[#c5a059] transition-colors"
           >
-            <span>Learn More About Our 60/40 Cotton-Modal Technology</span>
+            <span>Contact Axivers Concierge</span>
             <span>&rarr;</span>
           </Link>
         </div>

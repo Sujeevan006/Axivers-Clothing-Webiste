@@ -7,7 +7,7 @@ import { productsDatabase } from '../data/products';
 export const metadata: Metadata = {
   title: 'Core Collection — Axivers Essentials',
   description:
-    'Explore the Axivers Core Collection. Engineered athletic luxury garments crafted from 60/40 Cotton-Modal yarns in Sri Lanka.',
+    'Explore the Axivers Core Collection. Engineered athletic luxury garments crafted from 180 GSM Mercerized Cotton in Sri Lanka.',
 };
 
 export const dynamic = 'force-dynamic';
@@ -23,7 +23,7 @@ export default async function ProductsRoutePage() {
 
   return (
     <Suspense fallback={
-      <div className="pt-32 pb-24 text-center bg-[#09090b] text-white min-h-screen">
+      <div className="pt-32 pb-24 text-center bg-[#060606] text-white min-h-screen">
         <p className="text-xs uppercase tracking-widest font-display text-zinc-500">Loading catalog...</p>
       </div>
     }>

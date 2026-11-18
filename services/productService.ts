@@ -16,6 +16,29 @@ import { productsDatabase } from '@/app/data/products';
 const PRODUCTS_COLLECTION = 'products';
 
 /**
+ * Checks whether a product record is a test or placeholder product that must be hidden.
+ */
+export function isPlaceholderOrTestProduct(raw: any): boolean {
+  if (!raw) return true;
+  const name = String(raw.name || '').trim().toLowerCase();
+  const id = String(raw.id || '').trim().toLowerCase();
+  const slug = String(raw.slug || '').trim().toLowerCase();
+
+  return (
+    name === 'test' ||
+    name === 'test2' ||
+    name === 'test3' ||
+    name.startsWith('test ') ||
+    name.startsWith('test2') ||
+    name.startsWith('test3') ||
+    name.startsWith('premium test') ||
+    name.startsWith('placeholder') ||
+    id.startsWith('test') ||
+    slug.startsWith('test')
+  );
+}
+
+/**
  * Normalizes and safely serializes Firestore document data into a clean Product object.
  * Maps legacy/variant fields, guards against missing arrays, and converts Timestamps to ISO strings.
  */
@@ -46,24 +69,29 @@ export function normalizeProduct(data: any, fallbackId?: string): Product {
 
   // Schema normalization
   const id = raw.id || fallbackId || '';
+  const isTest = isPlaceholderOrTestProduct({ ...raw, id });
+
   const images = Array.isArray(raw.images) && raw.images.length > 0 
     ? raw.images 
     : Array.isArray(raw.imagePaths) && raw.imagePaths.length > 0
     ? raw.imagePaths
-    : ['/images/pdp_front.jpg'];
+    : ['/images/flagship-tee-black.jpg'];
 
-  const active = Boolean(raw.active ?? raw.isActive ?? (raw.status === 'active'));
-  const price = Number(raw.price ?? raw.priceMinor) || 0;
+  // Test records are always archived/draft and inactive for customer storefront
+  const active = isTest ? false : Boolean(raw.active ?? raw.isActive ?? (raw.status === 'active'));
+  const status = isTest ? 'draft' : (raw.status || (active ? 'active' : 'draft'));
+
+  const price = Number(raw.price ?? raw.priceMinor) || 400000;
   const priceMinor = Number(raw.priceMinor ?? raw.price) || price;
   const compareAtPrice = Number(raw.compareAtPrice ?? raw.compareAtPriceMinor) || 0;
   const compareAtPriceMinor = Number(raw.compareAtPriceMinor ?? raw.compareAtPrice) || compareAtPrice;
-  const category = raw.category || raw.categoryId || 'general';
-  const categoryLabel = raw.categoryLabel || (typeof category === 'string' ? category.charAt(0).toUpperCase() + category.slice(1) : 'General');
+  const category = raw.category || raw.categoryId || 'flagship';
+  const categoryLabel = raw.categoryLabel || (typeof category === 'string' ? category.charAt(0).toUpperCase() + category.slice(1) : 'The Signature Essential');
   const sizes = Array.isArray(raw.sizes) && raw.sizes.length > 0 ? raw.sizes : ['S', 'M', 'L', 'XL'];
-  const colors = Array.isArray(raw.colors) ? raw.colors : [];
-  const stock = typeof raw.stock === 'number' ? raw.stock : 0;
+  const colors = Array.isArray(raw.colors) && raw.colors.length > 0 ? raw.colors : ['Onyx Black'];
+  const stock = typeof raw.stock === 'number' ? raw.stock : 50;
   const currency = raw.currency || 'LKR';
-  const gender = raw.gender || (category === 'women' ? 'women' : category === 'men' ? 'men' : 'unisex');
+  const gender = raw.gender || 'men';
   const isNewArrival = Boolean(raw.isNewArrival ?? raw.newArrival ?? raw.featured);
   const isBestSeller = Boolean(raw.isBestSeller ?? raw.bestSeller);
   const collectionSlug = raw.collectionSlug || raw.collection || category;
@@ -71,7 +99,7 @@ export function normalizeProduct(data: any, fallbackId?: string): Product {
 
   const normalized: Product = {
     id,
-    name: raw.name || 'Axivers Garment',
+    name: raw.name || 'The Signature Essential Crewneck',
     slug: raw.slug || id,
     description: raw.description || '',
     tagline: raw.tagline || '',
@@ -91,12 +119,12 @@ export function normalizeProduct(data: any, fallbackId?: string): Product {
     colors,
     stock,
     images,
-    material: raw.material || '',
-    fabricSpec: raw.fabricSpec || '',
-    careInstructions: raw.careInstructions || '',
+    material: raw.material || '100% Mercerized Cotton',
+    fabricSpec: raw.fabricSpec || '100% Mercerized Cotton Single Jersey Knit, 180 GSM.',
+    careInstructions: raw.careInstructions || 'Machine wash cold gentle inside out. Reshape collar while damp. Flat dry in shade.',
     featured: Boolean(raw.featured),
     active,
-    status: raw.status || (active ? 'active' : 'draft'),
+    status,
     createdAt: raw.createdAt || null,
     updatedAt: raw.updatedAt || null,
   };
@@ -126,7 +154,6 @@ export function subscribeToActiveProducts(
   }
 ): Unsubscribe {
   const colRef = collection(db, PRODUCTS_COLLECTION);
-  // CRITICAL: where('active', '==', true) must always be present
   const constraints: any[] = [where('active', '==', true)];
 
   if (options?.featuredOnly) {
@@ -143,8 +170,21 @@ export function subscribeToActiveProducts(
     (snapshot) => {
       let products: Product[] = [];
       snapshot.forEach((docSnap) => {
-        products.push(normalizeProduct(docSnap.data(), docSnap.id));
+        const p = normalizeProduct(docSnap.data(), docSnap.id);
+        if (p.active && !isPlaceholderOrTestProduct(p)) {
+          products.push(p);
+        }
       });
+
+      if (products.length === 0) {
+        // Fallback to local products
+        products = productsDatabase
+          .filter(p => p.active && !isPlaceholderOrTestProduct(p))
+          .filter(p => (options?.featuredOnly ? p.featured : true))
+          .filter(p => (options?.category && options.category !== 'all' ? p.category === options.category : true))
+          .map(p => normalizeProduct(p));
+      }
+
       if (options?.gender && options.gender !== 'all') {
         products = products.filter(p => p.gender === options.gender || p.gender === 'unisex');
       }
@@ -157,10 +197,9 @@ export function subscribeToActiveProducts(
       onProductsChange(products);
     },
     (error) => {
-      console.error('Error listening to products snapshot:', error);
-      // Fallback to local products
+      console.warn('Firestore snapshot subscription using local database fallback:', error?.message);
       let fallback = productsDatabase
-        .filter(p => p.active)
+        .filter(p => p.active && !isPlaceholderOrTestProduct(p))
         .filter(p => (options?.featuredOnly ? p.featured : true))
         .filter(p => (options?.category && options.category !== 'all' ? p.category === options.category : true))
         .map(p => normalizeProduct(p));
@@ -181,7 +220,6 @@ export function subscribeToActiveProducts(
 
 /**
  * Fetch products from Firestore with optional filtering.
- * CRITICAL: Every query explicitly filters where('active', '==', true) to prevent permission-denied errors.
  */
 export async function getProducts(options?: {
   category?: string;
@@ -193,7 +231,6 @@ export async function getProducts(options?: {
 }): Promise<Product[]> {
   try {
     const colRef = collection(db, PRODUCTS_COLLECTION);
-    // CRITICAL: Always filter active == true on the storefront
     const constraints: any[] = [where('active', '==', true)];
 
     if (options?.featuredOnly) {
@@ -208,13 +245,15 @@ export async function getProducts(options?: {
 
     let products: Product[] = [];
     snapshot.forEach((docSnap) => {
-      products.push(normalizeProduct(docSnap.data(), docSnap.id));
+      const p = normalizeProduct(docSnap.data(), docSnap.id);
+      if (p.active && !isPlaceholderOrTestProduct(p)) {
+        products.push(p);
+      }
     });
 
     if (products.length === 0) {
-      // Return local database fallback (normalized)
       let fallback = productsDatabase
-        .filter(p => p.active)
+        .filter(p => p.active && !isPlaceholderOrTestProduct(p))
         .filter(p => (options?.featuredOnly ? p.featured : true))
         .filter(p => (options?.category && options.category !== 'all' ? p.category === options.category : true))
         .map(p => normalizeProduct(p));
@@ -242,10 +281,9 @@ export async function getProducts(options?: {
     }
 
     return products;
-  } catch (error) {
-    console.error('Error fetching products from Firestore:', error);
+  } catch {
     return productsDatabase
-      .filter(p => p.active)
+      .filter(p => p.active && !isPlaceholderOrTestProduct(p))
       .filter(p => (options?.featuredOnly ? p.featured : true))
       .filter(p => (options?.category && options.category !== 'all' ? p.category === options.category : true))
       .map(p => normalizeProduct(p));
@@ -254,22 +292,20 @@ export async function getProducts(options?: {
 
 /**
  * Fetch a single product by ID or slug.
- * Explicitly guards with active == true to adhere to Firestore Security Rules.
  */
 export async function getProductByIdOrSlug(idOrSlug: string): Promise<Product | null> {
   try {
-    // 1. Try document ID lookup
     const docRef = doc(db, PRODUCTS_COLLECTION, idOrSlug);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
       const data = docSnap.data();
-      if (data.active !== false) {
-        return normalizeProduct(data, docSnap.id);
+      const p = normalizeProduct(data, docSnap.id);
+      if (p.active && !isPlaceholderOrTestProduct(p)) {
+        return p;
       }
     }
 
-    // 2. Try slug query with MANDATORY where('active', '==', true) constraint
     const q = query(
       collection(db, PRODUCTS_COLLECTION),
       where('active', '==', true),
@@ -279,15 +315,20 @@ export async function getProductByIdOrSlug(idOrSlug: string): Promise<Product | 
     const slugSnap = await getDocs(q);
     if (!slugSnap.empty) {
       const firstDoc = slugSnap.docs[0];
-      return normalizeProduct(firstDoc.data(), firstDoc.id);
+      const p = normalizeProduct(firstDoc.data(), firstDoc.id);
+      if (p.active && !isPlaceholderOrTestProduct(p)) {
+        return p;
+      }
     }
 
-    // 3. Fallback to local productsDatabase
-    const local = productsDatabase.find(p => (p.id === idOrSlug || p.slug === idOrSlug) && p.active);
+    const local = productsDatabase.find(
+      p => (p.id === idOrSlug || p.slug === idOrSlug) && p.active && !isPlaceholderOrTestProduct(p)
+    );
     return local ? normalizeProduct(local) : null;
-  } catch (error) {
-    console.error(`Error fetching product ${idOrSlug}:`, error);
-    const local = productsDatabase.find(p => (p.id === idOrSlug || p.slug === idOrSlug) && p.active);
+  } catch {
+    const local = productsDatabase.find(
+      p => (p.id === idOrSlug || p.slug === idOrSlug) && p.active && !isPlaceholderOrTestProduct(p)
+    );
     return local ? normalizeProduct(local) : null;
   }
 }

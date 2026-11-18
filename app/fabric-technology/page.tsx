@@ -4,207 +4,200 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Fabric & Technology — Axivers Textile Innovation',
+  title: 'Fabric & Craftsmanship — Mercerized Cotton Innovation',
   description:
-    'Discover the engineering behind the Axivers 60/40 Cotton-Modal textile. 190 GSM balanced weight, cloud-soft drape, natural breathability, and Sri Lankan craftsmanship.',
+    'Discover the considered materials and construction behind Axivers everyday essentials. 180 GSM mercerized cotton, contrasting gray ribbing, tipped sleeve cuffs, and Sri Lankan craftsmanship.',
 };
 
 export default function FabricTechnologyPage() {
   const sections = [
     {
       num: '01',
-      title: 'The Axivers 60/40 Cotton-Modal Blend',
-      desc: 'Our proprietary composite combines long-staple combed cotton with regenerated beechwood modal fibers. The result is a hybrid textile that pairs cotton’s natural breathability and structural integrity with modal’s legendary cloud-soft hand feel and fluid athletic drape.',
-      highlight: 'Engineered balance of structure & fluidity',
+      title: 'Mercerized Cotton',
+      subtitle: 'Surface Lustre & Smooth Hand Feel',
+      desc: 'The flagship Axivers T-shirt is crafted from 100% combed long-staple cotton subjected to precision mercerization. This specialized finishing process aligns the cellulose structure, removes protruding micro-fibers, and flattens the yarn profile. The result is a distinctly smooth hand feel, enriched dye depth, and a subtle natural lustre that elevates the garment beyond standard cotton jerseys.',
+      highlight: 'Engineered smooth surface with natural low-sheen finish',
     },
     {
       num: '02',
-      title: 'Combed Ring-Spun Cotton (60%)',
-      desc: 'We use exclusively combed ring-spun cotton yarns where short fibers and impurities are removed during processing. This leaves only smooth, uniform parallel fibers that yield exceptional surface softness, natural thermoregulation, and high tensile strength.',
-      highlight: 'Ultra-pure combed fibers for enduring durability',
+      title: 'Fabric Weight (180 GSM)',
+      subtitle: 'Substantial Yet Breathable Single Jersey',
+      desc: 'At 180 grams per square meter (GSM), this single jersey knit strikes a calibrated balance between structural presence and warm-climate breathability. It provides an opaque, clean drape along the body without feeling excessively heavy, stiff, or trapping unnecessary heat.',
+      highlight: '180 GSM single jersey: non-sheer drape without excessive weight',
     },
     {
       num: '03',
-      title: 'Technical Beechwood Modal (40%)',
-      desc: 'Derived from sustainably cultivated European beechwood pulp, modal is a cellulose bio-fiber renowned for its silk-like smooth cross-section. It resists hard water mineral deposits, prevents fiber stiffening, and delivers a drape that conforms naturally without clinging.',
-      highlight: 'Silk-like softness that will not stiffen with washing',
+      title: 'Silhouette and Drape',
+      subtitle: 'Refined Everyday Fit, Not Boxy Streetwear',
+      desc: 'Designed around contemporary athletic-luxury proportions rather than an exaggeratedly oversized or heavy streetwear cut. The shoulder seam is tailored cleanly to sit at the natural acromion point, tapering gently through the torso to provide a relaxed yet composed silhouette.',
+      highlight: 'Sculpted athletic luxury drape designed for daily confidence',
     },
     {
       num: '04',
-      title: '190 GSM Fabric Structure',
-      desc: 'At 190 grams per square meter (GSM), our fabric strikes the sweet spot between structural streetwear presence and athletic breathability. It provides an opaque, structured drape that falls cleanly along the torso without feeling heavy or restricting airflow.',
-      highlight: 'Medium-heavy density: zero transparency, sublime weight',
+      title: 'Collar Construction',
+      subtitle: 'Contrasting Gray Rib with Spandex Recovery',
+      desc: 'The crewneck collar features a contrasting premium gray rib-knit in a 1×1 or 2×2 construction, fortified with 3–5% spandex. This structural blend ensures immediate shape recovery after wear and laundering, preventing the unsightly collar ripples commonly found in mass-market tees.',
+      highlight: '3–5% spandex collar integration for enduring shape retention',
     },
     {
       num: '05',
-      title: 'Natural Breathability & Airflow',
-      desc: 'The fine-gauge circular knit creates micro-channels between cotton and modal yarns, promoting continuous air circulation. Heat and moisture escape naturally, keeping your skin cool whether in humid tropical heat or air-conditioned metropolitan spaces.',
-      highlight: 'Active thermal equilibrium for tropical and temperate climates',
+      title: 'Signature Sleeve Detail',
+      subtitle: 'Yarn-Dyed Tipped Ribbing with Outer White Stripe',
+      desc: 'The sleeve cuffs feature premium black yarn-dyed tipped ribbing with a single crisp white stripe engineered strictly at the absolute outer edge of each cuff. Unlike manually inserted piping, this yarn-dyed construction lies completely flat against the arm without stiffness or interior bulk.',
+      highlight: 'Crisp white outer stripe on tipped ribbing; no inserted piping',
     },
     {
       num: '06',
-      title: 'Moisture Management & Quick-Dry Performance',
-      desc: 'Modal fibers possess naturally higher moisture absorption capacity than standard cotton. Our blend absorbs perspiration away from the skin surface and disperses it across the textile surface for accelerated atmospheric evaporation.',
-      highlight: 'Rapid capillary dispersion keeps you dry throughout the day',
+      title: 'Branding and Finishing',
+      subtitle: 'Reflective Metallic-Gold Screen Print & Tagless Marking',
+      desc: 'Chest branding features the exact lowercase "axivers" wordmark rendered in a restrained, small metallic-gold reflective screen print. Inside the neck, a tagless heat-transfer label provides verified size and care information, eliminating friction against the nape of the neck.',
+      highlight: 'Metallic-gold reflective print & tagless interior comfort',
     },
     {
       num: '07',
-      title: 'Cloud-Soft Drape & Hand Feel',
-      desc: 'The microscopic smoothness of modal filaments prevents the friction common to traditional heavy cotton tees. Every Axivers garment provides a fluid, frictionless drape that moves with you rather than bunching or catching against layers.',
-      highlight: 'Frictionless drape designed for uninhibited movement',
-    },
-    {
-      num: '08',
-      title: 'Shape Retention & Anti-Warping',
-      desc: 'Unlike conventional tees that twist or warp after a single laundry cycle, our 60/40 knit is heat-set and preshrunk during finishing. Side seams remain perpendicular, and our ribbed collars maintain their shape without wrinkling.',
-      highlight: 'Heat-set yarn stability retains crisp silhouette wash after wash',
-    },
-    {
-      num: '09',
-      title: 'Fabric Construction & Refined Finishing',
-      desc: 'Every batch undergoes rigorous bio-polishing and soft-flow dyeing to ensure deep color saturation (such as deep Onyx Black and pure Optic White) with high colorfastness and an ultra-low pilling index.',
-      highlight: 'Precision bio-polished surface for rich color depth',
-    },
-    {
-      num: '10',
-      title: 'Precision Craftsmanship in Sri Lanka',
-      desc: 'Sri Lanka is recognized globally as an epicenter of apparel engineering for premier international brands. Axivers garments are designed, knitted, cut, and assembled by master garment technicians who take pride in ethical craft and obsessive detail.',
-      highlight: 'World-renowned Sri Lankan garment engineering',
+      title: 'Sri Lankan Craftsmanship',
+      subtitle: 'Ethical Engineering & Global Pedigree',
+      desc: 'Axivers garments are engineered and manufactured in Colombo, Sri Lanka. Sri Lanka’s apparel industry is celebrated internationally for ethical manufacturing practices, progressive labor standards, and technical garment mastery for leading world luxury houses.',
+      highlight: 'Made in Sri Lanka, global quality standards',
     },
   ];
 
   return (
-    <div className="min-h-screen bg-[#09090b] text-[#ffffff] pt-24 sm:pt-28 pb-24">
-      {/* Hero Banner with Textile Macro Background */}
-      <div className="relative h-96 sm:h-[480px] w-full overflow-hidden border-b border-zinc-800/80 flex items-center justify-center">
+    <div className="min-h-screen bg-[#060606] text-[#ffffff] pt-24 sm:pt-28 pb-24">
+      {/* Editorial Header Banner */}
+      <div className="relative h-96 sm:h-[480px] w-full overflow-hidden border-b border-zinc-900 flex items-center justify-center">
         <Image
-          src="/images/fabricbg.png"
-          alt="Axivers Fabric Innovation"
+          src="/images/flagship-tee-black.jpg"
+          alt="Axivers Fabric & Craftsmanship"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center opacity-70"
+          className="object-cover object-center opacity-30"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-black/50 to-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#060606] via-[#060606]/75 to-transparent" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-4">
-          <div className="inline-flex items-center space-x-2 text-[10px] uppercase tracking-[0.25em] text-zinc-400 font-display">
-            <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-            <span>Textile Engineering & Science</span>
+          <div className="inline-flex items-center space-x-2 text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059]" />
+            <span>Materials &amp; Construction</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-display font-bold tracking-tight text-white leading-tight">
-            Engineered for Comfort. <br />
-            <span className="font-light italic text-zinc-300">Designed for Everyday Luxury.</span>
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-display font-light uppercase tracking-tight text-white leading-tight">
+            REFINED FROM <span className="font-bold">THE FIBRE.</span>
           </h1>
 
-          <p className="text-xs sm:text-sm md:text-base font-light text-zinc-300 max-w-2xl mx-auto leading-relaxed tracking-wide pt-2">
-            The foundation of every Axivers garment is our proprietary 60/40 Cotton-Modal knit. Discover why this architectural textile redefines what an everyday essential feels like.
+          <p className="text-xs sm:text-sm md:text-base font-light text-zinc-300 max-w-2xl mx-auto leading-relaxed tracking-wide pt-1">
+            Discover the materials and considered construction behind Axivers everyday essentials.
           </p>
         </div>
       </div>
 
-      {/* Main Content Layout */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 space-y-20">
-        {/* Textile Composition At A Glance */}
+      {/* Main Content Sections */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 space-y-16">
+        {/* Specification Highlight Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-[#101013] border border-zinc-800/80 rounded-2xl p-6 space-y-2 shadow-xl">
-            <span className="text-[10px] uppercase tracking-[0.2em] font-display text-zinc-500 block">Ratio Spec</span>
-            <div className="text-3xl font-mono font-bold text-white">60 / 40</div>
-            <div className="text-xs font-display text-zinc-300 font-medium">Combed Cotton & Beechwood Modal</div>
-            <p className="text-xs text-zinc-400 font-light pt-1">
-              Engineered equilibrium of breathability, drape, and enduring structure.
+          <div className="bg-[#0b0b0e] border border-zinc-800/80 rounded-2xl p-6 space-y-2">
+            <span className="text-[10px] uppercase font-mono tracking-wider text-[#c5a059] block">
+              Fiber Base
+            </span>
+            <div className="text-xl font-display font-bold uppercase text-white">
+              100% Mercerized Cotton
+            </div>
+            <p className="text-xs text-zinc-400 font-light leading-relaxed">
+              Long-staple combed cotton treated to maximize surface smoothness, tensile strength, and color depth.
             </p>
           </div>
 
-          <div className="bg-[#101013] border border-zinc-800/80 rounded-2xl p-6 space-y-2 shadow-xl">
-            <span className="text-[10px] uppercase tracking-[0.2em] font-display text-zinc-500 block">Density Weight</span>
-            <div className="text-3xl font-mono font-bold text-white">190 GSM</div>
-            <div className="text-xs font-display text-zinc-300 font-medium">Optimal Streetwear Drape</div>
-            <p className="text-xs text-zinc-400 font-light pt-1">
-              Zero see-through transparency with clean vertical fall that holds its shape.
+          <div className="bg-[#0b0b0e] border border-zinc-800/80 rounded-2xl p-6 space-y-2">
+            <span className="text-[10px] uppercase font-mono tracking-wider text-[#c5a059] block">
+              Knit Weight
+            </span>
+            <div className="text-xl font-display font-bold uppercase text-white">
+              180 GSM Single Jersey
+            </div>
+            <p className="text-xs text-zinc-400 font-light leading-relaxed">
+              Optimized medium density that drapes cleanly without sheer transparency or unnecessary heat retention.
             </p>
           </div>
 
-          <div className="bg-[#101013] border border-zinc-800/80 rounded-2xl p-6 space-y-2 shadow-xl">
-            <span className="text-[10px] uppercase tracking-[0.2em] font-display text-zinc-500 block">Origin</span>
-            <div className="text-3xl font-mono font-bold text-white">Sri Lanka</div>
-            <div className="text-xs font-display text-zinc-300 font-medium">Master Garment Engineering</div>
-            <p className="text-xs text-zinc-400 font-light pt-1">
-              Precision milled, crafted, and hand-finished in Colombo, Sri Lanka.
+          <div className="bg-[#0b0b0e] border border-zinc-800/80 rounded-2xl p-6 space-y-2">
+            <span className="text-[10px] uppercase font-mono tracking-wider text-[#c5a059] block">
+              Origin
+            </span>
+            <div className="text-xl font-display font-bold uppercase text-white">
+              Crafted in Sri Lanka
+            </div>
+            <p className="text-xs text-zinc-400 font-light leading-relaxed">
+              Milled, tailored, and inspected in Colombo, upholding global apparel engineering benchmarks.
             </p>
           </div>
         </div>
 
-        {/* 10 Detailed Innovation Sections */}
+        {/* Detailed 7 Pillars Matrix */}
         <div className="space-y-6">
-          <div className="text-center space-y-2 max-w-2xl mx-auto pb-4">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-zinc-500 font-display font-semibold block">
-              The Ten Pillars of Axivers Textile Quality
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold uppercase text-white">
-              Behind The Fabric
+          <div className="border-b border-zinc-800 pb-4">
+            <h2 className="text-lg sm:text-xl font-display font-bold uppercase tracking-wider text-white">
+              Construction Specifications &amp; Material Story
             </h2>
+            <p className="text-xs text-zinc-400 font-light">
+              Documented design targets and material specifications for our inaugural flagship garment.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6">
             {sections.map((sec) => (
               <div
                 key={sec.num}
-                className="bg-[#111114] border border-zinc-800/80 hover:border-zinc-700 rounded-2xl p-6 sm:p-7 space-y-3 transition-all hover:-translate-y-1 shadow-lg"
+                className="bg-[#0a0a0d] border border-zinc-800/80 rounded-2xl p-6 sm:p-8 space-y-3 hover:border-zinc-700 transition-colors"
               >
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-mono font-bold text-zinc-500">
-                    {sec.num}
-                  </span>
-                  <span className="text-[9px] uppercase tracking-wider font-display font-medium text-zinc-400 bg-zinc-900 px-2.5 py-1 rounded-full border border-zinc-800">
-                    {sec.highlight}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-zinc-900 pb-3">
+                  <div className="flex items-center space-x-3">
+                    <span className="text-xs font-mono font-bold text-[#c5a059] bg-[#c5a059]/10 px-2 py-0.5 rounded border border-[#c5a059]/20">
+                      {sec.num}
+                    </span>
+                    <h3 className="text-base sm:text-lg font-display uppercase tracking-wider font-bold text-white">
+                      {sec.title}
+                    </h3>
+                  </div>
+                  <span className="text-xs font-mono text-zinc-400">
+                    {sec.subtitle}
                   </span>
                 </div>
 
-                <h3 className="text-base sm:text-lg font-display font-bold uppercase tracking-wider text-white">
-                  {sec.title}
-                </h3>
-
-                <p className="text-xs sm:text-sm font-light text-zinc-400 leading-relaxed">
+                <p className="text-xs sm:text-sm font-light text-zinc-300 leading-relaxed pt-1">
                   {sec.desc}
                 </p>
+
+                <div className="pt-2 flex items-center space-x-2 text-[11px] font-mono text-[#c5a059]">
+                  <span>&bull;</span>
+                  <span>{sec.highlight}</span>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Macro Feature Banner */}
-        <div className="relative rounded-3xl overflow-hidden border border-zinc-800/80 bg-zinc-900 p-8 sm:p-12 lg:p-16">
-          <div className="absolute inset-0 z-0">
-            <Image
-              src="/images/fabric-tech-bg.png"
-              alt="Fabric Macro Detail"
-              fill
-              className="object-cover object-center opacity-40"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent" />
-          </div>
-
-          <div className="relative z-10 max-w-xl space-y-4">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-zinc-400 font-display font-semibold block">
-              Experience The Drape
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold tracking-tight text-white uppercase">
-              Feel The Difference In Every Movement
-            </h2>
-            <p className="text-xs sm:text-sm font-light text-zinc-300 leading-relaxed">
-              Words only capture part of the story. Put on an Axivers garment and experience how 60/40 cotton-modal feels against your skin in daily wear.
-            </p>
-            <div className="pt-2">
-              <Link
-                href="/shop"
-                className="inline-flex items-center space-x-2 px-6 py-3 rounded-xl bg-white text-black font-display text-xs uppercase tracking-wider font-bold hover:bg-zinc-200 transition-colors"
-              >
-                <span>Shop The Collection</span>
-                <span>&rarr;</span>
-              </Link>
-            </div>
+        {/* Bottom CTA Section */}
+        <div className="border-t border-zinc-900 pt-12 text-center space-y-4">
+          <h3 className="text-xl sm:text-2xl font-display font-bold uppercase text-white">
+            Experience Considered Quality
+          </h3>
+          <p className="text-xs sm:text-sm font-light text-zinc-400 max-w-md mx-auto">
+            Discover how considered construction and refined materials redefine your everyday wardrobe.
+          </p>
+          <div className="pt-2 flex justify-center gap-4">
+            <Link
+              href="/product/flagship-tee-black"
+              className="px-7 py-3.5 bg-white text-black font-display text-xs uppercase tracking-wider font-bold rounded-full hover:bg-zinc-200 transition-colors"
+            >
+              View Flagship Garment
+            </Link>
+            <Link
+              href="/our-story"
+              className="px-7 py-3.5 bg-zinc-900 border border-zinc-800 text-white font-display text-xs uppercase tracking-wider font-medium rounded-full hover:border-zinc-600 transition-colors"
+            >
+              Our Story
+            </Link>
           </div>
         </div>
       </div>

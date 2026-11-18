@@ -344,7 +344,7 @@ function TrackOrderContent() {
 
 export default function TrackOrderPage() {
   return (
-    <main className="min-h-screen bg-[#09090b] text-[#ffffff] pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#060606] text-[#ffffff] pt-32 pb-24 px-4 sm:px-6 lg:px-8">
       <Suspense fallback={
         <div className="text-center py-20">
           <p className="text-xs uppercase tracking-widest font-display text-zinc-500">Loading order tracker...</p>

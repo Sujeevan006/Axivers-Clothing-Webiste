@@ -278,12 +278,27 @@ export const CartDrawer: React.FC = () => {
                     </div>
                   </div>
 
-                  <button
-                    onClick={() => setCheckoutStep('details')}
-                    className="w-full py-4 bg-white text-black text-xs font-display uppercase tracking-widest font-bold rounded-xl hover:bg-zinc-200 transition-all duration-300 shadow-lg cursor-pointer text-center"
-                  >
-                    Proceed to Checkout
-                  </button>
+                  {!storeSettings.ordersEnabled ? (
+                    <div className="space-y-2">
+                      <div className="p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-[11px] text-zinc-400 text-center">
+                        Launch Preview Mode: Online orders open with our inaugural release.
+                      </div>
+                      <Link
+                        href="/#early-access"
+                        onClick={() => setIsCartOpen(false)}
+                        className="w-full py-4 bg-white text-black text-xs font-display uppercase tracking-widest font-bold rounded-xl hover:bg-zinc-200 transition-all duration-300 shadow-lg block text-center"
+                      >
+                        Join Launch Registry
+                      </Link>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => setCheckoutStep('details')}
+                      className="w-full py-4 bg-white text-black text-xs font-display uppercase tracking-widest font-bold rounded-xl hover:bg-zinc-200 transition-all duration-300 shadow-lg cursor-pointer text-center"
+                    >
+                      Proceed to Checkout
+                    </button>
+                  )}
                 </div>
               )}
             </>

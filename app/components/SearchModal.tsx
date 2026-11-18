@@ -111,12 +111,11 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
             </span>
             <div className="flex flex-wrap gap-2">
               {[
-                { label: 'Flagship Piping', href: '/collections/flagship-piping' },
-                { label: "Men's Collection", href: '/collections/men' },
-                { label: "Women's Collection", href: '/collections/women' },
-                { label: 'Minimalist Essentials', href: '/collections/minimalist-essentials' },
-                { label: 'Technical Garments', href: '/collections/technical' },
-                { label: '60/40 Cotton-Modal', href: '/fabric-technology' },
+                { label: 'Signature Essential', href: '/product/flagship-tee-black' },
+                { label: 'Men\'s Essentials', href: '/collections/men' },
+                { label: 'Mercerized Cotton', href: '/fabric-technology' },
+                { label: 'Our Story', href: '/our-story' },
+                { label: 'Lookbook', href: '/lookbook' },
               ].map((pill) => (
                 <Link
                   key={pill.href}

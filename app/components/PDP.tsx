@@ -7,6 +7,9 @@ import type { Product } from '@/types/product';
 import { useCart } from '../context/CartContext';
 import { formatCurrency } from '@/lib/utils/formatters';
 import { getProducts } from '@/services/productService';
+import { getStoreSettings } from '@/services/settingsService';
+import { StoreSettings } from '@/types/settings';
+import { DEFAULT_STORE_SETTINGS } from '@/services/settingsService';
 
 interface PDPProps {
   product: Product;
@@ -14,15 +17,19 @@ interface PDPProps {
 
 export const PDP: React.FC<PDPProps> = ({ product }) => {
   const [selectedSize, setSelectedSize] = useState<string>('M');
-  const [selectedColor, setSelectedColor] = useState<string>('');
+  const [selectedColor, setSelectedColor] = useState<string>('Onyx Black');
   const [quantity, setQuantity] = useState<number>(1);
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [addedSuccess, setAddedSuccess] = useState<boolean>(false);
   const [isZoomed, setIsZoomed] = useState<boolean>(false);
   const [showSizeModal, setShowSizeModal] = useState<boolean>(false);
+  const [showWaitlistModal, setShowWaitlistModal] = useState<boolean>(false);
+  const [waitlistEmail, setWaitlistEmail] = useState<string>('');
+  const [waitlistSubmitted, setWaitlistSubmitted] = useState<boolean>(false);
   const [openAccordion, setOpenAccordion] = useState<string | null>('fabric');
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [storeSettings, setStoreSettings] = useState<StoreSettings>(DEFAULT_STORE_SETTINGS);
 
   const { addToCart, setIsCartOpen } = useCart();
 
@@ -34,26 +41,32 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
     }
     if (product.colors && product.colors.length > 0) {
       setSelectedColor(product.colors[0]);
-    } else {
-      setSelectedColor('');
     }
 
-    // Fetch related products
+    getStoreSettings().then((s) => {
+      if (s) setStoreSettings(s);
+    });
+
     getProducts({ activeOnly: true }).then((all) => {
       if (all) {
-        const related = all.filter((p) => p.id !== product.id && (p.category === product.category || p.gender === product.gender));
+        const related = all.filter((p) => p.id !== product.id);
         setRelatedProducts(related.slice(0, 3));
       }
     });
   }, [product]);
 
   const sizes = product.sizes && product.sizes.length > 0 ? product.sizes : ['S', 'M', 'L', 'XL'];
-  const colors = product.colors && product.colors.length > 0 ? product.colors : [];
-  const images = product.images && product.images.length > 0 ? product.images : ['/images/pdp_front.jpg'];
+  const colors = product.colors && product.colors.length > 0 ? product.colors : ['Onyx Black'];
+  const images = product.images && product.images.length > 0 ? product.images : ['/images/flagship-tee-black.jpg'];
   const isOutOfStock = product.stock !== undefined && product.stock <= 0;
-  const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
+  const isPrelaunch = !storeSettings.ordersEnabled;
 
   const handleAddToCart = () => {
+    if (isPrelaunch) {
+      setShowWaitlistModal(true);
+      return;
+    }
+
     if (isOutOfStock) return;
     setIsAdding(true);
     setTimeout(() => {
@@ -63,8 +76,19 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
       setTimeout(() => {
         setAddedSuccess(false);
         setIsCartOpen(true);
-      }, 600);
-    }, 350);
+      }, 500);
+    }, 300);
+  };
+
+  const handleWaitlistSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!waitlistEmail || !waitlistEmail.includes('@')) return;
+    setWaitlistSubmitted(true);
+    setTimeout(() => {
+      setShowWaitlistModal(false);
+      setWaitlistSubmitted(false);
+      setWaitlistEmail('');
+    }, 2000);
   };
 
   const toggleAccordion = (section: string) => {
@@ -72,7 +96,7 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
   };
 
   return (
-    <div className="bg-[#09090b] text-[#ffffff] min-h-screen pt-28 sm:pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+    <div className="bg-[#060606] text-[#ffffff] min-h-screen pt-28 sm:pt-32 pb-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto space-y-12">
         {/* Breadcrumb Navigation */}
         <div className="flex items-center space-x-2 text-[10px] uppercase tracking-widest text-zinc-400 font-display">
@@ -80,21 +104,17 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
           <span>/</span>
           <Link href="/shop" className="hover:text-white transition-colors">Shop</Link>
           <span>/</span>
-          <Link href={`/collections/${product.category}`} className="hover:text-white transition-colors">
-            {product.categoryLabel || product.category}
-          </Link>
-          <span>/</span>
-          <span className="text-white font-semibold truncate max-w-[200px]">{product.name}</span>
+          <span className="text-white font-semibold truncate max-w-[240px]">{product.name}</span>
         </div>
 
-        {/* Product Showcase: Gallery & Purchasing Column */}
+        {/* Product Showcase */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-          {/* Left Column: Image Gallery with Interactive Zoom */}
+          {/* Left Column: Image Gallery */}
           <div className="lg:col-span-7 space-y-4">
             {/* Main Stage Image */}
             <div
               onClick={() => setIsZoomed(!isZoomed)}
-              className="relative aspect-[4/3] bg-[#121215] border border-zinc-800/80 rounded-2xl overflow-hidden cursor-zoom-in shadow-2xl group"
+              className="relative aspect-square sm:aspect-[4/3] bg-[#0a0a0d] border border-zinc-800/80 rounded-3xl overflow-hidden cursor-zoom-in shadow-2xl group flex items-center justify-center"
             >
               <Image
                 src={images[activeImageIndex] || images[0]}
@@ -102,43 +122,41 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 60vw"
-                className={`object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105 ${
-                  isOutOfStock ? 'opacity-50 grayscale' : ''
+                className={`object-contain p-6 transition-transform duration-700 ease-out group-hover:scale-105 ${
+                  isOutOfStock && !isPrelaunch ? 'opacity-60 grayscale' : ''
                 }`}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-30 pointer-events-none" />
 
               {/* Badges */}
-              <div className="absolute top-4 left-4 flex flex-col gap-2">
-                <span className="bg-black/60 backdrop-blur-md text-white/90 text-[9px] uppercase tracking-[0.2em] font-display font-medium px-3 py-1 rounded-full border border-white/10 shadow-sm">
-                  {product.categoryLabel || 'Garment'}
+              <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
+                <span className="bg-black/80 backdrop-blur-md text-white/90 text-[9px] uppercase tracking-[0.2em] font-mono px-3 py-1 rounded-full border border-white/10 shadow-sm">
+                  The Signature Essential
                 </span>
-                {product.fabricSpec && (
-                  <span className="bg-white/10 backdrop-blur-md text-white text-[9px] uppercase tracking-wider font-display font-semibold px-2.5 py-1 rounded-full border border-white/20">
-                    60/40 Cotton-Modal
-                  </span>
-                )}
+                <span className="bg-[#c5a059]/20 backdrop-blur-md text-[#c5a059] text-[9px] uppercase tracking-wider font-mono font-medium px-3 py-1 rounded-full border border-[#c5a059]/30">
+                  180 GSM Mercerized
+                </span>
               </div>
 
-              {/* Stock Status */}
-              <div className="absolute top-4 right-4">
-                {isOutOfStock ? (
+              {/* Stock / Launch Status */}
+              <div className="absolute top-4 right-4 z-10">
+                {isPrelaunch ? (
+                  <span className="bg-[#121215] text-[#c5a059] text-[9px] uppercase tracking-wider font-mono font-bold px-3 py-1 rounded-full border border-[#c5a059]/40 shadow-md">
+                    Inaugural Release
+                  </span>
+                ) : isOutOfStock ? (
                   <span className="bg-zinc-900/90 text-zinc-400 text-[9px] uppercase tracking-wider font-display font-bold px-3 py-1 rounded-full border border-zinc-700 shadow-md">
                     Sold Out
                   </span>
-                ) : product.stock && product.stock <= 5 ? (
-                  <span className="bg-amber-500 text-black text-[9px] uppercase tracking-wider font-display font-bold px-3 py-1 rounded-full shadow-md">
-                    Only {product.stock} Left
-                  </span>
                 ) : (
-                  <span className="bg-black/60 backdrop-blur-md text-zinc-300 text-[9px] uppercase tracking-wider font-display px-3 py-1 rounded-full border border-zinc-700">
-                    In Stock
+                  <span className="bg-black/70 backdrop-blur-md text-zinc-300 text-[9px] uppercase tracking-wider font-display px-3 py-1 rounded-full border border-zinc-800">
+                    Available
                   </span>
                 )}
               </div>
 
               {/* Zoom hint */}
-              <span className="absolute bottom-3 right-3 text-[9px] uppercase tracking-wider text-zinc-400 bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-full border border-zinc-800 hidden sm:inline-flex items-center space-x-1">
+              <span className="absolute bottom-4 right-4 text-[9px] uppercase tracking-wider text-zinc-400 bg-black/75 backdrop-blur-sm px-3 py-1 rounded-full border border-zinc-800 hidden sm:inline-flex items-center space-x-1.5 z-10">
                 <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
                 </svg>
@@ -146,16 +164,16 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
               </span>
             </div>
 
-            {/* Thumbnail Navigation Track */}
+            {/* Thumbnail Navigation */}
             {images.length > 1 && (
               <div className="grid grid-cols-4 sm:grid-cols-6 gap-3 pt-2">
                 {images.map((img, idx) => (
                   <button
                     key={idx}
                     onClick={() => setActiveImageIndex(idx)}
-                    className={`aspect-square bg-[#121215] border rounded-xl overflow-hidden relative transition-all duration-300 cursor-pointer ${
+                    className={`aspect-square bg-[#0a0a0d] border rounded-2xl overflow-hidden relative transition-all duration-300 cursor-pointer p-2 ${
                       activeImageIndex === idx
-                        ? 'border-white ring-2 ring-white/40 opacity-100 scale-95'
+                        ? 'border-white ring-2 ring-white/30 opacity-100 scale-95'
                         : 'border-zinc-800 opacity-60 hover:opacity-100 hover:border-zinc-600'
                     }`}
                   >
@@ -164,7 +182,7 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
                       alt={`Thumbnail ${idx + 1}`}
                       fill
                       sizes="15vw"
-                      className="object-cover object-center"
+                      className="object-contain p-1"
                     />
                   </button>
                 ))}
@@ -176,29 +194,25 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
           <div className="lg:col-span-5 space-y-7">
             {/* Header info */}
             <div className="space-y-2 border-b border-zinc-800/80 pb-6">
-              <span className="text-[10px] uppercase tracking-[0.25em] text-zinc-400 font-display font-semibold block">
-                Axivers Garment Specification
-              </span>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold tracking-tight text-white uppercase">
+              <div className="inline-flex items-center space-x-2 text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059]" />
+                <span>Made in Sri Lanka &bull; Master Blueprint</span>
+              </div>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold tracking-tight text-white uppercase leading-tight">
                 {product.name}
               </h1>
               {product.tagline && (
-                <p className="text-xs sm:text-sm font-light text-zinc-400 italic">
+                <p className="text-xs sm:text-sm font-light text-zinc-400">
                   {product.tagline}
                 </p>
               )}
 
-              {/* Price Row */}
+              {/* Honest Price Row (No artificial discounts) */}
               <div className="flex items-baseline space-x-3 pt-3">
                 <span className="text-2xl sm:text-3xl font-mono font-bold text-white tracking-tight">
                   {formatCurrency(product.price, product.currency || 'LKR', true)}
                 </span>
-                {hasDiscount && (
-                  <span className="text-sm font-mono text-zinc-500 line-through">
-                    {formatCurrency(product.compareAtPrice!, product.currency || 'LKR', true)}
-                  </span>
-                )}
-                <span className="text-[10px] uppercase tracking-wider text-emerald-400 font-display font-medium px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">
+                <span className="text-[10px] uppercase tracking-wider text-emerald-400 font-mono font-medium px-2.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">
                   Island-Wide Delivery
                 </span>
               </div>
@@ -209,7 +223,7 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
               {product.description}
             </p>
 
-            {/* Color Selection if available */}
+            {/* Color Selection */}
             {colors.length > 0 && (
               <div className="space-y-2.5">
                 <div className="flex justify-between items-center text-xs font-display">
@@ -246,7 +260,7 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
                   onClick={() => setShowSizeModal(true)}
                   className="text-zinc-400 hover:text-white underline text-[11px] uppercase tracking-wider transition-colors cursor-pointer"
                 >
-                  Size Guide & Measurements &rarr;
+                  Size Guide &rarr;
                 </button>
               </div>
 
@@ -267,49 +281,51 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
               </div>
             </div>
 
-            {/* Quantity Selector & Add to Cart */}
+            {/* Quantity Selector & Action Button */}
             <div className="space-y-3 pt-2">
               <div className="flex items-center space-x-3">
-                {/* Stepper */}
-                <div className="flex items-center border border-zinc-800 rounded-xl bg-zinc-900 p-1">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    disabled={quantity <= 1 || isOutOfStock}
-                    className="w-9 h-9 flex items-center justify-center text-zinc-300 hover:text-white disabled:opacity-30 cursor-pointer rounded-lg hover:bg-zinc-800"
-                    aria-label="Decrease quantity"
-                  >
-                    &minus;
-                  </button>
-                  <span className="w-10 text-center font-mono font-bold text-sm text-white">
-                    {quantity}
-                  </span>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    disabled={isOutOfStock}
-                    className="w-9 h-9 flex items-center justify-center text-zinc-300 hover:text-white disabled:opacity-30 cursor-pointer rounded-lg hover:bg-zinc-800"
-                    aria-label="Increase quantity"
-                  >
-                    +
-                  </button>
-                </div>
+                {!isPrelaunch && (
+                  <div className="flex items-center border border-zinc-800 rounded-xl bg-zinc-900 p-1">
+                    <button
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      disabled={quantity <= 1 || isOutOfStock}
+                      className="w-9 h-9 flex items-center justify-center text-zinc-300 hover:text-white disabled:opacity-30 cursor-pointer rounded-lg hover:bg-zinc-800"
+                      aria-label="Decrease quantity"
+                    >
+                      &minus;
+                    </button>
+                    <span className="w-10 text-center font-mono font-bold text-sm text-white">
+                      {quantity}
+                    </span>
+                    <button
+                      onClick={() => setQuantity(quantity + 1)}
+                      disabled={isOutOfStock}
+                      className="w-9 h-9 flex items-center justify-center text-zinc-300 hover:text-white disabled:opacity-30 cursor-pointer rounded-lg hover:bg-zinc-800"
+                      aria-label="Increase quantity"
+                    >
+                      +
+                    </button>
+                  </div>
+                )}
 
-                {/* Main CTA */}
+                {/* Primary CTA */}
                 <button
                   onClick={handleAddToCart}
-                  disabled={isAdding || isOutOfStock}
-                  className={`flex-1 py-3.5 px-6 rounded-xl font-display text-xs uppercase tracking-widest font-bold border transition-all duration-300 shadow-xl flex items-center justify-center space-x-2 cursor-pointer ${
-                    isOutOfStock
+                  disabled={isAdding || (isOutOfStock && !isPrelaunch)}
+                  className={`flex-1 py-4 px-6 rounded-full font-display text-xs uppercase tracking-widest font-bold border transition-all duration-300 shadow-xl flex items-center justify-center space-x-2 cursor-pointer ${
+                    isPrelaunch
+                      ? 'bg-white text-black border-white hover:bg-zinc-200'
+                      : isOutOfStock
                       ? 'bg-zinc-900 text-zinc-600 border-zinc-800 cursor-not-allowed'
                       : addedSuccess
                       ? 'bg-emerald-500 text-black border-emerald-500'
                       : 'bg-white text-black border-white hover:bg-zinc-200'
                   }`}
                 >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                  </svg>
                   <span>
-                    {isOutOfStock
+                    {isPrelaunch
+                      ? 'GET EARLY ACCESS FOR THIS SIZE'
+                      : isOutOfStock
                       ? 'Sold Out'
                       : isAdding
                       ? 'Adding to Bag...'
@@ -317,19 +333,20 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
                       ? 'Added to Shopping Bag'
                       : 'Add to Cart'}
                   </span>
+                  <span className="text-sm">&rarr;</span>
                 </button>
               </div>
             </div>
 
-            {/* Accordions: Fabric, Construction, Care, Shipping, Returns */}
+            {/* Accordions */}
             <div className="border-t border-zinc-800/80 pt-6 space-y-3">
-              {/* Accordion 1: Fabric & Textile Engineering */}
-              <div className="border border-zinc-800/80 rounded-xl overflow-hidden bg-[#101013]">
+              {/* Accordion 1: Fabric */}
+              <div className="border border-zinc-800/80 rounded-2xl overflow-hidden bg-[#0c0c0f]">
                 <button
                   onClick={() => toggleAccordion('fabric')}
                   className="w-full p-4 flex justify-between items-center text-xs uppercase tracking-wider font-display font-semibold text-white hover:bg-zinc-900/50 transition-colors cursor-pointer"
                 >
-                  <span>Fabric & Material Specification</span>
+                  <span>Fabric &amp; Material Specification</span>
                   <svg
                     className={`w-4 h-4 transition-transform duration-300 ${openAccordion === 'fabric' ? 'rotate-180 text-white' : 'text-zinc-500'}`}
                     fill="none"
@@ -341,20 +358,20 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
                 </button>
                 {openAccordion === 'fabric' && (
                   <div className="p-4 pt-0 text-xs font-light text-zinc-400 space-y-2 border-t border-zinc-800/60 mt-1">
-                    <p><strong>Composition:</strong> {product.fabricSpec || '60% Combed Ring-Spun Cotton / 40% Beechwood Modal blend, 190 GSM.'}</p>
-                    <p><strong>Drape & Hand Feel:</strong> Engineered for silky drape, cloud-soft touch, and zero clinginess.</p>
-                    <p><strong>Origin:</strong> Precision milled and assembled in Sri Lanka.</p>
+                    <p><strong>Composition:</strong> 180 GSM, 100% mercerized cotton, single jersey knit.</p>
+                    <p><strong>Hand Feel:</strong> Exceptionally smooth surface, fluid drape, and natural breathability.</p>
+                    <p><strong>Origin:</strong> Milled and assembled in Colombo, Sri Lanka.</p>
                   </div>
                 )}
               </div>
 
-              {/* Accordion 2: Fit & Construction */}
-              <div className="border border-zinc-800/80 rounded-xl overflow-hidden bg-[#101013]">
+              {/* Accordion 2: Construction */}
+              <div className="border border-zinc-800/80 rounded-2xl overflow-hidden bg-[#0c0c0f]">
                 <button
                   onClick={() => toggleAccordion('fit')}
                   className="w-full p-4 flex justify-between items-center text-xs uppercase tracking-wider font-display font-semibold text-white hover:bg-zinc-900/50 transition-colors cursor-pointer"
                 >
-                  <span>Fit & Construction Details</span>
+                  <span>Fit &amp; Construction Detailing</span>
                   <svg
                     className={`w-4 h-4 transition-transform duration-300 ${openAccordion === 'fit' ? 'rotate-180 text-white' : 'text-zinc-500'}`}
                     fill="none"
@@ -366,14 +383,16 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
                 </button>
                 {openAccordion === 'fit' && (
                   <div className="p-4 pt-0 text-xs font-light text-zinc-400 space-y-2 border-t border-zinc-800/60 mt-1">
-                    <p><strong>Fit:</strong> Tailored Athletic Silhouette. Sculpted shoulders with comfortable chest allowance.</p>
-                    <p><strong>Stitching:</strong> Reinforced twin-needle hem stitching and rib-knit neckband that will not bacon or warp.</p>
+                    <p><strong>Collar:</strong> Contrasting premium gray rib-knit crewneck with 3–5% spandex recovery.</p>
+                    <p><strong>Sleeve Cuffs:</strong> Black yarn-dyed tipped ribbing with one crisp white stripe strictly at the outer edge (no inserted piping).</p>
+                    <p><strong>Branding:</strong> Small centered reflective metallic-gold screen print. Tagless heat-transfer neck label.</p>
+                    <p><strong>Back:</strong> Completely plain solid black back.</p>
                   </div>
                 )}
               </div>
 
-              {/* Accordion 3: Care Instructions */}
-              <div className="border border-zinc-800/80 rounded-xl overflow-hidden bg-[#101013]">
+              {/* Accordion 3: Care */}
+              <div className="border border-zinc-800/80 rounded-2xl overflow-hidden bg-[#0c0c0f]">
                 <button
                   onClick={() => toggleAccordion('care')}
                   className="w-full p-4 flex justify-between items-center text-xs uppercase tracking-wider font-display font-semibold text-white hover:bg-zinc-900/50 transition-colors cursor-pointer"
@@ -390,18 +409,18 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
                 </button>
                 {openAccordion === 'care' && (
                   <div className="p-4 pt-0 text-xs font-light text-zinc-400 space-y-2 border-t border-zinc-800/60 mt-1">
-                    <p>{product.careInstructions || 'Machine wash cold inside out with similar colors. Flat dry in shade. Low iron avoiding prints or piping. Do not bleach.'}</p>
+                    <p>Machine wash cold gentle cycle inside out with similar colors. Gently reshape collar while damp. Lay flat to dry in shade. Cool iron avoiding chest print. Do not bleach.</p>
                   </div>
                 )}
               </div>
 
-              {/* Accordion 4: Shipping & Returns */}
-              <div className="border border-zinc-800/80 rounded-xl overflow-hidden bg-[#101013]">
+              {/* Accordion 4: Shipping */}
+              <div className="border border-zinc-800/80 rounded-2xl overflow-hidden bg-[#0c0c0f]">
                 <button
                   onClick={() => toggleAccordion('shipping')}
                   className="w-full p-4 flex justify-between items-center text-xs uppercase tracking-wider font-display font-semibold text-white hover:bg-zinc-900/50 transition-colors cursor-pointer"
                 >
-                  <span>Island-Wide Delivery & Easy Returns</span>
+                  <span>Island-Wide Delivery &amp; Exchanges</span>
                   <svg
                     className={`w-4 h-4 transition-transform duration-300 ${openAccordion === 'shipping' ? 'rotate-180 text-white' : 'text-zinc-500'}`}
                     fill="none"
@@ -413,71 +432,16 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
                 </button>
                 {openAccordion === 'shipping' && (
                   <div className="p-4 pt-0 text-xs font-light text-zinc-400 space-y-2 border-t border-zinc-800/60 mt-1">
-                    <p><strong>Colombo Delivery:</strong> 1-2 business days. Outstation: 2-4 business days.</p>
-                    <p><strong>Payment:</strong> Cash on Delivery, Bank Transfer, Visa, Mastercard accepted.</p>
-                    <p><strong>Returns:</strong> 7-day hassle-free exchange window for unworn items with tags intact.</p>
+                    <p><strong>Colombo Delivery:</strong> 1–2 business days. Outstation: 2–4 business days.</p>
+                    <p><strong>Payment Options:</strong> Cash on Delivery (COD), Bank Transfer, Visa / Mastercard.</p>
+                    <p><strong>Rates:</strong> Flat rate LKR 350.00. Free delivery on orders over LKR 10,000.00.</p>
+                    <p><strong>Exchanges:</strong> 7-day exchange window for unworn garments with tags intact.</p>
                   </div>
                 )}
               </div>
             </div>
           </div>
         </div>
-
-        {/* Related Products Section */}
-        {relatedProducts.length > 0 && (
-          <div className="border-t border-zinc-800/80 pt-16 space-y-8">
-            <div className="flex items-end justify-between">
-              <div>
-                <span className="text-[10px] uppercase tracking-[0.25em] text-zinc-400 font-display font-semibold block">
-                  Complete The Wardrobe
-                </span>
-                <h3 className="text-xl sm:text-2xl font-display font-bold tracking-tight text-white uppercase">
-                  Related Garments
-                </h3>
-              </div>
-              <Link
-                href="/shop"
-                className="text-xs font-display uppercase tracking-widest text-zinc-400 hover:text-white flex items-center space-x-1"
-              >
-                <span>View All</span>
-                <span>&rarr;</span>
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7">
-              {relatedProducts.map((rel) => {
-                const relImg = rel.images?.[0] || '/images/pdp_front.jpg';
-                return (
-                  <Link
-                    key={rel.id}
-                    href={`/product/${rel.slug || rel.id}`}
-                    className="group bg-[#111113] hover:bg-[#141417] border border-zinc-800/80 hover:border-zinc-700 rounded-2xl p-3.5 transition-all duration-300 hover:-translate-y-1 block"
-                  >
-                    <div className="aspect-[16/10] bg-[#161618] rounded-xl overflow-hidden relative border border-zinc-800/60">
-                      <Image
-                        src={relImg}
-                        alt={rel.name}
-                        fill
-                        className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
-                      />
-                    </div>
-                    <div className="pt-3 space-y-1">
-                      <span className="text-[9px] uppercase tracking-wider text-zinc-400 font-display block">
-                        {rel.categoryLabel || rel.category}
-                      </span>
-                      <h4 className="text-sm font-display font-semibold text-white group-hover:text-zinc-200 truncate">
-                        {rel.name}
-                      </h4>
-                      <span className="text-xs font-mono font-bold text-white block">
-                        {formatCurrency(rel.price, rel.currency || 'LKR', true)}
-                      </span>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        )}
       </div>
 
       {/* Full-Screen Zoom Modal */}
@@ -504,17 +468,68 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
         </div>
       )}
 
-      {/* Quick Size Guide Modal */}
-      {showSizeModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="relative w-full max-w-lg bg-[#0e0e11] border border-zinc-800 rounded-2xl p-6 sm:p-8 space-y-6 max-h-[85vh] overflow-y-auto">
-            <div className="flex justify-between items-center border-b border-zinc-800/80 pb-4">
+      {/* Early Access / Waitlist Modal */}
+      {showWaitlistModal && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
+          <div className="relative w-full max-w-md bg-[#0e0e12] border border-zinc-800 rounded-3xl p-6 sm:p-8 space-y-5 shadow-2xl">
+            <div className="flex justify-between items-center border-b border-zinc-800 pb-3">
               <div>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 font-display font-semibold block">
-                  Axivers Fit Guide
+                <span className="text-[10px] uppercase font-mono tracking-wider text-[#c5a059] block">
+                  Inaugural Launch Registry
+                </span>
+                <h3 className="text-base font-display font-bold uppercase text-white">
+                  Early Access for Size {selectedSize}
+                </h3>
+              </div>
+              <button
+                onClick={() => setShowWaitlistModal(false)}
+                className="p-1.5 text-zinc-400 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+
+            <p className="text-xs text-zinc-300 font-light leading-relaxed">
+              Register your email below to receive private release notification as soon as inventory for size {selectedSize} opens for ordering.
+            </p>
+
+            <form onSubmit={handleWaitlistSubmit} className="space-y-3">
+              <input
+                type="email"
+                value={waitlistEmail}
+                onChange={(e) => setWaitlistEmail(e.target.value)}
+                placeholder="Enter your email address"
+                required
+                className="w-full bg-[#141418] border border-zinc-800 text-xs px-4 py-3 text-white placeholder-zinc-500 rounded-xl focus:outline-none focus:border-zinc-500 tracking-wide"
+              />
+              <button
+                type="submit"
+                className="w-full py-3 bg-white text-black font-display font-bold uppercase text-xs tracking-wider rounded-xl hover:bg-zinc-200 transition-colors"
+              >
+                {waitlistSubmitted ? 'REGISTERED' : 'CONFIRM EARLY ACCESS'}
+              </button>
+            </form>
+
+            {waitlistSubmitted && (
+              <p className="text-xs text-emerald-400 text-center font-display">
+                Thank you. You have been added to the priority notification list!
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Sizing Modal */}
+      {showSizeModal && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
+          <div className="relative w-full max-w-lg bg-[#0e0e12] border border-zinc-800 rounded-3xl p-6 sm:p-8 space-y-6 max-h-[85vh] overflow-y-auto">
+            <div className="flex justify-between items-center border-b border-zinc-800 pb-4">
+              <div>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-[#c5a059] font-mono block">
+                  Axivers Sizing Specification
                 </span>
                 <h3 className="text-lg font-display font-bold uppercase text-white">
-                  Size Guide & Measurements
+                  Size Guide &amp; Fit Profiles
                 </h3>
               </div>
               <button
@@ -526,40 +541,39 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
               </button>
             </div>
 
+            <p className="text-xs text-zinc-400 font-light leading-relaxed">
+              Sizes confirmed: <strong>S, M, L, XL</strong>. Final garment measurements are subject to production spec sheet verification. Measure around the fullest part of your chest with a soft tape to choose your size.
+            </p>
+
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs font-mono">
                 <thead>
                   <tr className="border-b border-zinc-800 text-zinc-400">
-                    <th className="py-2">Size</th>
-                    <th className="py-2">Chest (cm)</th>
-                    <th className="py-2">Length (cm)</th>
-                    <th className="py-2">Shoulder (cm)</th>
+                    <th className="py-2.5">Size</th>
+                    <th className="py-2.5">Fit Description</th>
+                    <th className="py-2.5">Chest Recommendation</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-800/60 text-zinc-200">
                   <tr>
-                    <td className="py-2.5 font-bold text-white">S</td>
-                    <td className="py-2.5">96 - 100</td>
-                    <td className="py-2.5">70</td>
-                    <td className="py-2.5">44</td>
+                    <td className="py-3 font-bold text-white">S</td>
+                    <td className="py-3">Athletic Tailored</td>
+                    <td className="py-3">36 – 38 in / 91 – 96 cm</td>
                   </tr>
                   <tr>
-                    <td className="py-2.5 font-bold text-white">M</td>
-                    <td className="py-2.5">101 - 106</td>
-                    <td className="py-2.5">72</td>
-                    <td className="py-2.5">46</td>
+                    <td className="py-3 font-bold text-white">M</td>
+                    <td className="py-3">Athletic Tailored</td>
+                    <td className="py-3">39 – 41 in / 99 – 104 cm</td>
                   </tr>
                   <tr>
-                    <td className="py-2.5 font-bold text-white">L</td>
-                    <td className="py-2.5">107 - 112</td>
-                    <td className="py-2.5">74</td>
-                    <td className="py-2.5">48</td>
+                    <td className="py-3 font-bold text-white">L</td>
+                    <td className="py-3">Athletic Tailored</td>
+                    <td className="py-3">42 – 44 in / 106 – 111 cm</td>
                   </tr>
                   <tr>
-                    <td className="py-2.5 font-bold text-white">XL</td>
-                    <td className="py-2.5">113 - 118</td>
-                    <td className="py-2.5">76</td>
-                    <td className="py-2.5">50</td>
+                    <td className="py-3 font-bold text-white">XL</td>
+                    <td className="py-3">Athletic Tailored</td>
+                    <td className="py-3">45 – 47 in / 114 – 119 cm</td>
                   </tr>
                 </tbody>
               </table>
@@ -571,13 +585,13 @@ export const PDP: React.FC<PDPProps> = ({ product }) => {
                 onClick={() => setShowSizeModal(false)}
                 className="text-zinc-400 hover:text-white underline font-display"
               >
-                Open Full Size Guide Page &rarr;
+                Open Full Size Guide &rarr;
               </Link>
               <button
                 onClick={() => setShowSizeModal(false)}
-                className="px-4 py-2 bg-white text-black font-display font-semibold uppercase text-[11px] rounded-lg"
+                className="px-5 py-2.5 bg-white text-black font-display font-semibold uppercase text-[11px] rounded-full"
               >
-                Got It
+                Close
               </button>
             </div>
           </div>

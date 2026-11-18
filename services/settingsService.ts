@@ -7,10 +7,10 @@ export const DEFAULT_STORE_SETTINGS: StoreSettings = {
   currency: 'LKR',
   timezone: 'Asia/Colombo',
   supportEmail: 'contact@axivers.com',
-  supportPhone: '+94 77 123 4567',
-  ordersEnabled: true,
-  standardShippingFee: 45000,    // Minor units (LKR 450.00)
-  freeShippingThreshold: 1500000,// Minor units (LKR 15,000.00)
+  supportPhone: '',
+  ordersEnabled: false,          // Default to Prelaunch Mode until inventory release is confirmed
+  standardShippingFee: 35000,    // Minor units (LKR 350.00 flat rate in Sri Lanka)
+  freeShippingThreshold: 1000000,// Minor units (LKR 10,000.00 threshold)
 };
 
 /**
@@ -19,13 +19,13 @@ export const DEFAULT_STORE_SETTINGS: StoreSettings = {
 export function normalizeStoreSettings(data: any): StoreSettings {
   if (!data) return DEFAULT_STORE_SETTINGS;
 
-  // Handle standardShippingFee: if stored in major units (e.g. 450), convert to minor (45000)
+  // Handle standardShippingFee: if stored in major units (e.g. 350), convert to minor (35000)
   let standardShippingFee = Number(data.standardShippingFee ?? DEFAULT_STORE_SETTINGS.standardShippingFee);
   if (standardShippingFee > 0 && standardShippingFee < 1000) {
     standardShippingFee = standardShippingFee * 100;
   }
 
-  // Handle freeShippingThreshold: if stored in major units (e.g. 15000), convert to minor (1500000)
+  // Handle freeShippingThreshold: if stored in major units (e.g. 10000), convert to minor (1000000)
   let freeShippingThreshold = data.freeShippingThreshold !== undefined 
     ? Number(data.freeShippingThreshold) 
     : DEFAULT_STORE_SETTINGS.freeShippingThreshold;
@@ -71,7 +71,7 @@ export async function getStoreSettings(): Promise<StoreSettings> {
 
     return normalizeStoreSettings(mergedData);
   } catch (error) {
-    console.warn('Error reading store settings from Firestore, using defaults:', error);
+    console.warn('Using default store settings:', error);
     return DEFAULT_STORE_SETTINGS;
   }
 }
@@ -94,12 +94,11 @@ export function subscribeToStoreSettings(
         }
       },
       (error) => {
-        console.warn('Store settings subscription error, using defaults:', error);
+        console.warn('Store settings subscription notice:', error?.message);
         onSettingsChange(DEFAULT_STORE_SETTINGS);
       }
     );
-  } catch (error) {
-    console.warn('Failed to listen to store settings:', error);
+  } catch {
     onSettingsChange(DEFAULT_STORE_SETTINGS);
     return () => {};
   }

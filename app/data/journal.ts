@@ -16,24 +16,24 @@ export interface JournalArticle {
 
 export const journalArticles: JournalArticle[] = [
   {
-    slug: 'the-science-of-60-40-cotton-modal',
-    title: 'The Science of 60/40 Cotton-Modal: Why It Outperforms 100% Cotton',
+    slug: 'the-art-of-mercerized-cotton',
+    title: 'The Art of 180 GSM Mercerized Cotton: Redefining Everyday Essentials',
     category: 'Fabric & Technology',
     readTime: '4 min read',
     publishedAt: 'October 2026',
-    excerpt: 'Traditional 100% cotton shrinks and stiffens. Synthetic polyester traps heat. Here is why blending combed cotton with beechwood modal creates the ultimate luxury everyday textile.',
-    coverImage: '/images/fabric-tech-bg.png',
+    excerpt: 'Mercerization is a specialized finishing treatment that alters the molecular structure of cotton cellulose. Here is why it elevates our 180 GSM single jersey into an enduring everyday luxury.',
+    coverImage: '/images/flagship-tee-black.jpg',
     content: {
-      lead: 'In the search for the quintessential everyday T-shirt, most brands defaults to either 100% conventional cotton or synthetic athletic polyester. Both come with significant trade-offs.',
+      lead: 'In developing the inaugural Axivers flagship crewneck, conventional cotton simply did not deliver the level of luster, structural recovery, and smooth hand-feel our design philosophy demanded.',
       paragraphs: [
-        'Pure 100% cotton, while naturally breathable, suffers from fiber friction, pilling, shrinkage, and progressive stiffening over repeated laundry cycles. On the other hand, fully synthetic poly blends often build static, retain body odors, and feel artificial against the skin.',
-        'At Axivers, our textile engineers developed a custom 60/40 ratio: 60% combed ring-spun cotton and 40% regenerated beechwood modal fibers. Modal is an ultra-fine cellulosic bio-fiber spun from sustainably managed European beechwood pulp.',
-        'Because modal fibers have an exceptionally smooth circular cross-section, they glide over each other without surface friction. This grants the fabric its signature silky drape that resists wrinkling, maintains deep color saturation, and never loses its softness after washing.',
-        'Combined with combed cotton for structural breathability, the resulting 190 GSM knit offers the best of both worlds: natural comfort with engineered athletic performance.'
+        'Pure 100% long-staple cotton is treated under controlled tension in an alkaline bath during the mercerization process. This round-shapes the natural kidney-bean cross-section of cotton fibers and un-twists their natural convolutions.',
+        'The optical result is a distinctive, refined surface sheen that reflects ambient light uniformly, bringing deep chromatic depth to our solid Onyx Black knit.',
+        'At 180 GSM, the single jersey knit achieves an ideal balance: substantial enough to drape cleanly over the torso without clinging, yet breathable and fluid for warm tropical and metropolitan environments alike.',
+        'Unlike synthetic coatings that wash off over time, mercerization is a permanent structural enhancement that preserves the garment’s lustrous appearance and tactile softness.'
       ],
-      quote: '“We designed 60/40 cotton-modal not as an experiment, but as an enduring solution to the flaws of conventional everyday tees.”',
+      quote: '“Mercerized cotton represents the intersection of natural fiber comfort and meticulous textile finishing.”',
     },
-    relatedProductSlug: 'piping-crewneck',
+    relatedProductSlug: 'flagship-tee-black',
   },
   {
     slug: 'how-to-style-minimalist-athletic-luxury',
@@ -41,18 +41,18 @@ export const journalArticles: JournalArticle[] = [
     category: 'Style Guides',
     readTime: '3 min read',
     publishedAt: 'October 2026',
-    excerpt: 'From tailoring to drape, mastering monochrome athletic luxury requires understanding proportions, sleeve cuts, and fabric weights.',
-    coverImage: '/images/cat-men-bg.png',
+    excerpt: 'From tailoring to drape, mastering monochrome athletic luxury requires understanding proportions, subtle accents, and restrained silhouettes.',
+    coverImage: '/images/editorial-men-black.jpg',
     content: {
-      lead: 'Athletic luxury is not gym wear. It is the art of applying high-performance fabric principles to elevated, clean everyday silhouettes.',
+      lead: 'Athletic luxury is not sportswear. It is the art of applying high-grade tailoring principles and ergonomic comfort to clean, elevated everyday silhouettes.',
       paragraphs: [
-        'When dressing in monochrome palettes like Onyx Black, Carbon Slate, or Optic White, visual interest comes from texture and cut rather than loud logos.',
-        'Pair our Flagship Contrast Piping Crewneck with relaxed tailored trousers or clean denim. The subtle white piping along the sleeve cuffs provides an intentional flash of contrast that anchors your footwear and accessories.',
-        'For casual streetwear days, lean into the 240 GSM Minimalist Heavyweight Boxy Tee. Its dropped shoulders and structured chest create a strong architectural frame that does not cling to the midsection.'
+        'When dressing in monochrome palettes like Onyx Black, visual interest comes from textural contrast, precise ribbing, and subtle finishing details rather than loud logos.',
+        'Pair our Signature Crewneck with relaxed tailored trousers, raw denim, or structured shorts. The contrasting gray rib-knit collar anchors the neckline, while the tipped ribbing on the sleeve cuffs provides an intentional flash of clean white contrast at the outer hem.',
+        'For layering, the refined 180 GSM weight sits smoothly under unstructured blazers or overshirts without adding unnecessary bulk around the arms or chest.'
       ],
-      quote: '“True style whispers. When your fabric drape is immaculate, you don’t need overt branding to make an impression.”',
+      quote: '“True luxury speaks quietly. When the silhouette and textile are considered, simplicity commands the room.”',
     },
-    relatedProductSlug: 'boxy-black-tee',
+    relatedProductSlug: 'flagship-tee-black',
   },
   {
     slug: 'made-in-sri-lanka-the-global-garment-hub',
@@ -61,35 +61,35 @@ export const journalArticles: JournalArticle[] = [
     readTime: '5 min read',
     publishedAt: 'October 2026',
     excerpt: 'Sri Lanka has long engineered technical garments for the world’s most prestigious athletic labels. Axivers brings that caliber directly home.',
-    coverImage: '/images/HeroBg.png',
+    coverImage: '/images/editorial-pedestal-black.png',
     content: {
       lead: 'For over four decades, Sri Lanka has been quietly revered across international fashion capitals as the gold standard for high-end apparel engineering.',
       paragraphs: [
-        'Global titans in athletic wear and luxury lingerie choose Sri Lankan facilities because of our country’s unparalleled precision, ethical manufacturing standards, and cutting-edge knitting capabilities.',
-        'Axivers Clothing (Pvt) Ltd was created to bring that world-class capability directly to the forefront under a home-grown luxury label. By sourcing, knitting, cutting, and stitching every single garment in Colombo, we maintain obsessive control over every millimeter of piping and seam tension.',
-        'Our artisans take pride in creating garments that can sit in the most prestigious boutiques of London, Tokyo, or New York, while remaining rooted in the craft heritage of Sri Lanka.'
+        'Global leaders in athletic luxury and designer fashion choose Sri Lankan facilities because of our country’s technical knitting precision, ethical manufacturing standards, and skilled artisan workforce.',
+        'Axivers Clothing (Pvt) Ltd was founded to bring that world-class capability directly to the forefront under an independent Sri Lankan luxury label. By conducting product development, precision cutting, and assembly in Colombo, we maintain rigorous oversight of every stitch line, seam tension, and trim placement.',
+        'Our artisans take pride in crafting garments that rival the benchmark quality of international fashion capitals, proudly carrying the identification: Made in Sri Lanka.'
       ],
-      quote: '“Our ambition is to prove that Sri Lankan craftsmanship can set the benchmark for athletic luxury worldwide.”',
+      quote: '“Our ambition is to prove that Sri Lankan craftsmanship can set the benchmark for elevated everyday apparel worldwide.”',
     },
-    relatedProductSlug: 'white-piping-crewneck',
+    relatedProductSlug: 'flagship-tee-black',
   },
   {
-    slug: 'introducing-flagship-contrast-piping',
-    title: 'Product Story: The Anatomy of Our Signature Contrast Piping',
+    slug: 'anatomy-of-the-signature-cuff',
+    title: 'Product Story: The Anatomy of Our Signature Tipped Sleeve & Rib Collar',
     category: 'Product Stories',
     readTime: '3 min read',
     publishedAt: 'September 2026',
-    excerpt: 'A deep dive into the engineering challenge of inserting custom piping into stretch-knit hems without puckering or stiffness.',
-    coverImage: '/images/pdp_detail.jpg',
+    excerpt: 'A deep dive into why our master blueprint specifies yarn-dyed tipped ribbing with an outer-edge white stripe and spandex-reinforced crewneck collar.',
+    coverImage: '/images/editorial-women-black.png',
     content: {
-      lead: 'Inserting rigid woven piping into a fluid 60/40 stretch knit is notoriously difficult in garment manufacturing. Here is how we solved it.',
+      lead: 'A premium T-shirt lives or dies by its neckline and sleeve cuffs. Here is the engineering behind the Axivers flagship construction.',
       paragraphs: [
-        'Standard piping often shrinks at a different rate than the main body fabric, causing unsightly bunching or pulling around the cuffs after the first wash.',
-        'Our technicians engineered a custom micro-rib piping insert that expands and contracts in exact synchronization with our 190 GSM cotton-modal knit.',
-        'The result is a clean, sharp, razor-straight accent that frames the arms and hemline, creating a tailored, sculpted silhouette that stays crisp through countless wears.'
+        'Standard commercial T-shirt collars frequently stretch and lose their circular recovery after a few wears. To ensure resilience, our contrasting gray crewneck incorporates 3–5% spandex within the 1×1 rib construction, retaining its crisp frame around the collarbone throughout the garment’s lifespan.',
+        'On the sleeves, earlier prototypes tested manually inserted piping, which risked uneven tension. The master specification replaced this with yarn-dyed black ribbing featuring a crisp white stripe positioned strictly at the absolute outer edge of the cuff.',
+        'Knitted as a continuous tipped-rib element, this eliminates bulky internal seams, rests flush against the bicep, and provides a distinctive signature identity exclusive to Axivers.'
       ],
-      quote: '“Subtle design details require the most complex manufacturing discipline.”',
+      quote: '“Subtle design signatures require the most disciplined technical construction.”',
     },
-    relatedProductSlug: 'piping-crewneck',
+    relatedProductSlug: 'flagship-tee-black',
   },
 ];

@@ -3,66 +3,53 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Size & Fit Guide — Axivers Clothing',
+  title: 'Size & Measuring Guide — Axivers Essentials',
   description:
-    'Axivers official garment sizing and measurement guide. Centimetres and inches for Men and Women, how to measure, and fit explanations.',
+    'Axivers official size and measuring guide. Learn how to take accurate body measurements for S, M, L, and XL to ensure an athletic luxury drape.',
 };
 
 export default function SizeGuidePage() {
   return (
-    <div className="min-h-screen bg-[#09090b] text-[#ffffff] pt-24 sm:pt-28 pb-24 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#060606] text-[#ffffff] pt-24 sm:pt-28 pb-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-12">
         {/* Header */}
         <div className="text-center space-y-3 pt-6">
-          <span className="text-[10px] uppercase tracking-[0.3em] text-zinc-400 font-display font-semibold block">
-            Precision Fitting
-          </span>
+          <div className="inline-flex items-center space-x-2 text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059]" />
+            <span>Fit &amp; Sizing Specification</span>
+          </div>
           <h1 className="text-3xl sm:text-5xl font-display font-light uppercase tracking-tight text-white">
-            Axivers <span className="font-bold">Size & Fit Guide</span>
+            Size &amp; <span className="font-bold">Fit Guide</span>
           </h1>
-          <p className="text-xs sm:text-sm font-light text-zinc-400 max-w-lg mx-auto">
-            All Axivers garments are engineered to international athletic luxury standards with tailored proportions. Refer to the measurements below to find your ideal fit.
+          <p className="text-xs sm:text-sm font-light text-zinc-300 max-w-lg mx-auto leading-relaxed">
+            Axivers foundations are engineered with tailored athletic proportions. Follow our measurement recommendations below to find your intended fit.
           </p>
         </div>
 
-        {/* Fit Profiles Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-[#111114] border border-zinc-800/80 rounded-2xl p-6 space-y-2">
-            <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-display font-semibold">
-              Fit Profile 01
-            </span>
-            <h3 className="text-base font-display font-bold uppercase text-white">
-              Tailored Athletic Fit
-            </h3>
-            <p className="text-xs text-zinc-400 font-light leading-relaxed">
-              Found on our Flagship Piping Crewnecks and Technical Polos. Fitted cleanly across the chest and shoulders with an athletic taper down to the waist. Size up if you prefer a looser drape.
-            </p>
+        {/* Specification Status Note */}
+        <div className="bg-[#0b0b0e] border border-zinc-800/80 rounded-2xl p-5 sm:p-6 text-xs font-light text-zinc-300 space-y-2">
+          <div className="flex items-center space-x-2 text-[#c5a059] font-mono text-[11px] font-medium uppercase tracking-wider">
+            <span>&bull;</span>
+            <span>Production Verification Notice</span>
           </div>
-
-          <div className="bg-[#111114] border border-zinc-800/80 rounded-2xl p-6 space-y-2">
-            <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-display font-semibold">
-              Fit Profile 02
-            </span>
-            <h3 className="text-base font-display font-bold uppercase text-white">
-              Minimalist Boxy Fit
-            </h3>
-            <p className="text-xs text-zinc-400 font-light leading-relaxed">
-              Found on our 240 GSM Heavyweight Tees. Features dropped shoulders, generous chest width, and a structured vertical drape that does not cling to the torso. True to size for intentional streetwear drape.
-            </p>
-          </div>
+          <p className="leading-relaxed">
+            The master blueprint confirms initial production sizing in <strong>S, M, L, and XL</strong> for our flagship Men’s Crewneck T-Shirt. Below are standard body measurement recommendations (in centimetres) to guide your size selection. Finalized garment flat-lay dimensions will be published upon approval of initial factory production records.
+          </p>
         </div>
 
-        {/* Men's Size Table */}
-        <div className="bg-[#101013] border border-zinc-800/80 rounded-2xl p-6 sm:p-8 space-y-5">
-          <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+        {/* Body Measurement Table */}
+        <div className="bg-[#0a0a0d] border border-zinc-800/80 rounded-3xl p-6 sm:p-8 space-y-5 shadow-2xl">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-900 pb-4 gap-2">
             <div>
               <h2 className="text-base font-display font-bold uppercase text-white tracking-wider">
-                Men&apos;s Garment Measurements (Centimetres)
+                Recommended Body Measurements (Centimetres)
               </h2>
-              <p className="text-[11px] text-zinc-500">Standard Sri Lankan & International sizing</p>
+              <p className="text-[11px] text-zinc-400">
+                Measure directly around your body for the intended athletic tailored fit.
+              </p>
             </div>
-            <span className="text-[10px] font-mono text-zinc-400 uppercase bg-zinc-900 px-2.5 py-1 rounded border border-zinc-800">
-              Tolerance: ±1.0 cm
+            <span className="text-[10px] font-mono text-zinc-400 uppercase bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">
+              Centimetre Standard
             </span>
           </div>
 
@@ -70,145 +57,112 @@ export default function SizeGuidePage() {
             <table className="w-full text-left text-xs font-mono">
               <thead>
                 <tr className="border-b border-zinc-800 text-zinc-400">
-                  <th className="py-3 px-2">Size</th>
-                  <th className="py-3 px-2">Chest (Around)</th>
-                  <th className="py-3 px-2">Length</th>
-                  <th className="py-3 px-2">Shoulder Width</th>
-                  <th className="py-3 px-2">Sleeve Length</th>
+                  <th className="py-3 px-3">Size</th>
+                  <th className="py-3 px-3">Target Chest Circumference</th>
+                  <th className="py-3 px-3">Shoulder Breadth Reference</th>
+                  <th className="py-3 px-3">Intended Fit Character</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-800/60 text-zinc-200">
                 <tr>
-                  <td className="py-3.5 px-2 font-bold text-white">S (Small)</td>
-                  <td className="py-3.5 px-2">96 - 100 cm</td>
-                  <td className="py-3.5 px-2">70 cm</td>
-                  <td className="py-3.5 px-2">44 cm</td>
-                  <td className="py-3.5 px-2">20 cm</td>
+                  <td className="py-4 px-3 font-bold text-white">S (Small)</td>
+                  <td className="py-4 px-3 font-mono">91 – 96 cm</td>
+                  <td className="py-4 px-3 font-mono">43 – 44 cm</td>
+                  <td className="py-4 px-3 text-zinc-400 font-sans">Athletic Tailored</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-2 font-bold text-white">M (Medium)</td>
-                  <td className="py-3.5 px-2">101 - 106 cm</td>
-                  <td className="py-3.5 px-2">72 cm</td>
-                  <td className="py-3.5 px-2">46 cm</td>
-                  <td className="py-3.5 px-2">21 cm</td>
+                  <td className="py-4 px-3 font-bold text-white">M (Medium)</td>
+                  <td className="py-4 px-3 font-mono">99 – 104 cm</td>
+                  <td className="py-4 px-3 font-mono">45 – 46 cm</td>
+                  <td className="py-4 px-3 text-zinc-400 font-sans">Athletic Tailored</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-2 font-bold text-white">L (Large)</td>
-                  <td className="py-3.5 px-2">107 - 112 cm</td>
-                  <td className="py-3.5 px-2">74 cm</td>
-                  <td className="py-3.5 px-2">48 cm</td>
-                  <td className="py-3.5 px-2">22 cm</td>
+                  <td className="py-4 px-3 font-bold text-white">L (Large)</td>
+                  <td className="py-4 px-3 font-mono">106 – 111 cm</td>
+                  <td className="py-4 px-3 font-mono">47 – 48 cm</td>
+                  <td className="py-4 px-3 text-zinc-400 font-sans">Athletic Tailored</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-2 font-bold text-white">XL (Extra Large)</td>
-                  <td className="py-3.5 px-2">113 - 118 cm</td>
-                  <td className="py-3.5 px-2">76 cm</td>
-                  <td className="py-3.5 px-2">50 cm</td>
-                  <td className="py-3.5 px-2">23 cm</td>
+                  <td className="py-4 px-3 font-bold text-white">XL (Extra Large)</td>
+                  <td className="py-4 px-3 font-mono">114 – 119 cm</td>
+                  <td className="py-4 px-3 font-mono">49 – 50 cm</td>
+                  <td className="py-4 px-3 text-zinc-400 font-sans">Athletic Tailored</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
 
-        {/* Women's Size Table */}
-        <div className="bg-[#101013] border border-zinc-800/80 rounded-2xl p-6 sm:p-8 space-y-5">
-          <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
-            <div>
-              <h2 className="text-base font-display font-bold uppercase text-white tracking-wider">
-                Women&apos;s Garment Measurements (Centimetres)
-              </h2>
-              <p className="text-[11px] text-zinc-500">Relaxed cloud-modal cut</p>
-            </div>
-            <span className="text-[10px] font-mono text-zinc-400 uppercase bg-zinc-900 px-2.5 py-1 rounded border border-zinc-800">
-              Tolerance: ±1.0 cm
-            </span>
+        {/* Measuring Guide: Step-by-Step */}
+        <div className="bg-[#0b0b0e] border border-zinc-800/80 rounded-3xl p-6 sm:p-8 space-y-6">
+          <div className="border-b border-zinc-900 pb-3">
+            <h3 className="text-base font-display font-bold uppercase text-white tracking-wider">
+              How to Measure Accurately
+            </h3>
+            <p className="text-[11px] text-zinc-400">
+              Use a flexible tape measure while standing in a relaxed, natural posture.
+            </p>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs font-mono">
-              <thead>
-                <tr className="border-b border-zinc-800 text-zinc-400">
-                  <th className="py-3 px-2">Size</th>
-                  <th className="py-3 px-2">Bust / Chest</th>
-                  <th className="py-3 px-2">Length</th>
-                  <th className="py-3 px-2">Shoulder Width</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-800/60 text-zinc-200">
-                <tr>
-                  <td className="py-3.5 px-2 font-bold text-white">S (UK 6 - 8)</td>
-                  <td className="py-3.5 px-2">88 - 92 cm</td>
-                  <td className="py-3.5 px-2">64 cm</td>
-                  <td className="py-3.5 px-2">40 cm</td>
-                </tr>
-                <tr>
-                  <td className="py-3.5 px-2 font-bold text-white">M (UK 10 - 12)</td>
-                  <td className="py-3.5 px-2">93 - 98 cm</td>
-                  <td className="py-3.5 px-2">66 cm</td>
-                  <td className="py-3.5 px-2">42 cm</td>
-                </tr>
-                <tr>
-                  <td className="py-3.5 px-2 font-bold text-white">L (UK 14)</td>
-                  <td className="py-3.5 px-2">99 - 104 cm</td>
-                  <td className="py-3.5 px-2">68 cm</td>
-                  <td className="py-3.5 px-2">44 cm</td>
-                </tr>
-                <tr>
-                  <td className="py-3.5 px-2 font-bold text-white">XL (UK 16)</td>
-                  <td className="py-3.5 px-2">105 - 110 cm</td>
-                  <td className="py-3.5 px-2">70 cm</td>
-                  <td className="py-3.5 px-2">46 cm</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* How To Measure Guide */}
-        <div className="bg-[#111114] border border-zinc-800/80 rounded-2xl p-6 sm:p-8 space-y-6">
-          <h3 className="text-base font-display font-bold uppercase text-white tracking-wider">
-            How to Measure Your Body Correctly
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-zinc-300 font-light leading-relaxed">
-            <div className="space-y-2">
-              <div className="font-display font-bold uppercase text-white text-[11px]">
-                1. Chest / Bust
-              </div>
-              <p>
-                Run a flexible measuring tape horizontally under your armpits across the fullest part of your chest. Keep the tape parallel to the floor without pulling taut.
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-zinc-300 font-light">
+            <div className="space-y-2 p-4 rounded-2xl bg-[#0e0e12] border border-zinc-900">
+              <span className="text-[10px] font-mono text-[#c5a059] uppercase block">
+                Step 01
+              </span>
+              <h4 className="font-display uppercase tracking-wider font-bold text-white">
+                Chest Measurement
+              </h4>
+              <p className="leading-relaxed text-zinc-400">
+                Wrap the measuring tape horizontally around the fullest part of your chest, keeping the tape level under your arms and across your shoulder blades.
               </p>
             </div>
-            <div className="space-y-2">
-              <div className="font-display font-bold uppercase text-white text-[11px]">
-                2. Body Length
-              </div>
-              <p>
-                Measure straight down from the highest point of the shoulder seam next to the neck collar to the bottom hemline of the garment.
+
+            <div className="space-y-2 p-4 rounded-2xl bg-[#0e0e12] border border-zinc-900">
+              <span className="text-[10px] font-mono text-[#c5a059] uppercase block">
+                Step 02
+              </span>
+              <h4 className="font-display uppercase tracking-wider font-bold text-white">
+                Shoulder Width
+              </h4>
+              <p className="leading-relaxed text-zinc-400">
+                Measure straight across the back from the prominent bone tip of one shoulder (acromion) to the tip of the other shoulder.
               </p>
             </div>
-            <div className="space-y-2">
-              <div className="font-display font-bold uppercase text-white text-[11px]">
-                3. Shoulder Width
-              </div>
-              <p>
-                Measure across the back from the edge of the left shoulder seam directly across to the edge of the right shoulder seam.
+
+            <div className="space-y-2 p-4 rounded-2xl bg-[#0e0e12] border border-zinc-900">
+              <span className="text-[10px] font-mono text-[#c5a059] uppercase block">
+                Step 03
+              </span>
+              <h4 className="font-display uppercase tracking-wider font-bold text-white">
+                Between Sizes?
+              </h4>
+              <p className="leading-relaxed text-zinc-400">
+                If your chest measurement falls on the borderline between two sizes, choose the smaller size for a clean athletic fit, or the larger size for a more relaxed drape.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Assistance CTA */}
-        <div className="text-center space-y-3 pt-4">
+        {/* Distinguishing Body vs Garment Dimensions */}
+        <div className="bg-[#0b0b0e] border border-zinc-800/80 rounded-2xl p-6 text-xs text-zinc-400 space-y-2">
+          <h4 className="font-display uppercase tracking-wider font-bold text-white text-xs">
+            Body Measurements vs. Garment Measurements
+          </h4>
+          <p className="leading-relaxed">
+            Please note that the figures in this guide represent <strong>body dimensions</strong>. Finished garments incorporate design ease (fabric allowance) calibrated for a 180 GSM single jersey knit to achieve a clean drape that does not cling.
+          </p>
+        </div>
+
+        {/* Concierge Support CTA */}
+        <div className="border-t border-zinc-900 pt-8 text-center space-y-3">
           <p className="text-xs text-zinc-400">
-            Still unsure about your ideal size? Our Colombo sizing team is happy to advise.
+            Have questions regarding sizing or fit preference before launch?
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center space-x-1.5 text-xs font-display uppercase tracking-wider text-white underline hover:text-zinc-300"
+            className="inline-flex items-center space-x-1.5 text-xs font-display uppercase tracking-wider font-semibold text-white underline hover:text-[#c5a059] transition-colors"
           >
-            <span>Speak with our Sizing Specialist</span>
+            <span>Contact Axivers Concierge</span>
             <span>&rarr;</span>
           </Link>
         </div>

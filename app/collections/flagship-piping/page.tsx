@@ -2,18 +2,18 @@ import type { Metadata } from 'next';
 import { CollectionPage, CollectionConfig } from '@/app/components/CollectionPage';
 
 export const metadata: Metadata = {
-  title: 'Flagship Piping Collection — Axivers Signature',
+  title: 'Signature Essential Collection — Axivers Athletic Luxury',
   description:
-    'The iconic Axivers Flagship Piping Collection. Distinctive contrast piping inside sleeve cuffs and hem, crafted from 190 GSM 60/40 cotton-modal for athletic luxury.',
+    'The iconic Axivers Signature Crewneck Collection. Distinctive tipped ribbing with outer white stripe and contrasting gray collar, crafted from 180 GSM mercerized cotton.',
 };
 
 const config: CollectionConfig = {
   collectionKey: 'flagship-piping',
-  title: 'Flagship Piping Collection',
+  title: 'Signature Essential Collection',
   tagline: 'Signature Detail. Precision Craftsmanship.',
   description:
-    'Our defining silhouette. Masterfully engineered with custom-inserted contrast piping on sleeve cuffs and hem, finished with low-profile embroidery and a sculpted drape.',
-  bannerImage: '/images/cat-piping-bg.png',
+    'Our defining silhouette. Masterfully engineered with contrasting gray rib-knit collar, outer-edge white tipped cuffs, and reflective metallic-gold branding on 180 GSM mercerized cotton.',
+  bannerImage: '/images/editorial-pedestal-black.png',
   badge: 'Signature Collection',
 };
 

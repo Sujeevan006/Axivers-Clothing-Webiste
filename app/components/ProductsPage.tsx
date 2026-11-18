@@ -121,18 +121,19 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
   });
 
   return (
-    <section className="pt-28 pb-24 px-4 sm:px-6 lg:px-8 bg-[#09090b] text-[#ffffff] min-h-screen">
+    <section className="pt-28 pb-24 px-4 sm:px-6 lg:px-8 bg-[#060606] text-[#ffffff] min-h-screen">
       <div className="max-w-7xl mx-auto space-y-10">
         {/* Page Header */}
         <div className="text-center space-y-3 max-w-2xl mx-auto">
-          <span className="text-[10px] uppercase tracking-[0.3em] text-white font-display font-semibold block">
-            Axivers Storefront
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-display font-light tracking-tight">
-            The <span className="font-bold text-white">Garment Catalog</span>
+          <div className="inline-flex items-center space-x-2 text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059]" />
+            <span>Inaugural Collection</span>
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-display font-light tracking-tight text-white uppercase">
+            The <span className="font-bold">Garment Catalog</span>
           </h1>
-          <p className="text-xs sm:text-sm font-light text-zinc-400 leading-relaxed">
-            Athletic luxury engineered for durability, drape, and performance.
+          <p className="text-xs sm:text-sm font-light text-zinc-300 leading-relaxed">
+            Minimalist athletic luxury engineered for refined drape, comfort, and precision.
           </p>
 
           {/* Search bar */}
@@ -288,17 +289,17 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
                   key={product.id}
                   className="group relative flex flex-col justify-between bg-[#111113] hover:bg-[#141417] border border-zinc-800/80 hover:border-zinc-700/90 rounded-2xl p-3.5 sm:p-4 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.7)]"
                 >
-                  {/* Landscape Image Container (16:10) */}
+                  {/* Garment Image Container */}
                   <Link
                     href={`/product/${product.slug || product.id}`}
-                    className="aspect-[16/10] bg-[#161618] rounded-xl overflow-hidden relative block border border-zinc-800/60 group-hover:border-zinc-700/80 transition-colors cursor-pointer"
+                    className="aspect-square bg-[#0c0c0f] rounded-2xl overflow-hidden relative block border border-zinc-800/60 group-hover:border-zinc-700/80 transition-colors cursor-pointer p-4"
                   >
                     <Image
                       src={displayImage}
                       alt={product.name}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className={`object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105 ${
+                      className={`object-contain p-2 transition-transform duration-700 ease-out group-hover:scale-105 ${
                         isOutOfStock ? 'opacity-40 grayscale' : ''
                       }`}
                     />

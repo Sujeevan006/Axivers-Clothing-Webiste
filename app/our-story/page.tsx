@@ -4,149 +4,149 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Our Story — Axivers Clothing',
+  title: 'Our Story — Crafted with Purpose. Designed for Everyday.',
   description:
-    'The story behind Axivers Clothing (Pvt) Ltd. Born in Colombo, Sri Lanka. Redefining everyday luxury with 60/40 cotton-modal engineering and architectural essentials.',
+    'Discover the vision behind Axivers Clothing (Pvt) Ltd. Founded in Colombo, Sri Lanka to create globally competitive everyday apparel through minimalist design and precision craftsmanship.',
 };
 
 export default function OurStoryPage() {
   return (
-    <div className="min-h-screen bg-[#09090b] text-[#ffffff] pt-24 sm:pt-28 pb-24">
+    <div className="min-h-screen bg-[#060606] text-[#ffffff] pt-24 sm:pt-28 pb-24">
       {/* Editorial Hero Banner */}
-      <div className="relative h-96 sm:h-[480px] w-full overflow-hidden border-b border-zinc-800/80 flex items-center justify-center">
+      <div className="relative h-96 sm:h-[480px] w-full overflow-hidden border-b border-zinc-900 flex items-center justify-center">
         <Image
-          src="/images/HeroBg.png"
+          src="/images/editorial-men-black.jpg"
           alt="Axivers Brand Story"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center opacity-60"
+          className="object-cover object-top opacity-35"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-black/50 to-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#060606] via-[#060606]/80 to-transparent" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-4">
-          <div className="inline-flex items-center space-x-2 text-[10px] uppercase tracking-[0.25em] text-zinc-400 font-display">
+          <div className="inline-flex items-center space-x-2 text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono">
             <span>Colombo, Sri Lanka</span>
-            <span>•</span>
-            <span>Est. 2026</span>
+            <span>&bull;</span>
+            <span>Own Your Axis</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-display font-bold tracking-tight text-white uppercase leading-tight">
-            Elevated Essentials. <br />
-            <span className="font-light italic text-zinc-300">Crafted in Sri Lanka.</span>
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-display font-light uppercase tracking-tight text-white leading-tight">
+            CRAFTED WITH PURPOSE. <br />
+            <span className="font-bold text-white">DESIGNED FOR EVERYDAY.</span>
           </h1>
 
-          <p className="text-xs sm:text-sm md:text-base font-light text-zinc-300 max-w-2xl mx-auto leading-relaxed tracking-wide pt-2">
-            Axivers was born from a singular conviction: the garments you wear most frequently should be engineered with the highest degree of textile innovation, precision tailoring, and uncompromised comfort.
+          <p className="text-xs sm:text-sm md:text-base font-light text-zinc-300 max-w-2xl mx-auto leading-relaxed tracking-wide pt-1">
+            Axivers was created around a simple belief: the essentials we wear every day deserve thoughtful design, considered materials, and exceptional attention to detail.
           </p>
         </div>
       </div>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 space-y-20">
-        {/* Section 1: About Axivers & Brand Philosophy */}
+        {/* Section 1: Origins & Design Philosophy */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
           <div className="md:col-span-6 space-y-4">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-zinc-400 font-display font-semibold block">
-              About Axivers
+            <span className="text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono font-semibold block">
+              Origin &amp; Foundation
             </span>
             <h2 className="text-2xl sm:text-3xl font-display font-bold uppercase tracking-tight text-white">
-              Redefining Everyday Luxury
+              Elevated Essentials, Defined
             </h2>
             <p className="text-xs sm:text-sm font-light text-zinc-300 leading-relaxed">
-              Axivers Clothing (Pvt) Ltd is an athletic-luxury apparel house founded on the principle that everyday garments should never be ordinary. We reject the fast-fashion cycle of disposable fabrics, warped collars, and fleeting gimmicks.
+              Axivers Clothing (Pvt) Ltd was founded in Colombo with a focused ambition: to bridge minimalist contemporary fashion aesthetics with the precision engineering of Sri Lankan apparel craftsmanship.
             </p>
             <p className="text-xs sm:text-sm font-light text-zinc-400 leading-relaxed">
-              Instead, we construct enduring wardrobe foundations that bridge modern athletic performance with minimalist streetwear aesthetic. Every silhouette is tested for movement, drape, and long-term durability.
+              We reject the cycle of generic fast-fashion and excessive decoration. Instead, we channel our creative focus into perfecting everyday wardrobe foundations — garments defined by considered silhouettes, refined textile choices, and lasting construction integrity.
             </p>
           </div>
-          <div className="md:col-span-6 relative aspect-square rounded-2xl overflow-hidden border border-zinc-800 shadow-2xl">
+          <div className="md:col-span-6 relative aspect-square rounded-3xl overflow-hidden border border-zinc-800 bg-[#0a0a0c] shadow-2xl">
             <Image
-              src="/images/pdp_front.jpg"
+              src="/images/flagship-tee-black.jpg"
               alt="Axivers Garment Craftsmanship"
               fill
-              className="object-cover object-top"
+              className="object-contain p-6"
             />
           </div>
         </div>
 
-        {/* Section 2: Our Vision & Why Everyday Essentials */}
-        <div className="bg-[#111114] border border-zinc-800/80 rounded-2xl p-8 sm:p-12 space-y-8">
+        {/* Section 2: Own Your Axis & Core Vision */}
+        <div className="bg-[#0b0b0e] border border-zinc-800/80 rounded-3xl p-8 sm:p-12 space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-3">
-              <span className="text-[10px] uppercase tracking-[0.2em] font-display font-semibold text-zinc-400 block">
-                Our Vision
+              <span className="text-[10px] uppercase tracking-[0.2em] font-mono font-semibold text-[#c5a059] block">
+                Brand Philosophy
               </span>
               <h3 className="text-xl font-display font-bold uppercase text-white">
-                Global Appeal, Island Craft
+                Own Your Axis
               </h3>
               <p className="text-xs sm:text-sm font-light text-zinc-300 leading-relaxed">
-                To establish a contemporary apparel brand that showcases Sri Lanka’s world-class garment manufacturing heritage on the global stage, proving that local craftsmanship can sit proudly alongside the world’s leading lifestyle brands.
+                An axis is a center of balance, rotation, and purpose. &ldquo;Own Your Axis&rdquo; represents self-assurance, clarity, and intentional living. When your wardrobe foundations fit impeccably and feel exceptional, you move through your everyday pursuits with natural poise.
               </p>
             </div>
 
             <div className="space-y-3">
-              <span className="text-[10px] uppercase tracking-[0.2em] font-display font-semibold text-zinc-400 block">
-                Why Everyday Essentials?
+              <span className="text-[10px] uppercase tracking-[0.2em] font-mono font-semibold text-[#c5a059] block">
+                Our Long-Term Vision
               </span>
               <h3 className="text-xl font-display font-bold uppercase text-white">
-                The Pieces That Define Your Day
+                Internationally Competitive
               </h3>
               <p className="text-xs sm:text-sm font-light text-zinc-300 leading-relaxed">
-                Most wardrobes are built on T-shirts, crewnecks, and base layers. If these core garments don’t feel sublime or drape cleanly, nothing else matters. We put 100% of our energy into perfecting the essentials you live in.
+                Our vision is to build an apparel brand originating in Sri Lanka that stands shoulder-to-shoulder with global minimalist labels. We measure progress not through rapid volume expansion, but through the uncompromising quality of each garment we release.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Section 3: Sri Lankan Craftsmanship */}
+        {/* Section 3: Sri Lankan Heritage & Craftsmanship */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
-          <div className="md:col-span-6 order-2 md:order-1 relative aspect-square rounded-2xl overflow-hidden border border-zinc-800 shadow-2xl">
+          <div className="md:col-span-6 order-2 md:order-1 relative aspect-square rounded-3xl overflow-hidden border border-zinc-800 bg-[#0a0a0c] shadow-2xl">
             <Image
-              src="/images/pdp_detail.jpg"
-              alt="Precision Piping & Construction"
+              src="/images/editorial-pedestal-black.png"
+              alt="Precision Craftsmanship"
               fill
               className="object-cover object-center"
             />
           </div>
           <div className="md:col-span-6 order-1 md:order-2 space-y-4">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-zinc-400 font-display font-semibold block">
-              Heritage of Excellence
+            <span className="text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono font-semibold block">
+              Ethical Pedigree
             </span>
             <h2 className="text-2xl sm:text-3xl font-display font-bold uppercase tracking-tight text-white">
               Sri Lankan Craftsmanship
             </h2>
             <p className="text-xs sm:text-sm font-light text-zinc-300 leading-relaxed">
-              Sri Lanka has earned international acclaim as the world’s most trusted hub for technical apparel manufacturing, engineering performance garments for the world’s premier sporting and luxury houses.
+              Sri Lanka is internationally renowned for producing apparel of exceptional technical precision for the world’s leading lifestyle and luxury brands, while upholding respected labor standards and responsible manufacturing methods.
             </p>
             <p className="text-xs sm:text-sm font-light text-zinc-400 leading-relaxed">
-              Axivers brings that exact pedigree of precision directly to local and international consumers. From custom knit tension to contrast-inserted piping and clean twin-needle stitching, our garments are crafted by master artisans who value quality over volume.
+              Axivers brings that technical expertise directly to our community. Every garment is cut, assembled, and finished by skilled apparel technicians who treat construction consistency as a matter of pride.
             </p>
           </div>
         </div>
 
-        {/* Section 4: Our Approach to Modern Fashion */}
-        <div className="border-t border-zinc-800/80 pt-16 space-y-8 text-center max-w-3xl mx-auto">
-          <span className="text-[10px] uppercase tracking-[0.25em] text-zinc-400 font-display font-semibold block">
-            The Axivers Standard
+        {/* Section 4: Looking Forward CTA */}
+        <div className="border-t border-zinc-900 pt-16 space-y-6 text-center max-w-2xl mx-auto">
+          <span className="text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono font-semibold block">
+            The Journey Ahead
           </span>
           <h2 className="text-2xl sm:text-4xl font-display font-bold uppercase text-white">
-            Form, Fabric & Function In Harmony
+            Join The Evolution
           </h2>
           <p className="text-xs sm:text-sm font-light text-zinc-300 leading-relaxed">
-            We measure success not by the number of designs we release, but by how long each garment remains your first choice when you open your wardrobe. Discover the feeling of true athletic luxury.
+            We are beginning our journey with a single, thoroughly considered flagship piece — the Men’s Crewneck T-Shirt in 180 GSM mercerized cotton. We invite you to experience the difference thoughtful design makes.
           </p>
-          <div className="pt-4 flex justify-center gap-4">
+          <div className="pt-2 flex justify-center gap-4">
             <Link
               href="/shop"
-              className="px-7 py-3.5 bg-white text-black font-display text-xs uppercase tracking-wider font-bold rounded-xl hover:bg-zinc-200 transition-colors"
+              className="px-7 py-3.5 bg-white text-black font-display text-xs uppercase tracking-wider font-bold rounded-full hover:bg-zinc-200 transition-colors shadow-xl"
             >
-              Shop The Collection
+              Explore Collection
             </Link>
             <Link
               href="/fabric-technology"
-              className="px-7 py-3.5 bg-zinc-900 border border-zinc-800 text-white font-display text-xs uppercase tracking-wider font-medium rounded-xl hover:border-zinc-600 transition-colors"
+              className="px-7 py-3.5 bg-zinc-900 border border-zinc-800 text-white font-display text-xs uppercase tracking-wider font-medium rounded-full hover:border-zinc-600 transition-colors"
             >
-              Learn About Our Fabric
+              Fabric &amp; Craftsmanship
             </Link>
           </div>
         </div>

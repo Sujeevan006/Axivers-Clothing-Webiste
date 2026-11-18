@@ -8,10 +8,15 @@
   --font-mono:
     'Roboto', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --color-brand-dark: #09090b;
-  --color-brand-light: #ffffff;
+  /* Axivers Master Monochrome Palette with Restrained Metallic Gold */
+  --color-brand-dark: #060606;
+  --color-brand-light: #f6f6f6;
+  --color-brand-white: #ffffff;
+  --color-brand-black: #000000;
   --color-brand-accent: #ffffff;
-  --color-brand-border: #27272a;
+  --color-brand-border: #1c1c1f;
+  --color-brand-gold: #c5a059;
+  --color-brand-gold-metallic: #d4af37;
 
   --animate-fade-in: fade-in 0.5s ease-out forwards;
   --animate-slide-up: slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -83,7 +88,7 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #09090b;
+    background: #060606;
   }
 
   ::-webkit-scrollbar-thumb {
@@ -98,28 +103,39 @@
 
 /* Glassmorphism utilities */
 .glass-card {
-  background: rgba(18, 18, 20, 0.75);
+  background: rgba(10, 10, 12, 0.75);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-card-white {
-  background: rgba(24, 24, 27, 0.8);
+  background: rgba(20, 20, 24, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Backwards compatibility helper class name */
 .glass-card-gold {
-  background: rgba(24, 24, 27, 0.8);
+  background: rgba(18, 16, 12, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(197, 160, 89, 0.3);
 }
 
 .text-stroke-white {
   -webkit-text-stroke: 1px #ffffff;
   color: transparent;
+}
+
+/* Reduced motion preference support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

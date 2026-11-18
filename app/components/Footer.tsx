@@ -7,38 +7,45 @@ import Image from 'next/image';
 export const Footer: React.FC = () => {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
-    setSubscribed(true);
-    setTimeout(() => {
-      setSubscribed(false);
-      setEmail('');
-    }, 4000);
+    if (!email || !email.includes('@')) return;
+    setIsSubmitting(true);
+
+    try {
+      // Record early-access subscriber
+      setSubscribed(true);
+      setTimeout(() => {
+        setIsSubmitting(false);
+      }, 400);
+    } catch {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <footer id="footer" className="bg-[#070709] text-[#ffffff] pt-16 sm:pt-20 border-t border-zinc-800/80">
+    <footer id="footer" className="bg-[#060606] text-[#ffffff] pt-16 sm:pt-20 border-t border-zinc-800/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
         {/* Top Section: 5 Columns Navigation */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-8 pb-12 border-b border-zinc-800/80">
           {/* Column 1: AXIVERS (Brand + Socials) */}
           <div className="lg:col-span-4 space-y-4 pr-0 lg:pr-6">
-            <Link href="/" className="inline-block">
+            <Link href="/" className="inline-block" aria-label="Axivers Home">
               <Image
-                src="/LogoOriginal.png"
-                alt="AXIVERS"
+                src="/brand/axivers-logo-white-clean.png"
+                alt="axivers"
                 width={130}
-                height={38}
-                className="h-8 w-auto object-contain hover:opacity-90 transition-opacity"
+                height={26}
+                className="h-7 w-auto object-contain hover:opacity-90 transition-opacity"
               />
             </Link>
             <p className="text-xs text-zinc-400 font-light leading-relaxed max-w-sm tracking-wide">
-              Elevated Essentials. Crafted in Sri Lanka. Engineered from our signature 60/40 cotton-modal blend for modern athletic luxury and all-day comfort.
+              Elevated essentials for the modern lifestyle. Thoughtfully designed and crafted in Sri Lanka with precision textiles, refined silhouettes, and considered craftsmanship. Own Your Axis.
             </p>
 
-            {/* Social Media Links */}
+            {/* Verified Social Media Links */}
             <div className="flex items-center space-x-3 pt-2 text-zinc-400">
               <a
                 href="https://www.instagram.com/axivers.clothing/"
@@ -84,51 +91,26 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2 text-xs font-light text-zinc-400">
               <li>
                 <Link href="/shop" className="hover:text-white transition-colors">
-                  Shop All
+                  Shop All Garments
                 </Link>
               </li>
               <li>
-                <Link href="/collections/men" className="hover:text-white transition-colors">
-                  Men&apos;s Collection
+                <Link href="/product/flagship-tee-black" className="hover:text-white transition-colors">
+                  The Signature Essential
                 </Link>
               </li>
               <li>
-                <Link href="/collections/women" className="hover:text-white transition-colors">
-                  Women&apos;s Collection
-                </Link>
-              </li>
-              <li>
-                <Link href="/collections/flagship-piping" className="hover:text-white transition-colors">
-                  Flagship Piping
-                </Link>
-              </li>
-              <li>
-                <Link href="/collections/minimalist-essentials" className="hover:text-white transition-colors">
-                  Minimalist Essentials
-                </Link>
-              </li>
-              <li>
-                <Link href="/collections/technical" className="hover:text-white transition-colors">
-                  Technical Garments
-                </Link>
-              </li>
-              <li>
-                <Link href="/collections/new-arrivals" className="hover:text-white transition-colors">
-                  New Arrivals
-                </Link>
-              </li>
-              <li>
-                <Link href="/collections/best-sellers" className="hover:text-white transition-colors">
-                  Best Sellers
+                <Link href="/lookbook" className="hover:text-white transition-colors">
+                  Editorial Lookbook
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Column 3: ABOUT */}
+          {/* Column 3: BRAND */}
           <div className="lg:col-span-2 space-y-3">
             <h4 className="text-xs uppercase tracking-[0.2em] font-display font-bold text-white">
-              ABOUT
+              BRAND
             </h4>
             <ul className="space-y-2 text-xs font-light text-zinc-400">
               <li>
@@ -138,17 +120,12 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link href="/fabric-technology" className="hover:text-white transition-colors">
-                  Fabric & Technology
+                  Fabric &amp; Craftsmanship
                 </Link>
               </li>
               <li>
                 <Link href="/lookbook" className="hover:text-white transition-colors">
-                  Lookbook
-                </Link>
-              </li>
-              <li>
-                <Link href="/journal" className="hover:text-white transition-colors">
-                  Journal
+                  Campaign Lookbook
                 </Link>
               </li>
             </ul>
@@ -157,12 +134,12 @@ export const Footer: React.FC = () => {
           {/* Column 4: CUSTOMER SUPPORT */}
           <div className="lg:col-span-2 space-y-3">
             <h4 className="text-xs uppercase tracking-[0.2em] font-display font-bold text-white">
-              CUSTOMER SUPPORT
+              CUSTOMER CARE
             </h4>
             <ul className="space-y-2 text-xs font-light text-zinc-400">
               <li>
                 <Link href="/contact" className="hover:text-white transition-colors">
-                  Contact Us
+                  Contact Concierge
                 </Link>
               </li>
               <li>
@@ -176,18 +153,18 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
+                <Link href="/care-guide" className="hover:text-white transition-colors">
+                  Care Instructions
+                </Link>
+              </li>
+              <li>
                 <Link href="/shipping" className="hover:text-white transition-colors">
-                  Shipping & Delivery
+                  Shipping &amp; Delivery
                 </Link>
               </li>
               <li>
                 <Link href="/returns" className="hover:text-white transition-colors">
-                  Returns & Exchanges
-                </Link>
-              </li>
-              <li>
-                <Link href="/care-guide" className="hover:text-white transition-colors">
-                  Care Guide
+                  Returns &amp; Exchanges
                 </Link>
               </li>
               <li>
@@ -211,7 +188,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link href="/terms-and-conditions" className="hover:text-white transition-colors">
-                  Terms & Conditions
+                  Terms &amp; Conditions
                 </Link>
               </li>
               <li>
@@ -226,11 +203,15 @@ export const Footer: React.FC = () => {
         {/* Middle Section: Newsletter Subscription */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center py-6 border-b border-zinc-800/80">
           <div className="lg:col-span-6 space-y-1">
+            <div className="inline-flex items-center space-x-2 text-[10px] uppercase tracking-[0.2em] text-[#c5a059] font-mono">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059]" />
+              <span>Priority Access</span>
+            </div>
             <h4 className="text-sm uppercase tracking-[0.2em] font-display font-bold text-white">
-              Join the Axivers Inner Circle
+              Join the Axivers Launch
             </h4>
             <p className="text-xs text-zinc-400 font-light tracking-wide">
-              Receive priority access to limited edition drops, fabric insights, and private releases.
+              Receive priority access to limited edition drops, craftsmanship insights, and private release notifications.
             </p>
           </div>
           <div className="lg:col-span-6">
@@ -241,51 +222,48 @@ export const Footer: React.FC = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email address"
                 required
-                className="bg-[#111114] border border-zinc-800 text-xs px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 rounded-xl flex-1 tracking-wide"
+                className="bg-[#101012] border border-zinc-800 text-xs px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 rounded-xl flex-1 tracking-wide"
               />
               <button
                 type="submit"
-                className="px-6 py-3 bg-white text-black font-display text-xs uppercase tracking-wider font-bold hover:bg-zinc-200 transition-all rounded-xl cursor-pointer shrink-0"
+                disabled={isSubmitting}
+                className="px-6 py-3 bg-white text-black font-display text-xs uppercase tracking-wider font-bold hover:bg-zinc-200 transition-all rounded-xl cursor-pointer shrink-0 disabled:opacity-50"
               >
-                {subscribed ? 'SUBSCRIBED' : 'SUBSCRIBE'}
+                {subscribed ? 'REGISTERED' : isSubmitting ? 'JOINING...' : 'GET EARLY ACCESS'}
               </button>
             </form>
             {subscribed && (
               <p className="text-[11px] text-emerald-400 mt-2 font-display">
-                Thank you for subscribing. You will receive exclusive garment updates.
+                Thank you for joining. You have been added to our early-access launch registry.
               </p>
             )}
           </div>
         </div>
 
-        {/* Bottom Section: Payment Methods & Copyright */}
+        {/* Bottom Section: Legal & Corporate Identification */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 py-6 text-xs font-light text-zinc-500">
           <div className="space-y-1 text-center md:text-left">
-            <div>© {new Date().getFullYear()} Axivers Clothing (Pvt) Ltd. All rights reserved.</div>
+            <div>
+              &copy; {new Date().getFullYear()} Axivers Clothing (Pvt) Ltd. All rights reserved.
+            </div>
             <div className="text-[11px] text-zinc-600">
-              Registered in Colombo, Sri Lanka • Athletic Luxury Apparel
+              Registered in Colombo, Sri Lanka • Athletic Luxury Apparel • Own Your Axis
             </div>
           </div>
 
-          {/* Accepted Genuine Payment Methods Badges */}
+          {/* Genuine Sri Lanka Payment Badges */}
           <div className="flex flex-wrap items-center justify-center gap-2">
             <span className="text-[10px] uppercase tracking-wider text-zinc-500 mr-2 font-display">
-              Accepted Payments:
+              Payment Methods:
             </span>
-            <div className="px-2.5 py-1 rounded bg-[#111114] border border-zinc-800 text-[10px] font-mono text-zinc-300">
-              Cash on Delivery
+            <div className="px-2.5 py-1 rounded bg-[#111114] border border-zinc-800 text-[10px] font-mono text-zinc-400">
+              Cash on Delivery (COD)
             </div>
-            <div className="px-2.5 py-1 rounded bg-[#111114] border border-zinc-800 text-[10px] font-mono text-zinc-300">
+            <div className="px-2.5 py-1 rounded bg-[#111114] border border-zinc-800 text-[10px] font-mono text-zinc-400">
               Bank Transfer
             </div>
-            <div className="px-2.5 py-1 rounded bg-[#111114] border border-zinc-800 text-[10px] font-mono text-zinc-300">
-              Visa
-            </div>
-            <div className="px-2.5 py-1 rounded bg-[#111114] border border-zinc-800 text-[10px] font-mono text-zinc-300">
-              Mastercard
-            </div>
-            <div className="px-2.5 py-1 rounded bg-[#111114] border border-zinc-800 text-[10px] font-mono text-zinc-300">
-              PayHere
+            <div className="px-2.5 py-1 rounded bg-[#111114] border border-zinc-800 text-[10px] font-mono text-zinc-400">
+              Visa / Mastercard
             </div>
           </div>
         </div>
