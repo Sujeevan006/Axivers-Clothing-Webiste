@@ -19,7 +19,7 @@ export default function LookbookPage() {
       aspect: 'aspect-[3/4]',
       colSpan: 'lg:col-span-7',
       productLink: '/product/flagship-tee-black',
-      specs: '180 GSM Mercerized Cotton • Target Price LKR 4,000.00',
+      specs: '180 GSM Mercerized Cotton • LKR 4,000.00',
       description:
         'Sculpted shoulder lines with a gentle athletic taper, worn with minimalist casual tailoring in contemporary charcoal surroundings.',
     },
@@ -69,63 +69,63 @@ export default function LookbookPage() {
       productLink: '/shop',
       specs: '180 GSM Mercerized Cotton • Clean Metallic Gold Print',
       description:
-        'A study in optic white jersey featuring the same reflective metallic-gold logo screen print. Planned for upcoming seasonal capsule releases subject to production verification.',
+        'A study in optic white jersey featuring the same reflective metallic-gold logo screen print. Planned for upcoming seasonal capsule releases.',
     },
   ];
 
   return (
-    <div className="min-h-screen bg-[#060606] text-[#ffffff] pt-24 sm:pt-28 pb-24">
+    <div className="min-h-screen bg-white text-[#060606] pt-24 sm:pt-28 pb-24">
       {/* Editorial Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center space-y-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 text-center space-y-3">
         <span className="text-[10px] uppercase tracking-[0.3em] text-[#c5a059] font-mono block">
           Editorial Series &bull; Season 01
         </span>
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-display font-light tracking-tight uppercase text-white">
-          The <span className="font-bold">Axivers Lookbook</span>
+        <h1 className="text-3xl sm:text-5xl font-display font-bold tracking-tight uppercase text-[#060606]">
+          The Axivers Lookbook
         </h1>
-        <p className="text-xs sm:text-sm font-light text-zinc-400 max-w-xl mx-auto leading-relaxed">
+        <p className="text-xs sm:text-sm font-light text-zinc-500 max-w-xl mx-auto leading-relaxed">
           An exploration of form, drape, and movement. Documenting everyday essentials refined through athletic luxury and precision Sri Lankan craftsmanship.
         </p>
       </div>
 
       {/* Editorial Visual Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
           {looks.map((look) => (
             <div
               key={look.id}
-              className={`${look.colSpan} group rounded-3xl overflow-hidden border border-zinc-800/80 bg-[#0a0a0d] shadow-2xl flex flex-col justify-between hover:border-zinc-700 transition-all`}
+              className={`${look.colSpan} group rounded-2xl overflow-hidden border border-zinc-200 bg-[#fafafa] shadow-sm flex flex-col justify-between hover:border-zinc-400 transition-all`}
             >
-              <div className={`relative ${look.aspect} w-full overflow-hidden bg-[#09090b]`}>
+              <div className={`relative ${look.aspect} w-full overflow-hidden bg-[#f6f6f6]`}>
                 <Image
                   src={look.image}
                   alt={look.title}
                   fill
                   sizes="(max-width: 1024px) 100vw, 60vw"
-                  className="object-cover object-center group-hover:scale-103 transition-transform duration-700"
+                  className="object-cover object-center group-hover:scale-102 transition-transform duration-700 ease-out"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent opacity-60" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-40 pointer-events-none" />
               </div>
 
-              <div className="p-6 sm:p-8 space-y-3 border-t border-zinc-900 bg-[#0a0a0d]">
+              <div className="p-6 sm:p-7 space-y-2 border-t border-zinc-200 bg-white">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                  <h3 className="text-base sm:text-lg font-display uppercase tracking-wider font-bold text-white">
+                  <h3 className="text-base font-display uppercase tracking-wider font-bold text-[#060606]">
                     {look.title}
                   </h3>
-                  <span className="text-[11px] font-mono text-[#c5a059]">
+                  <span className="text-[11px] font-mono text-[#c5a059] font-medium">
                     {look.specs}
                   </span>
                 </div>
-                <div className="text-xs font-mono text-zinc-400">
+                <div className="text-xs font-mono text-zinc-500">
                   {look.subtitle}
                 </div>
-                <p className="text-xs text-zinc-400 font-light leading-relaxed">
+                <p className="text-xs text-zinc-600 font-light leading-relaxed pt-1">
                   {look.description}
                 </p>
                 <div className="pt-2">
                   <Link
                     href={look.productLink}
-                    className="inline-flex items-center space-x-1.5 text-xs font-display uppercase tracking-wider font-semibold text-white hover:text-[#c5a059] transition-colors"
+                    className="inline-flex items-center space-x-1.5 text-xs font-display uppercase tracking-wider font-semibold text-[#060606] hover:text-zinc-600 transition-colors"
                   >
                     <span>Garment Details</span>
                     <span>&rarr;</span>
@@ -137,19 +137,19 @@ export default function LookbookPage() {
         </div>
 
         {/* Bottom Banner */}
-        <div className="mt-16 text-center border-t border-zinc-900 pt-12 space-y-4 max-w-xl mx-auto">
-          <h4 className="text-sm uppercase tracking-[0.2em] font-display font-bold text-white">
+        <div className="mt-16 text-center border-t border-zinc-200 pt-12 space-y-4 max-w-xl mx-auto">
+          <h4 className="text-sm uppercase tracking-[0.2em] font-display font-bold text-[#060606]">
             Own Your Axis
           </h4>
-          <p className="text-xs text-zinc-400 font-light">
+          <p className="text-xs text-zinc-500 font-light">
             Register for our private launch registry to receive invitations to inaugural small-batch releases.
           </p>
           <div className="pt-2">
             <Link
-              href="/#early-access"
-              className="px-7 py-3 bg-white text-black font-display text-xs uppercase tracking-wider font-bold rounded-full hover:bg-zinc-200 transition-colors inline-block"
+              href="/shop"
+              className="px-7 py-3.5 bg-[#060606] text-white font-display text-xs uppercase tracking-wider font-bold rounded-lg hover:bg-zinc-800 transition-colors inline-block shadow-sm"
             >
-              Get Early Access
+              Explore Collection
             </Link>
           </div>
         </div>

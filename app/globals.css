@@ -8,20 +8,20 @@
   --font-mono:
     'Roboto', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  /* Axivers Master Monochrome Palette with Restrained Metallic Gold */
-  --color-brand-dark: #060606;
-  --color-brand-light: #f6f6f6;
+  /* Axivers Hybrid 70% Light / 30% Dark Palette */
   --color-brand-white: #ffffff;
-  --color-brand-black: #000000;
-  --color-brand-accent: #ffffff;
-  --color-brand-border: #1c1c1f;
+  --color-brand-offwhite: #f6f6f6;
+  --color-brand-lightgray: #efefef;
+  --color-brand-muted: #777777;
+  --color-brand-charcoal: #1a1a1a;
+  --color-brand-dark: #060606;
   --color-brand-gold: #c5a059;
   --color-brand-gold-metallic: #d4af37;
 
-  --animate-fade-in: fade-in 0.5s ease-out forwards;
-  --animate-slide-up: slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  --animate-slide-left: slide-left 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  --animate-slide-right: slide-right 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-fade-in: fade-in 0.4s ease-out forwards;
+  --animate-slide-up: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-slide-left: slide-left 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-slide-right: slide-right 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes fade-in {
@@ -35,7 +35,7 @@
 
 @keyframes slide-up {
   from {
-    transform: translateY(20px);
+    transform: translateY(16px);
     opacity: 0;
   }
   to {
@@ -62,12 +62,12 @@
   }
 }
 
-/* Custom global rules for minimalist monochrome athletic luxury aesthetic */
+/* Base styles: Light, clean, refined modern fashion aesthetic */
 @layer base {
   html,
   body {
-    background-color: var(--color-brand-dark);
-    color: var(--color-brand-light);
+    background-color: #ffffff;
+    color: #060606;
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -77,8 +77,8 @@
 
   /* High contrast selection styling */
   ::selection {
-    background-color: #ffffff;
-    color: #000000;
+    background-color: #060606;
+    color: #ffffff;
   }
 
   /* Minimalist monochrome scrollbar */
@@ -88,44 +88,17 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #060606;
+    background: #f6f6f6;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #27272a;
+    background: #d4d4d8;
     border-radius: 3px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #ffffff;
+    background: #060606;
   }
-}
-
-/* Glassmorphism utilities */
-.glass-card {
-  background: rgba(10, 10, 12, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.glass-card-white {
-  background: rgba(20, 20, 24, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.glass-card-gold {
-  background: rgba(18, 16, 12, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(197, 160, 89, 0.3);
-}
-
-.text-stroke-white {
-  -webkit-text-stroke: 1px #ffffff;
-  color: transparent;
 }
 
 /* Reduced motion preference support */

@@ -87,24 +87,23 @@ export default function FAQPage() {
   const currentCategory = FAQ_DATA.find((c) => c.category === activeCategory) || FAQ_DATA[0];
 
   return (
-    <div className="min-h-screen bg-[#060606] text-[#ffffff] pt-24 sm:pt-28 pb-24 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto space-y-12">
+    <div className="min-h-screen bg-white text-[#060606] pt-24 sm:pt-28 pb-20 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto space-y-10 sm:space-y-12">
         {/* Header */}
-        <div className="text-center space-y-3 pt-6">
-          <div className="inline-flex items-center space-x-2 text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059]" />
-            <span>Frequently Asked Questions</span>
-          </div>
-          <h1 className="text-3xl sm:text-5xl font-display font-light uppercase tracking-tight text-white">
-            Frequently Asked <span className="font-bold">Questions</span>
+        <div className="text-center space-y-2 pt-4">
+          <span className="text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono font-medium block">
+            Frequently Asked Questions
+          </span>
+          <h1 className="text-3xl sm:text-4xl font-display font-bold uppercase tracking-tight text-[#060606]">
+            Questions &amp; Answers
           </h1>
-          <p className="text-xs sm:text-sm font-light text-zinc-300 max-w-lg mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm font-light text-zinc-500 max-w-lg mx-auto leading-relaxed">
             Find answers regarding our master textile specifications, initial launch, ordering procedures, and shipping policies.
           </p>
         </div>
 
         {/* Category Pill Tabs */}
-        <div className="flex flex-wrap justify-center gap-2 border-b border-zinc-900 pb-6">
+        <div className="flex flex-wrap justify-center gap-2 border-b border-zinc-200 pb-5">
           {FAQ_DATA.map((cat) => (
             <button
               key={cat.category}
@@ -112,10 +111,10 @@ export default function FAQPage() {
                 setActiveCategory(cat.category);
                 setOpenQuestionIndex(0);
               }}
-              className={`px-4 py-2 rounded-full text-xs font-display uppercase tracking-wider transition-all cursor-pointer ${
+              className={`px-4 py-2 rounded-lg text-xs font-display uppercase tracking-wider transition-all cursor-pointer ${
                 activeCategory === cat.category
-                  ? 'bg-white text-black font-bold shadow-md'
-                  : 'bg-zinc-900/60 text-zinc-400 hover:text-white border border-zinc-800'
+                  ? 'bg-[#060606] text-white font-bold shadow-sm'
+                  : 'bg-white text-zinc-700 hover:text-black border border-zinc-200 hover:border-black'
               }`}
             >
               {cat.category}
@@ -124,19 +123,19 @@ export default function FAQPage() {
         </div>
 
         {/* Accordion Questions */}
-        <div className="space-y-4">
+        <div className="space-y-3">
           {currentCategory.items.map((item, idx) => {
             const isOpen = openQuestionIndex === idx;
             return (
               <div
                 key={idx}
-                className="bg-[#0b0b0e] border border-zinc-800/80 rounded-2xl overflow-hidden transition-colors"
+                className="bg-[#fafafa] border border-zinc-200 rounded-xl overflow-hidden transition-colors"
               >
                 <button
                   onClick={() => setOpenQuestionIndex(isOpen ? null : idx)}
-                  className="w-full p-5 sm:p-6 text-left flex justify-between items-center space-x-4 cursor-pointer hover:bg-zinc-900/40 transition-colors"
+                  className="w-full p-5 text-left flex justify-between items-center space-x-4 cursor-pointer hover:bg-zinc-100 transition-colors"
                 >
-                  <span className="text-sm font-display font-semibold uppercase tracking-wider text-white">
+                  <span className="text-xs sm:text-sm font-display font-bold uppercase tracking-wider text-[#060606]">
                     {item.q}
                   </span>
                   <span className="text-lg text-zinc-400 font-mono shrink-0">
@@ -144,7 +143,7 @@ export default function FAQPage() {
                   </span>
                 </button>
                 {isOpen && (
-                  <div className="px-5 sm:px-6 pb-6 text-xs sm:text-sm font-light text-zinc-300 leading-relaxed border-t border-zinc-900 pt-4">
+                  <div className="px-5 pb-5 text-xs sm:text-sm font-light text-zinc-600 leading-relaxed border-t border-zinc-200 pt-3 bg-white">
                     {item.a}
                   </div>
                 )}
@@ -154,13 +153,13 @@ export default function FAQPage() {
         </div>
 
         {/* Bottom Concierge Link */}
-        <div className="border-t border-zinc-900 pt-8 text-center space-y-3">
-          <p className="text-xs text-zinc-400">
+        <div className="border-t border-zinc-200 pt-6 text-center space-y-2">
+          <p className="text-xs text-zinc-500">
             Have a question that is not addressed here?
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center space-x-1.5 text-xs font-display uppercase tracking-wider font-semibold text-white underline hover:text-[#c5a059] transition-colors"
+            className="inline-flex items-center space-x-1.5 text-xs font-display uppercase tracking-wider font-semibold text-[#060606] underline hover:text-zinc-600 transition-colors"
           >
             <span>Inquire Directly with Concierge</span>
             <span>&rarr;</span>

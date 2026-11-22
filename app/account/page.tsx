@@ -8,28 +8,28 @@ export default function AccountPage() {
   const [phone, setPhone] = useState('');
 
   return (
-    <div className="min-h-screen bg-[#060606] text-[#ffffff] pt-28 sm:pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-white text-[#060606] pt-28 sm:pt-32 pb-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-xl mx-auto space-y-8">
         {/* Header */}
         <div className="text-center space-y-3">
-          <span className="text-[10px] uppercase tracking-[0.3em] text-zinc-400 font-display font-semibold block">
+          <span className="text-[10px] uppercase tracking-[0.3em] text-[#777777] font-semibold block">
             Customer Portal
           </span>
-          <h1 className="text-3xl sm:text-4xl font-display font-light uppercase tracking-tight text-white">
+          <h1 className="text-3xl sm:text-4xl font-display font-light uppercase tracking-tight text-[#060606]">
             Axivers <span className="font-bold">Client Account</span>
           </h1>
-          <p className="text-xs sm:text-sm font-light text-zinc-400">
+          <p className="text-xs sm:text-sm font-light text-[#777777]">
             Access your order history, delivery status, and saved address information.
           </p>
         </div>
 
         {/* Quick Order Lookup Form */}
-        <div className="bg-[#111114] border border-zinc-800/80 rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xl">
+        <div className="bg-[#f6f6f6] border border-zinc-200 rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm">
           <div className="space-y-1">
-            <h2 className="text-base font-display font-bold uppercase text-white tracking-wider">
+            <h2 className="text-base font-display font-bold uppercase text-[#060606] tracking-wider">
               Quick Order Access
             </h2>
-            <p className="text-xs text-zinc-400 font-light">
+            <p className="text-xs text-[#777777] font-light">
               Enter your order reference and registered phone number to view live fulfillment updates.
             </p>
           </div>
@@ -44,7 +44,7 @@ export default function AccountPage() {
             className="space-y-4"
           >
             <div className="space-y-1.5">
-              <label className="block text-[10px] uppercase font-display font-semibold tracking-wider text-zinc-400">
+              <label className="block text-[10px] uppercase font-semibold tracking-wider text-[#777777]">
                 Order Reference Number *
               </label>
               <input
@@ -53,12 +53,12 @@ export default function AccountPage() {
                 value={orderNumber}
                 onChange={(e) => setOrderNumber(e.target.value)}
                 placeholder="e.g. AXV-84920"
-                className="w-full bg-[#0a0a0d] border border-zinc-800 rounded-xl px-4 py-3 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-white font-mono uppercase"
+                className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-3 text-xs text-[#060606] placeholder-zinc-400 focus:outline-none focus:border-black font-mono uppercase transition-colors"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-[10px] uppercase font-display font-semibold tracking-wider text-zinc-400">
+              <label className="block text-[10px] uppercase font-semibold tracking-wider text-[#777777]">
                 Registered Phone Number
               </label>
               <input
@@ -66,13 +66,13 @@ export default function AccountPage() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="e.g. 077 123 4567"
-                className="w-full bg-[#0a0a0d] border border-zinc-800 rounded-xl px-4 py-3 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-white font-mono"
+                className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-3 text-xs text-[#060606] placeholder-zinc-400 focus:outline-none focus:border-black font-mono transition-colors"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full py-3.5 rounded-xl bg-white text-black font-display text-xs uppercase tracking-widest font-bold hover:bg-zinc-200 transition-all cursor-pointer shadow-lg"
+              className="w-full py-3.5 rounded-xl bg-[#060606] text-white font-display text-xs uppercase tracking-widest font-bold hover:bg-zinc-800 transition-colors cursor-pointer"
             >
               Lookup Order Details &rarr;
             </button>
@@ -80,21 +80,21 @@ export default function AccountPage() {
         </div>
 
         {/* Benefits of Client Account */}
-        <div className="bg-[#101013] border border-zinc-800/80 rounded-2xl p-6 space-y-4 text-xs font-light text-zinc-400">
-          <h3 className="text-xs uppercase tracking-wider font-display font-bold text-white">
+        <div className="bg-[#f6f6f6] border border-zinc-200 rounded-2xl p-6 space-y-4 text-xs font-light text-[#777777]">
+          <h3 className="text-xs uppercase tracking-wider font-display font-bold text-[#060606]">
             Client Services & Privileges
           </h3>
           <ul className="space-y-2">
             <li className="flex items-center space-x-2">
-              <span className="text-white">•</span>
+              <span className="text-[#060606]">•</span>
               <span>Priority dispatch for verified client accounts.</span>
             </li>
             <li className="flex items-center space-x-2">
-              <span className="text-white">•</span>
+              <span className="text-[#060606]">•</span>
               <span>7-day instant doorstep exchange service in Colombo.</span>
             </li>
             <li className="flex items-center space-x-2">
-              <span className="text-white">•</span>
+              <span className="text-[#060606]">•</span>
               <span>Invitations to limited-run 180 GSM mercerized cotton seasonal drops.</span>
             </li>
           </ul>

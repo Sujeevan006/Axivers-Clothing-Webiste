@@ -47,63 +47,58 @@ export default function CareGuidePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#060606] text-[#ffffff] pt-24 sm:pt-28 pb-24 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto space-y-12">
+    <div className="min-h-screen bg-white text-[#060606] pt-24 sm:pt-28 pb-20 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto space-y-10 sm:space-y-12">
         {/* Header */}
-        <div className="text-center space-y-3 pt-6">
-          <div className="inline-flex items-center space-x-2 text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059]" />
-            <span>Garment Longevity</span>
-          </div>
-          <h1 className="text-3xl sm:text-5xl font-display font-light uppercase tracking-tight text-white">
-            Axivers <span className="font-bold">Care Guide</span>
+        <div className="text-center space-y-2 pt-4">
+          <span className="text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono font-medium block">
+            Garment Longevity Protocol
+          </span>
+          <h1 className="text-3xl sm:text-4xl font-display font-bold uppercase tracking-tight text-[#060606]">
+            Care &amp; Maintenance
           </h1>
-          <p className="text-xs sm:text-sm font-light text-zinc-300 max-w-lg mx-auto leading-relaxed">
-            Follow these considered practices to preserve the smooth hand feel, collar resilience, and metallic-gold finish of your Axivers essentials.
+          <p className="text-xs sm:text-sm font-light text-zinc-500 max-w-lg mx-auto leading-relaxed">
+            Preserve the lustre, drape, and structural recovery of your 180 GSM mercerized cotton essentials with our recommended care practices.
           </p>
         </div>
 
-        {/* 4 Pillars of Care */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* 4 Care Sections */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {careSections.map((sec) => (
             <div
               key={sec.title}
-              className="bg-[#0b0b0e] border border-zinc-800/80 rounded-3xl p-6 sm:p-7 space-y-4 shadow-xl"
+              className="bg-[#fafafa] border border-zinc-200 rounded-2xl p-6 sm:p-7 space-y-3 shadow-sm"
             >
-              <h3 className="text-base font-display font-bold uppercase text-white tracking-wider border-b border-zinc-900 pb-2">
+              <h3 className="text-sm font-display font-bold uppercase tracking-wider text-[#060606] border-b border-zinc-200 pb-2">
                 {sec.title}
               </h3>
-
-              <ul className="space-y-2.5 text-xs text-zinc-300 font-light leading-relaxed">
+              <ul className="space-y-2 text-xs font-light text-zinc-600 leading-relaxed list-disc pl-4">
                 {sec.rules.map((rule, idx) => (
-                  <li key={idx} className="flex items-start space-x-2">
-                    <span className="text-[#c5a059] font-mono text-[11px] mt-0.5">&bull;</span>
-                    <span>{rule}</span>
-                  </li>
+                  <li key={idx}>{rule}</li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
 
-        {/* Care Guidance Notice */}
-        <div className="bg-[#0a0a0d] border border-zinc-800/80 rounded-2xl p-6 text-xs text-zinc-400 space-y-2">
-          <h4 className="font-display uppercase tracking-wider font-bold text-white text-xs">
-            Approved Fabric Care Standards
+        {/* Additional Note */}
+        <div className="bg-[#fafafa] border border-zinc-200 rounded-2xl p-6 text-xs text-zinc-600 space-y-2 shadow-sm">
+          <h4 className="font-display font-bold uppercase text-[#060606]">
+            Why Mercerized Cotton Behaves Differently
           </h4>
           <p className="leading-relaxed">
-            These guidelines represent best practices for 180 GSM mercerized cotton single jersey knit and reflective metallic-gold screen prints. Always check the tagless heat-transfer label printed inside your garment for specific care symbols.
+            Mercerization alters the cotton fiber from a kidney-bean cross section to an elliptical, lustrous profile. This finishing process naturally minimizes shrinkage and fiber piling, allowing your garment to retain its smooth hand feel for years when laundered according to these recommendations.
           </p>
         </div>
 
-        {/* Bottom CTA */}
-        <div className="border-t border-zinc-900 pt-8 text-center space-y-3">
-          <p className="text-xs text-zinc-400">
-            Need further guidance regarding textile maintenance?
+        {/* Concierge Link */}
+        <div className="border-t border-zinc-200 pt-6 text-center space-y-2">
+          <p className="text-xs text-zinc-500">
+            Have questions regarding stain treatment or garment care?
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center space-x-1.5 text-xs font-display uppercase tracking-wider font-semibold text-white underline hover:text-[#c5a059] transition-colors"
+            className="inline-flex items-center space-x-1.5 text-xs font-display uppercase tracking-wider font-semibold text-[#060606] underline hover:text-zinc-600 transition-colors"
           >
             <span>Contact Axivers Concierge</span>
             <span>&rarr;</span>

@@ -63,18 +63,18 @@ export default function FabricTechnologyPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#060606] text-[#ffffff] pt-24 sm:pt-28 pb-24">
-      {/* Editorial Header Banner */}
-      <div className="relative h-96 sm:h-[480px] w-full overflow-hidden border-b border-zinc-900 flex items-center justify-center">
+    <div className="min-h-screen bg-white text-[#060606]">
+      {/* Editorial Dark Header Banner (Strategic 30% Dark Contrast Element) */}
+      <div className="relative h-80 sm:h-96 md:h-[440px] w-full overflow-hidden bg-[#060606] flex items-center justify-center">
         <Image
           src="/images/flagship-tee-black.jpg"
           alt="Axivers Fabric & Craftsmanship"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center opacity-30"
+          className="object-cover object-center opacity-45"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#060606] via-[#060606]/75 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#060606]/90 via-[#060606]/40 to-black/30" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-4">
           <div className="inline-flex items-center space-x-2 text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono">
@@ -83,7 +83,7 @@ export default function FabricTechnologyPage() {
           </div>
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-display font-light uppercase tracking-tight text-white leading-tight">
-            REFINED FROM <span className="font-bold">THE FIBRE.</span>
+            Refined from <span className="font-bold">The Fibre.</span>
           </h1>
 
           <p className="text-xs sm:text-sm md:text-base font-light text-zinc-300 max-w-2xl mx-auto leading-relaxed tracking-wide pt-1">
@@ -92,42 +92,42 @@ export default function FabricTechnologyPage() {
         </div>
       </div>
 
-      {/* Main Content Sections */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 space-y-16">
+      {/* Main Content Sections on Clean Light Background */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 space-y-16">
         {/* Specification Highlight Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-[#0b0b0e] border border-zinc-800/80 rounded-2xl p-6 space-y-2">
+          <div className="bg-[#fafafa] border border-zinc-200 rounded-2xl p-6 space-y-2 shadow-sm">
             <span className="text-[10px] uppercase font-mono tracking-wider text-[#c5a059] block">
               Fiber Base
             </span>
-            <div className="text-xl font-display font-bold uppercase text-white">
+            <div className="text-lg font-display font-bold uppercase text-[#060606]">
               100% Mercerized Cotton
             </div>
-            <p className="text-xs text-zinc-400 font-light leading-relaxed">
+            <p className="text-xs text-zinc-600 font-light leading-relaxed">
               Long-staple combed cotton treated to maximize surface smoothness, tensile strength, and color depth.
             </p>
           </div>
 
-          <div className="bg-[#0b0b0e] border border-zinc-800/80 rounded-2xl p-6 space-y-2">
+          <div className="bg-[#fafafa] border border-zinc-200 rounded-2xl p-6 space-y-2 shadow-sm">
             <span className="text-[10px] uppercase font-mono tracking-wider text-[#c5a059] block">
               Knit Weight
             </span>
-            <div className="text-xl font-display font-bold uppercase text-white">
+            <div className="text-lg font-display font-bold uppercase text-[#060606]">
               180 GSM Single Jersey
             </div>
-            <p className="text-xs text-zinc-400 font-light leading-relaxed">
+            <p className="text-xs text-zinc-600 font-light leading-relaxed">
               Optimized medium density that drapes cleanly without sheer transparency or unnecessary heat retention.
             </p>
           </div>
 
-          <div className="bg-[#0b0b0e] border border-zinc-800/80 rounded-2xl p-6 space-y-2">
+          <div className="bg-[#fafafa] border border-zinc-200 rounded-2xl p-6 space-y-2 shadow-sm">
             <span className="text-[10px] uppercase font-mono tracking-wider text-[#c5a059] block">
               Origin
             </span>
-            <div className="text-xl font-display font-bold uppercase text-white">
+            <div className="text-lg font-display font-bold uppercase text-[#060606]">
               Crafted in Sri Lanka
             </div>
-            <p className="text-xs text-zinc-400 font-light leading-relaxed">
+            <p className="text-xs text-zinc-600 font-light leading-relaxed">
               Milled, tailored, and inspected in Colombo, upholding global apparel engineering benchmarks.
             </p>
           </div>
@@ -135,40 +135,40 @@ export default function FabricTechnologyPage() {
 
         {/* Detailed 7 Pillars Matrix */}
         <div className="space-y-6">
-          <div className="border-b border-zinc-800 pb-4">
-            <h2 className="text-lg sm:text-xl font-display font-bold uppercase tracking-wider text-white">
+          <div className="border-b border-zinc-200 pb-4">
+            <h2 className="text-lg sm:text-xl font-display font-bold uppercase tracking-wider text-[#060606]">
               Construction Specifications &amp; Material Story
             </h2>
-            <p className="text-xs text-zinc-400 font-light">
+            <p className="text-xs text-zinc-500 font-light">
               Documented design targets and material specifications for our inaugural flagship garment.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-6">
+          <div className="grid grid-cols-1 gap-5">
             {sections.map((sec) => (
               <div
                 key={sec.num}
-                className="bg-[#0a0a0d] border border-zinc-800/80 rounded-2xl p-6 sm:p-8 space-y-3 hover:border-zinc-700 transition-colors"
+                className="bg-[#fafafa] border border-zinc-200 rounded-2xl p-6 sm:p-7 space-y-3 hover:border-zinc-300 transition-colors shadow-sm"
               >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-zinc-900 pb-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-zinc-200/80 pb-3">
                   <div className="flex items-center space-x-3">
-                    <span className="text-xs font-mono font-bold text-[#c5a059] bg-[#c5a059]/10 px-2 py-0.5 rounded border border-[#c5a059]/20">
+                    <span className="text-xs font-mono font-bold text-[#c5a059] bg-[#c5a059]/10 px-2.5 py-0.5 rounded border border-[#c5a059]/30">
                       {sec.num}
                     </span>
-                    <h3 className="text-base sm:text-lg font-display uppercase tracking-wider font-bold text-white">
+                    <h3 className="text-base sm:text-lg font-display uppercase tracking-wider font-bold text-[#060606]">
                       {sec.title}
                     </h3>
                   </div>
-                  <span className="text-xs font-mono text-zinc-400">
+                  <span className="text-xs font-mono text-zinc-500">
                     {sec.subtitle}
                   </span>
                 </div>
 
-                <p className="text-xs sm:text-sm font-light text-zinc-300 leading-relaxed pt-1">
+                <p className="text-xs sm:text-sm font-light text-zinc-600 leading-relaxed pt-1">
                   {sec.desc}
                 </p>
 
-                <div className="pt-2 flex items-center space-x-2 text-[11px] font-mono text-[#c5a059]">
+                <div className="pt-1 flex items-center space-x-2 text-[11px] font-mono text-[#c5a059]">
                   <span>&bull;</span>
                   <span>{sec.highlight}</span>
                 </div>
@@ -178,23 +178,23 @@ export default function FabricTechnologyPage() {
         </div>
 
         {/* Bottom CTA Section */}
-        <div className="border-t border-zinc-900 pt-12 text-center space-y-4">
-          <h3 className="text-xl sm:text-2xl font-display font-bold uppercase text-white">
+        <div className="border-t border-zinc-200 pt-12 text-center space-y-4">
+          <h3 className="text-xl sm:text-2xl font-display font-bold uppercase text-[#060606]">
             Experience Considered Quality
           </h3>
-          <p className="text-xs sm:text-sm font-light text-zinc-400 max-w-md mx-auto">
+          <p className="text-xs sm:text-sm font-light text-zinc-500 max-w-md mx-auto">
             Discover how considered construction and refined materials redefine your everyday wardrobe.
           </p>
-          <div className="pt-2 flex justify-center gap-4">
+          <div className="pt-2 flex flex-col sm:flex-row justify-center gap-3">
             <Link
               href="/product/flagship-tee-black"
-              className="px-7 py-3.5 bg-white text-black font-display text-xs uppercase tracking-wider font-bold rounded-full hover:bg-zinc-200 transition-colors"
+              className="px-7 py-3.5 bg-[#060606] text-white font-display text-xs uppercase tracking-wider font-bold rounded-lg hover:bg-zinc-800 transition-colors shadow-sm"
             >
               View Flagship Garment
             </Link>
             <Link
               href="/our-story"
-              className="px-7 py-3.5 bg-zinc-900 border border-zinc-800 text-white font-display text-xs uppercase tracking-wider font-medium rounded-full hover:border-zinc-600 transition-colors"
+              className="px-7 py-3.5 bg-white border border-zinc-300 text-zinc-800 font-display text-xs uppercase tracking-wider font-medium rounded-lg hover:border-black transition-colors"
             >
               Our Story
             </Link>

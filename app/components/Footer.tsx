@@ -15,7 +15,6 @@ export const Footer: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      // Record early-access subscriber
       setSubscribed(true);
       setTimeout(() => {
         setIsSubmitting(false);
@@ -26,23 +25,23 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer id="footer" className="bg-[#060606] text-[#ffffff] pt-16 sm:pt-20 border-t border-zinc-800/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
-        {/* Top Section: 5 Columns Navigation */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-8 pb-12 border-b border-zinc-800/80">
-          {/* Column 1: AXIVERS (Brand + Socials) */}
-          <div className="lg:col-span-4 space-y-4 pr-0 lg:pr-6">
+    <footer id="footer" className="bg-[#060606] text-white pt-16 sm:pt-20 pb-12 border-t border-zinc-850">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        {/* Top Grid: Brand Statement + Compact Navigation Columns */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 pb-12 border-b border-zinc-800/80">
+          {/* Brand Info & Socials */}
+          <div className="lg:col-span-5 space-y-4 pr-0 lg:pr-8">
             <Link href="/" className="inline-block" aria-label="Axivers Home">
               <Image
                 src="/brand/axivers-logo-white-clean.png"
-                alt="axivers"
+                alt="Axivers"
                 width={130}
                 height={26}
-                className="h-7 w-auto object-contain hover:opacity-90 transition-opacity"
+                className="h-6 sm:h-7 w-auto object-contain hover:opacity-90 transition-opacity"
               />
             </Link>
             <p className="text-xs text-zinc-400 font-light leading-relaxed max-w-sm tracking-wide">
-              Elevated essentials for the modern lifestyle. Thoughtfully designed and crafted in Sri Lanka with precision textiles, refined silhouettes, and considered craftsmanship. Own Your Axis.
+              Elevated essentials for the modern lifestyle.
             </p>
 
             {/* Verified Social Media Links */}
@@ -83,15 +82,15 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Column 2: SHOP */}
+          {/* Shop Column */}
           <div className="lg:col-span-2 space-y-3">
             <h4 className="text-xs uppercase tracking-[0.2em] font-display font-bold text-white">
-              SHOP
+              Shop
             </h4>
             <ul className="space-y-2 text-xs font-light text-zinc-400">
               <li>
                 <Link href="/shop" className="hover:text-white transition-colors">
-                  Shop All Garments
+                  All Garments
                 </Link>
               </li>
               <li>
@@ -101,16 +100,16 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link href="/lookbook" className="hover:text-white transition-colors">
-                  Editorial Lookbook
+                  Lookbook
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Column 3: BRAND */}
+          {/* Brand Column */}
           <div className="lg:col-span-2 space-y-3">
             <h4 className="text-xs uppercase tracking-[0.2em] font-display font-bold text-white">
-              BRAND
+              Brand
             </h4>
             <ul className="space-y-2 text-xs font-light text-zinc-400">
               <li>
@@ -124,42 +123,22 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/lookbook" className="hover:text-white transition-colors">
-                  Campaign Lookbook
+                <Link href="/contact" className="hover:text-white transition-colors">
+                  Contact
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Column 4: CUSTOMER SUPPORT */}
-          <div className="lg:col-span-2 space-y-3">
+          {/* Customer Care & Legal Column */}
+          <div className="lg:col-span-3 space-y-3">
             <h4 className="text-xs uppercase tracking-[0.2em] font-display font-bold text-white">
-              CUSTOMER CARE
+              Customer Care &amp; Legal
             </h4>
             <ul className="space-y-2 text-xs font-light text-zinc-400">
               <li>
-                <Link href="/contact" className="hover:text-white transition-colors">
-                  Contact Concierge
-                </Link>
-              </li>
-              <li>
-                <Link href="/faq" className="hover:text-white transition-colors">
-                  FAQ
-                </Link>
-              </li>
-              <li>
-                <Link href="/size-guide" className="hover:text-white transition-colors">
-                  Size Guide
-                </Link>
-              </li>
-              <li>
-                <Link href="/care-guide" className="hover:text-white transition-colors">
-                  Care Instructions
-                </Link>
-              </li>
-              <li>
                 <Link href="/shipping" className="hover:text-white transition-colors">
-                  Shipping &amp; Delivery
+                  Shipping Information
                 </Link>
               </li>
               <li>
@@ -168,19 +147,10 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/track-order" className="hover:text-white transition-colors">
-                  Track Order
+                <Link href="/size-guide" className="hover:text-white transition-colors">
+                  Size Guide
                 </Link>
               </li>
-            </ul>
-          </div>
-
-          {/* Column 5: LEGAL */}
-          <div className="lg:col-span-2 space-y-3">
-            <h4 className="text-xs uppercase tracking-[0.2em] font-display font-bold text-white">
-              LEGAL
-            </h4>
-            <ul className="space-y-2 text-xs font-light text-zinc-400">
               <li>
                 <Link href="/privacy-policy" className="hover:text-white transition-colors">
                   Privacy Policy
@@ -191,80 +161,46 @@ export const Footer: React.FC = () => {
                   Terms &amp; Conditions
                 </Link>
               </li>
-              <li>
-                <Link href="/refund-policy" className="hover:text-white transition-colors">
-                  Refund Policy
-                </Link>
-              </li>
             </ul>
           </div>
         </div>
 
-        {/* Middle Section: Newsletter Subscription */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center py-6 border-b border-zinc-800/80">
-          <div className="lg:col-span-6 space-y-1">
-            <div className="inline-flex items-center space-x-2 text-[10px] uppercase tracking-[0.2em] text-[#c5a059] font-mono">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059]" />
-              <span>Priority Access</span>
-            </div>
-            <h4 className="text-sm uppercase tracking-[0.2em] font-display font-bold text-white">
-              Join the Axivers Launch
+        {/* Priority Access Newsletter */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 py-4 border-b border-zinc-850">
+          <div className="space-y-1">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-[#c5a059] font-mono block">
+              Priority Access
+            </span>
+            <h4 className="text-sm uppercase tracking-[0.18em] font-display font-bold text-white">
+              Join the Axivers Release Registry
             </h4>
-            <p className="text-xs text-zinc-400 font-light tracking-wide">
-              Receive priority access to limited edition drops, craftsmanship insights, and private release notifications.
-            </p>
           </div>
-          <div className="lg:col-span-6">
-            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email address"
-                required
-                className="bg-[#101012] border border-zinc-800 text-xs px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 rounded-xl flex-1 tracking-wide"
-              />
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="px-6 py-3 bg-white text-black font-display text-xs uppercase tracking-wider font-bold hover:bg-zinc-200 transition-all rounded-xl cursor-pointer shrink-0 disabled:opacity-50"
-              >
-                {subscribed ? 'REGISTERED' : isSubmitting ? 'JOINING...' : 'GET EARLY ACCESS'}
-              </button>
-            </form>
-            {subscribed && (
-              <p className="text-[11px] text-emerald-400 mt-2 font-display">
-                Thank you for joining. You have been added to our early-access launch registry.
-              </p>
-            )}
-          </div>
+          <form onSubmit={handleSubscribe} className="flex w-full md:w-auto gap-2">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter email address"
+              required
+              className="bg-zinc-900 border border-zinc-800 text-xs px-4 py-2.5 text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 rounded-lg flex-1 md:w-64 tracking-wide"
+            />
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="px-5 py-2.5 bg-white text-black font-display text-xs uppercase tracking-wider font-bold hover:bg-zinc-200 transition-colors rounded-lg cursor-pointer shrink-0 disabled:opacity-50"
+            >
+              {subscribed ? 'Joined' : 'Join'}
+            </button>
+          </form>
         </div>
 
-        {/* Bottom Section: Legal & Corporate Identification */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6 py-6 text-xs font-light text-zinc-500">
-          <div className="space-y-1 text-center md:text-left">
-            <div>
-              &copy; {new Date().getFullYear()} Axivers Clothing (Pvt) Ltd. All rights reserved.
-            </div>
-            <div className="text-[11px] text-zinc-600">
-              Registered in Colombo, Sri Lanka • Athletic Luxury Apparel • Own Your Axis
-            </div>
+        {/* Copyright & Confirmation */}
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-light text-zinc-500">
+          <div>
+            &copy; {new Date().getFullYear()} Axivers Clothing (Pvt) Ltd. All rights reserved.
           </div>
-
-          {/* Genuine Sri Lanka Payment Badges */}
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            <span className="text-[10px] uppercase tracking-wider text-zinc-500 mr-2 font-display">
-              Payment Methods:
-            </span>
-            <div className="px-2.5 py-1 rounded bg-[#111114] border border-zinc-800 text-[10px] font-mono text-zinc-400">
-              Cash on Delivery (COD)
-            </div>
-            <div className="px-2.5 py-1 rounded bg-[#111114] border border-zinc-800 text-[10px] font-mono text-zinc-400">
-              Bank Transfer
-            </div>
-            <div className="px-2.5 py-1 rounded bg-[#111114] border border-zinc-800 text-[10px] font-mono text-zinc-400">
-              Visa / Mastercard
-            </div>
+          <div className="text-[11px] text-zinc-600">
+            Colombo, Sri Lanka • Own Your Axis
           </div>
         </div>
       </div>

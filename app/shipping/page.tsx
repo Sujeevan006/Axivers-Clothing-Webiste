@@ -10,113 +10,112 @@ export const metadata: Metadata = {
 
 export default function ShippingPage() {
   return (
-    <div className="min-h-screen bg-[#060606] text-[#ffffff] pt-24 sm:pt-28 pb-24 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto space-y-12">
+    <div className="min-h-screen bg-white text-[#060606] pt-24 sm:pt-28 pb-20 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto space-y-10 sm:space-y-12">
         {/* Header */}
-        <div className="text-center space-y-3 pt-6">
-          <div className="inline-flex items-center space-x-2 text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059]" />
-            <span>Fulfillment Protocol</span>
-          </div>
-          <h1 className="text-3xl sm:text-5xl font-display font-light uppercase tracking-tight text-white">
-            Shipping &amp; <span className="font-bold">Delivery Policy</span>
+        <div className="text-center space-y-2 pt-4">
+          <span className="text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono font-medium block">
+            Fulfillment Protocol
+          </span>
+          <h1 className="text-3xl sm:text-4xl font-display font-bold uppercase tracking-tight text-[#060606]">
+            Shipping &amp; Delivery
           </h1>
-          <p className="text-xs sm:text-sm font-light text-zinc-300 max-w-lg mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm font-light text-zinc-500 max-w-lg mx-auto leading-relaxed">
             We deliver island-wide across Sri Lanka with trusted domestic courier partners. Clear timelines, door-to-door delivery, and secure package fulfillment.
           </p>
         </div>
 
         {/* Timelines Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-[#0b0b0e] border border-zinc-800/80 rounded-3xl p-6 space-y-3 shadow-xl">
-            <span className="text-[10px] font-mono font-bold text-[#c5a059] bg-[#c5a059]/10 px-2.5 py-1 rounded-full border border-[#c5a059]/20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="bg-[#fafafa] border border-zinc-200 rounded-2xl p-6 space-y-3 shadow-sm">
+            <span className="text-[10px] font-mono font-bold text-[#c5a059] bg-[#c5a059]/10 px-2.5 py-1 rounded-full border border-[#c5a059]/30">
               Region 01
             </span>
-            <h3 className="text-base font-display font-bold uppercase text-white">
+            <h3 className="text-sm font-display font-bold uppercase text-[#060606]">
               Colombo &amp; Suburbs
             </h3>
-            <div className="text-2xl font-mono font-bold text-white">1 – 2 Days</div>
-            <p className="text-xs text-zinc-400 font-light leading-relaxed">
+            <div className="text-2xl font-mono font-bold text-[#060606]">1 – 2 Days</div>
+            <p className="text-xs text-zinc-600 font-light leading-relaxed">
               Dispatched from our Colombo fulfillment center. Same-day or next-day courier routing for metropolitan areas.
             </p>
           </div>
 
-          <div className="bg-[#0b0b0e] border border-zinc-800/80 rounded-3xl p-6 space-y-3 shadow-xl">
-            <span className="text-[10px] font-mono font-bold text-[#c5a059] bg-[#c5a059]/10 px-2.5 py-1 rounded-full border border-[#c5a059]/20">
+          <div className="bg-[#fafafa] border border-zinc-200 rounded-2xl p-6 space-y-3 shadow-sm">
+            <span className="text-[10px] font-mono font-bold text-[#c5a059] bg-[#c5a059]/10 px-2.5 py-1 rounded-full border border-[#c5a059]/30">
               Region 02
             </span>
-            <h3 className="text-base font-display font-bold uppercase text-white">
+            <h3 className="text-sm font-display font-bold uppercase text-[#060606]">
               Outstation Cities
             </h3>
-            <div className="text-2xl font-mono font-bold text-white">2 – 4 Days</div>
-            <p className="text-xs text-zinc-400 font-light leading-relaxed">
-              Door-to-door delivery across major provincial capitals including Kandy, Galle, Gampaha, Kurunegala, and Matara.
+            <div className="text-2xl font-mono font-bold text-[#060606]">2 – 3 Days</div>
+            <p className="text-xs text-zinc-600 font-light leading-relaxed">
+              Major provincial centers (Kandy, Galle, Kurunegala, Gampaha, Matara, Negombo, etc.).
             </p>
           </div>
 
-          <div className="bg-[#0b0b0e] border border-zinc-800/80 rounded-3xl p-6 space-y-3 shadow-xl">
-            <span className="text-[10px] font-mono font-bold text-[#c5a059] bg-[#c5a059]/10 px-2.5 py-1 rounded-full border border-[#c5a059]/20">
+          <div className="bg-[#fafafa] border border-zinc-200 rounded-2xl p-6 space-y-3 shadow-sm">
+            <span className="text-[10px] font-mono font-bold text-[#c5a059] bg-[#c5a059]/10 px-2.5 py-1 rounded-full border border-[#c5a059]/30">
               Region 03
             </span>
-            <h3 className="text-base font-display font-bold uppercase text-white">
+            <h3 className="text-sm font-display font-bold uppercase text-[#060606]">
               Remote Districts
             </h3>
-            <div className="text-2xl font-mono font-bold text-white">3 – 5 Days</div>
-            <p className="text-xs text-zinc-400 font-light leading-relaxed">
-              Extended provincial regions and highland sectors serviced via verified domestic distribution partners.
+            <div className="text-2xl font-mono font-bold text-[#060606]">3 – 4 Days</div>
+            <p className="text-xs text-zinc-600 font-light leading-relaxed">
+              Northern, Eastern, and remote highland regions serviced via registered domestic postal couriers.
             </p>
           </div>
         </div>
 
-        {/* Detailed Sections */}
-        <div className="bg-[#0b0b0e] border border-zinc-800/80 rounded-3xl p-6 sm:p-10 space-y-8 text-xs sm:text-sm font-light text-zinc-300 leading-relaxed shadow-2xl">
-          <div className="space-y-2 border-b border-zinc-900 pb-6">
-            <h2 className="text-base font-display font-bold uppercase text-white tracking-wider">
-              1. Delivery Charges &amp; Free Shipping Threshold
-            </h2>
-            <p>
-              Standard island-wide delivery is charged at a flat rate of <strong>LKR 350.00</strong> across Sri Lanka.
-            </p>
-            <p className="text-emerald-400 font-medium">
-              We offer complimentary free shipping on all orders valued above LKR 10,000.00.
-            </p>
-          </div>
+        {/* Rates & Policy Details */}
+        <div className="bg-[#fafafa] border border-zinc-200 rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm">
+          <h2 className="text-sm font-display font-bold uppercase text-[#060606] tracking-wider border-b border-zinc-200 pb-3">
+            Shipping Rates &amp; Free Delivery Policy
+          </h2>
 
-          <div className="space-y-2 border-b border-zinc-900 pb-6">
-            <h2 className="text-base font-display font-bold uppercase text-white tracking-wider">
-              2. Order Processing &amp; Verification
-            </h2>
-            <p>
-              Orders placed Monday through Friday (before 2:00 PM Asia/Colombo) are processed for dispatch within 24 hours. For orders placed with Cash on Delivery (COD), our dispatch concierge may reach out via SMS or call to confirm recipient availability.
-            </p>
-          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs font-light text-zinc-700">
+            <div className="space-y-2">
+              <h4 className="font-display font-bold uppercase text-[#060606]">Standard Delivery Fee</h4>
+              <p className="leading-relaxed text-zinc-600">
+                A flat fee of <strong>LKR 350.00</strong> applies to domestic orders below our free shipping threshold. This covers secure poly-bagged packaging, courier handling, and tracking.
+              </p>
+            </div>
 
-          <div className="space-y-2 border-b border-zinc-900 pb-6">
-            <h2 className="text-base font-display font-bold uppercase text-white tracking-wider">
-              3. Cash on Delivery (COD) Policy
-            </h2>
-            <p>
-              Cash on Delivery is available across Sri Lanka. Please have the exact payment amount ready upon rider arrival to facilitate prompt delivery handoff.
-            </p>
-          </div>
+            <div className="space-y-2">
+              <h4 className="font-display font-bold uppercase text-[#060606]">Free Shipping Threshold</h4>
+              <p className="leading-relaxed text-zinc-600">
+                All domestic orders with a subtotal of <strong>LKR 10,000.00 or more</strong> qualify automatically for <strong>Free Delivery</strong> anywhere across Sri Lanka.
+              </p>
+            </div>
 
-          <div className="space-y-2">
-            <h2 className="text-base font-display font-bold uppercase text-white tracking-wider">
-              4. Order Tracking
-            </h2>
-            <p>
-              Upon courier pickup, your order reference number will be sent via email. You can verify package status anytime through our Track Order portal.
-            </p>
-            <div className="pt-2">
-              <Link
-                href="/track-order"
-                className="inline-flex items-center space-x-2 text-white underline font-display uppercase tracking-wider text-xs font-semibold hover:text-[#c5a059]"
-              >
-                <span>Track An Active Order</span>
-                <span>&rarr;</span>
-              </Link>
+            <div className="space-y-2">
+              <h4 className="font-display font-bold uppercase text-[#060606]">Cash on Delivery (COD)</h4>
+              <p className="leading-relaxed text-zinc-600">
+                Cash on Delivery is available across 100% of serviceable domestic pin codes. Please prepare the exact cash amount for your delivery representative.
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <h4 className="font-display font-bold uppercase text-[#060606]">Tracking &amp; Confirmation</h4>
+              <p className="leading-relaxed text-zinc-600">
+                Once dispatched, you will receive your unique tracking reference via SMS and email. You can check live status directly on our <Link href="/track-order" className="text-black underline font-semibold">Track Order</Link> page.
+              </p>
             </div>
           </div>
+        </div>
+
+        {/* Concierge Support CTA */}
+        <div className="border-t border-zinc-200 pt-6 text-center space-y-2">
+          <p className="text-xs text-zinc-500">
+            Have questions regarding an upcoming shipment or special delivery instruction?
+          </p>
+          <Link
+            href="/contact"
+            className="inline-flex items-center space-x-1.5 text-xs font-display uppercase tracking-wider font-semibold text-[#060606] underline hover:text-zinc-600 transition-colors"
+          >
+            <span>Contact Axivers Concierge</span>
+            <span>&rarr;</span>
+          </Link>
         </div>
       </div>
     </div>

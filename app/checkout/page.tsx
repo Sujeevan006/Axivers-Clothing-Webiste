@@ -114,65 +114,64 @@ export default function CheckoutPage() {
 
   if (orderComplete) {
     return (
-      <main className="min-h-screen bg-[#060606] text-[#ffffff] pt-32 pb-24 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-        <div className="max-w-lg w-full bg-[#0c0c0e] border border-neutral-800 rounded-2xl p-8 text-center space-y-6 shadow-2xl">
-          <div className="w-20 h-20 bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 rounded-full flex items-center justify-center mx-auto">
-            <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <main className="min-h-screen bg-white text-[#060606] pt-28 pb-20 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+        <div className="max-w-lg w-full bg-[#fafafa] border border-zinc-200 rounded-2xl p-8 text-center space-y-6 shadow-sm">
+          <div className="w-16 h-16 bg-emerald-50 border border-emerald-300 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
             </svg>
           </div>
 
-          <div className="space-y-2">
-            <h1 className="text-2xl font-display uppercase tracking-wider font-bold text-white">
+          <div className="space-y-1">
+            <h1 className="text-2xl font-display uppercase tracking-wider font-bold text-[#060606]">
               Order Confirmed
             </h1>
-            <p className="text-xs text-neutral-400 leading-relaxed">
-              Your order has been recorded in our unified order processing system. A confirmation has been assigned to your reference.
+            <p className="text-xs text-zinc-500 leading-relaxed">
+              Thank you for ordering with Axivers. Your order has been placed in our unified system.
             </p>
           </div>
 
-          <div className="bg-black p-5 rounded-xl border border-neutral-700 font-mono space-y-1">
-            <span className="text-[10px] uppercase tracking-widest text-neutral-400 font-display block">
-              Official Order Reference
+          {/* Order reference banner */}
+          <div className="bg-white p-4 rounded-xl border border-zinc-200 text-center space-y-1">
+            <span className="text-[10px] uppercase tracking-widest text-zinc-500 font-display block">
+              Order Number
             </span>
-            <span className="text-2xl font-bold text-white tracking-widest">
+            <span className="font-mono text-xl font-bold text-[#060606] tracking-wider">
               {placedOrderNumber}
             </span>
           </div>
 
-          {/* Bank Transfer Instructions if chosen */}
+          {/* Bank Transfer Instructions */}
           {selectedPaymentMethod === 'bank_transfer' && (
-            <div className="bg-black/80 p-5 rounded-xl border border-[#c5a059]/40 text-left space-y-2">
-              <span className="text-[10px] uppercase font-display tracking-widest text-[#c5a059] font-bold block">
-                Bank Transfer Instructions
-              </span>
-              <div className="text-xs text-neutral-300 font-mono space-y-1">
+            <div className="bg-white p-4 rounded-xl border border-zinc-200 text-left text-xs space-y-2">
+              <p className="font-bold text-[#060606] uppercase tracking-wider font-display">Bank Transfer Details:</p>
+              <div className="space-y-1 font-mono text-zinc-700">
                 <p><strong>Bank:</strong> Commercial Bank of Ceylon</p>
                 <p><strong>Account Name:</strong> Axivers Clothing (Pvt) Ltd</p>
                 <p><strong>Account No:</strong> 1000 8923 4512</p>
                 <p><strong>Branch:</strong> Corporate Branch (Colombo 03)</p>
                 <p><strong>Reference:</strong> {placedOrderNumber}</p>
               </div>
-              <p className="text-[11px] text-neutral-400 italic pt-1">
+              <p className="text-[11px] text-zinc-500 italic pt-1">
                 Please transfer the amount ({formatCurrency(totalMinor, 'LKR', true)}) and email your transfer confirmation to{' '}
-                <a href="mailto:contact@axivers.com" className="text-white underline">
+                <a href="mailto:contact@axivers.com" className="text-black underline font-semibold">
                   contact@axivers.com
                 </a>.
               </p>
             </div>
           )}
 
-          <div className="pt-2 space-y-3">
+          <div className="pt-2 space-y-2">
             <Link
               href={`/track-order?orderNumber=${placedOrderNumber}&phone=${encodeURIComponent(completedPhone)}`}
-              className="block w-full py-4 bg-white text-black text-xs font-display uppercase tracking-widest font-bold rounded-xl hover:bg-neutral-200 transition-colors shadow-lg"
+              className="block w-full py-3.5 bg-[#060606] text-white text-xs font-display uppercase tracking-widest font-bold rounded-lg hover:bg-zinc-800 transition-colors shadow-sm"
             >
               Track Your Order &rarr;
             </Link>
 
             <Link
               href="/shop"
-              className="block w-full py-3 bg-neutral-900 text-neutral-300 text-xs font-display uppercase tracking-widest font-semibold rounded-xl hover:text-white hover:bg-neutral-800 transition-colors border border-neutral-800"
+              className="block w-full py-3 bg-white text-zinc-700 text-xs font-display uppercase tracking-widest font-semibold rounded-lg hover:text-black hover:bg-zinc-50 transition-colors border border-zinc-200"
             >
               Continue Shopping
             </Link>
@@ -183,21 +182,21 @@ export default function CheckoutPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#060606] text-[#ffffff] pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-white text-[#060606] pt-24 sm:pt-28 pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-8">
-        <div className="space-y-2">
+        <div className="space-y-1">
           <span className="text-[10px] font-display uppercase tracking-[0.25em] text-[#c5a059] font-semibold block">
             Axivers Storefront
           </span>
-          <h1 className="text-3xl font-display uppercase font-bold tracking-tight text-white">
+          <h1 className="text-2xl sm:text-3xl font-display uppercase font-bold tracking-tight text-[#060606]">
             Checkout
           </h1>
         </div>
 
         {/* Launch Mode Notice */}
         {!storeSettings.ordersEnabled && (
-          <div className="p-5 bg-[#0c0c0e] border border-[#c5a059]/40 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex items-center space-x-3 text-xs text-neutral-300">
+          <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center space-x-3 text-xs text-zinc-700">
               <span className="w-2.5 h-2.5 rounded-full bg-[#c5a059] animate-pulse shrink-0" />
               <span>
                 <strong>Pre-Launch Mode:</strong> Direct online ordering is currently paused while our inaugural release allocation is being finalized.
@@ -205,7 +204,7 @@ export default function CheckoutPage() {
             </div>
             <Link
               href="/#early-access"
-              className="inline-flex items-center px-4 py-2 rounded-lg bg-white text-black font-display text-[10px] uppercase tracking-wider font-bold hover:bg-neutral-200 shrink-0"
+              className="inline-flex items-center px-4 py-2 rounded-lg bg-[#060606] text-white font-display text-[10px] uppercase tracking-wider font-bold hover:bg-zinc-800 shrink-0"
             >
               Join Launch Registry &rarr;
             </Link>
@@ -213,34 +212,34 @@ export default function CheckoutPage() {
         )}
 
         {cartItems.length === 0 ? (
-          <div className="bg-[#0c0c0e] border border-neutral-800 rounded-2xl p-12 text-center space-y-4">
-            <p className="text-sm text-neutral-400 font-display">
+          <div className="bg-[#fafafa] border border-zinc-200 rounded-2xl p-12 text-center space-y-4">
+            <p className="text-sm text-zinc-500 font-display">
               Your shopping bag is empty. Please add items before checking out.
             </p>
             <Link
               href="/shop"
-              className="inline-block px-6 py-3 bg-white text-black font-display text-xs uppercase tracking-widest font-bold rounded-xl hover:bg-neutral-200"
+              className="inline-block px-6 py-3 bg-[#060606] text-white font-display text-xs uppercase tracking-widest font-bold rounded-lg hover:bg-zinc-800"
             >
               Explore Collection
             </Link>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
             {/* Customer Details Form */}
-            <div className="lg:col-span-7 bg-[#0c0c0e] border border-neutral-800 rounded-2xl p-6 sm:p-8 space-y-6">
-              <h2 className="text-lg font-display uppercase font-semibold text-white border-b border-neutral-800 pb-3">
+            <div className="lg:col-span-7 bg-[#fafafa] border border-zinc-200 rounded-2xl p-6 sm:p-8 space-y-6">
+              <h2 className="text-base font-display uppercase font-semibold text-[#060606] border-b border-zinc-200 pb-3">
                 Shipping Information
               </h2>
 
               {errorMessage && (
-                <div className="p-4 bg-rose-950/80 border border-rose-800 text-rose-200 text-xs rounded-xl">
+                <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg">
                   {errorMessage}
                 </div>
               )}
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-neutral-400">
+                  <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-zinc-600">
                     Full Name *
                   </label>
                   <input
@@ -249,13 +248,13 @@ export default function CheckoutPage() {
                     value={customerName}
                     onChange={(e) => setCustomerName(e.target.value)}
                     placeholder="e.g. Kasun Perera"
-                    className="w-full px-4 py-3 text-xs border border-neutral-800 rounded-xl bg-black text-white focus:outline-none focus:border-white"
+                    className="w-full px-4 py-2.5 text-xs border border-zinc-300 rounded-lg bg-white text-[#060606] focus:outline-none focus:border-black"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-neutral-400">
+                    <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-zinc-600">
                       Phone Number *
                     </label>
                     <input
@@ -264,11 +263,11 @@ export default function CheckoutPage() {
                       value={customerPhone}
                       onChange={(e) => setCustomerPhone(e.target.value)}
                       placeholder="0771234567"
-                      className="w-full px-4 py-3 text-xs border border-neutral-800 rounded-xl bg-black text-white focus:outline-none focus:border-white"
+                      className="w-full px-4 py-2.5 text-xs border border-zinc-300 rounded-lg bg-white text-[#060606] focus:outline-none focus:border-black"
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-neutral-400">
+                    <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-zinc-600">
                       Email Address
                     </label>
                     <input
@@ -276,13 +275,13 @@ export default function CheckoutPage() {
                       value={customerEmail}
                       onChange={(e) => setCustomerEmail(e.target.value)}
                       placeholder="kasun@example.com"
-                      className="w-full px-4 py-3 text-xs border border-neutral-800 rounded-xl bg-black text-white focus:outline-none focus:border-white"
+                      className="w-full px-4 py-2.5 text-xs border border-zinc-300 rounded-lg bg-white text-[#060606] focus:outline-none focus:border-black"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-neutral-400">
+                  <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-zinc-600">
                     Shipping Address *
                   </label>
                   <textarea
@@ -291,13 +290,13 @@ export default function CheckoutPage() {
                     value={shippingAddress}
                     onChange={(e) => setShippingAddress(e.target.value)}
                     placeholder="Street address, apartment or house number"
-                    className="w-full px-4 py-3 text-xs border border-neutral-800 rounded-xl bg-black text-white focus:outline-none focus:border-white"
+                    className="w-full px-4 py-2.5 text-xs border border-zinc-300 rounded-lg bg-white text-[#060606] focus:outline-none focus:border-black"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-neutral-400">
+                    <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-zinc-600">
                       City *
                     </label>
                     <input
@@ -306,11 +305,11 @@ export default function CheckoutPage() {
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
                       placeholder="e.g. Colombo"
-                      className="w-full px-4 py-3 text-xs border border-neutral-800 rounded-xl bg-black text-white focus:outline-none focus:border-white"
+                      className="w-full px-4 py-2.5 text-xs border border-zinc-300 rounded-lg bg-white text-[#060606] focus:outline-none focus:border-black"
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-neutral-400">
+                    <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-zinc-600">
                       Postal Code
                     </label>
                     <input
@@ -318,24 +317,24 @@ export default function CheckoutPage() {
                       value={postalCode}
                       onChange={(e) => setPostalCode(e.target.value)}
                       placeholder="10100"
-                      className="w-full px-4 py-3 text-xs border border-neutral-800 rounded-xl bg-black text-white focus:outline-none focus:border-white"
+                      className="w-full px-4 py-2.5 text-xs border border-zinc-300 rounded-lg bg-white text-[#060606] focus:outline-none focus:border-black"
                     />
                   </div>
                 </div>
 
                 {/* Payment method selection */}
-                <div className="pt-4 border-t border-neutral-800 space-y-3">
-                  <label className="block text-[10px] uppercase font-display font-semibold text-neutral-400">
+                <div className="pt-3 border-t border-zinc-200 space-y-3">
+                  <label className="block text-[10px] uppercase font-display font-semibold text-zinc-600">
                     Payment Method *
                   </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                     <button
                       type="button"
                       onClick={() => setSelectedPaymentMethod('cash_on_delivery')}
-                      className={`p-3.5 rounded-xl border text-left flex flex-col justify-between cursor-pointer transition-all ${
+                      className={`p-3 rounded-lg border text-left flex flex-col justify-between cursor-pointer transition-all ${
                         selectedPaymentMethod === 'cash_on_delivery'
-                          ? 'bg-neutral-900 border-white text-white font-bold'
-                          : 'bg-black border-neutral-800 text-neutral-400 hover:border-neutral-700'
+                          ? 'bg-[#060606] border-[#060606] text-white font-bold'
+                          : 'bg-white border-zinc-300 text-zinc-700 hover:border-black'
                       }`}
                     >
                       <span className="text-xs font-bold font-display uppercase">Cash on Delivery</span>
@@ -345,10 +344,10 @@ export default function CheckoutPage() {
                     <button
                       type="button"
                       onClick={() => setSelectedPaymentMethod('bank_transfer')}
-                      className={`p-3.5 rounded-xl border text-left flex flex-col justify-between cursor-pointer transition-all ${
+                      className={`p-3 rounded-lg border text-left flex flex-col justify-between cursor-pointer transition-all ${
                         selectedPaymentMethod === 'bank_transfer'
-                          ? 'bg-neutral-900 border-white text-white font-bold'
-                          : 'bg-black border-neutral-800 text-neutral-400 hover:border-neutral-700'
+                          ? 'bg-[#060606] border-[#060606] text-white font-bold'
+                          : 'bg-white border-zinc-300 text-zinc-700 hover:border-black'
                       }`}
                     >
                       <span className="text-xs font-bold font-display uppercase">Bank Transfer</span>
@@ -358,10 +357,10 @@ export default function CheckoutPage() {
                     <button
                       type="button"
                       onClick={() => setSelectedPaymentMethod('payhere')}
-                      className={`p-3.5 rounded-xl border text-left flex flex-col justify-between cursor-pointer transition-all ${
+                      className={`p-3 rounded-lg border text-left flex flex-col justify-between cursor-pointer transition-all ${
                         selectedPaymentMethod === 'payhere'
-                          ? 'bg-neutral-900 border-white text-white font-bold'
-                          : 'bg-black border-neutral-800 text-neutral-400 hover:border-neutral-700'
+                          ? 'bg-[#060606] border-[#060606] text-white font-bold'
+                          : 'bg-white border-zinc-300 text-zinc-700 hover:border-black'
                       }`}
                     >
                       <span className="text-xs font-bold font-display uppercase">Card / Online</span>
@@ -369,14 +368,13 @@ export default function CheckoutPage() {
                     </button>
                   </div>
 
-                  {/* Bank Transfer Details helper */}
                   {selectedPaymentMethod === 'bank_transfer' && (
-                    <div className="bg-black p-4 rounded-xl border border-neutral-800 text-xs text-neutral-300 space-y-1">
-                      <p className="font-semibold text-white">Bank Transfer Account:</p>
+                    <div className="bg-white p-3.5 rounded-lg border border-zinc-200 text-xs text-zinc-700 space-y-1">
+                      <p className="font-semibold text-black">Bank Transfer Account:</p>
                       <p>Bank: <strong>Commercial Bank of Ceylon</strong></p>
                       <p>Account Name: <strong>Axivers Clothing (Pvt) Ltd</strong></p>
                       <p>Account No: <strong>1000 8923 4512</strong></p>
-                      <p className="text-[11px] text-neutral-400 pt-1">
+                      <p className="text-[11px] text-zinc-500 pt-1">
                         Use your order number as reference and notify us via email upon transfer.
                       </p>
                     </div>
@@ -384,7 +382,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-neutral-400">
+                  <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-zinc-600">
                     Order Notes (Optional)
                   </label>
                   <input
@@ -392,24 +390,24 @@ export default function CheckoutPage() {
                     value={customerNotes}
                     onChange={(e) => setCustomerNotes(e.target.value)}
                     placeholder="Gate instructions, landmark, etc."
-                    className="w-full px-4 py-3 text-xs border border-neutral-800 rounded-xl bg-black text-white focus:outline-none focus:border-white"
+                    className="w-full px-4 py-2.5 text-xs border border-zinc-300 rounded-lg bg-white text-[#060606] focus:outline-none focus:border-black"
                   />
                 </div>
               </div>
             </div>
 
             {/* Order Summary Side Column */}
-            <div className="lg:col-span-5 bg-[#0c0c0e] border border-neutral-800 rounded-2xl p-6 sm:p-8 space-y-6">
-              <h2 className="text-lg font-display uppercase font-semibold text-white border-b border-neutral-800 pb-3">
+            <div className="lg:col-span-5 bg-[#fafafa] border border-zinc-200 rounded-2xl p-6 sm:p-7 space-y-5">
+              <h2 className="text-base font-display uppercase font-semibold text-[#060606] border-b border-zinc-200 pb-3">
                 Order Summary
               </h2>
 
-              <div className="space-y-4 max-h-80 overflow-y-auto pr-1">
+              <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
                 {cartItems.map((item) => {
                   const itemPriceMinor = toMinorUnits(fromMinorUnits(item.price));
                   return (
-                    <div key={`${item.id}-${item.selectedSize || item.size}`} className="flex space-x-4 items-center border-b border-neutral-800/60 pb-3">
-                      <div className="w-14 h-14 bg-black rounded-lg overflow-hidden border border-neutral-800 flex-shrink-0 relative">
+                    <div key={`${item.id}-${item.selectedSize || item.size}`} className="flex space-x-3 items-center border-b border-zinc-200/60 pb-3">
+                      <div className="w-14 h-14 bg-white rounded-lg overflow-hidden border border-zinc-200 flex-shrink-0 relative">
                         <Image
                           src={item.image || (item.images && item.images[0]) || '/images/flagship-tee-black.jpg'}
                           alt={item.name}
@@ -418,14 +416,14 @@ export default function CheckoutPage() {
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="text-xs font-display font-semibold uppercase text-white truncate">
+                        <h4 className="text-xs font-display font-semibold uppercase text-[#060606] truncate">
                           {item.name}
                         </h4>
-                        <p className="text-[10px] font-mono text-neutral-400 mt-0.5">
+                        <p className="text-[10px] font-mono text-zinc-500 mt-0.5">
                           Qty: {item.quantity} | Size: {item.selectedSize || item.size} {item.selectedColor || item.color ? `| Color: ${item.selectedColor || item.color}` : ''}
                         </p>
                       </div>
-                      <span className="text-xs font-mono font-bold text-white">
+                      <span className="text-xs font-mono font-bold text-[#060606]">
                         {formatCurrency(itemPriceMinor * item.quantity, 'LKR', true)}
                       </span>
                     </div>
@@ -433,35 +431,24 @@ export default function CheckoutPage() {
                 })}
               </div>
 
-              <div className="space-y-2 text-xs pt-2 border-t border-neutral-800">
-                <div className="flex justify-between text-neutral-400">
+              <div className="space-y-2 text-xs pt-2 border-t border-zinc-200">
+                <div className="flex justify-between text-zinc-600">
                   <span>Subtotal</span>
-                  <span className="font-mono text-neutral-200">{formatCurrency(subtotalMinor, 'LKR', true)}</span>
+                  <span className="font-mono text-[#060606]">{formatCurrency(subtotalMinor, 'LKR', true)}</span>
                 </div>
-                <div className="flex justify-between text-neutral-400">
+                <div className="flex justify-between text-zinc-600">
                   <span>Standard Delivery Fee</span>
-                  <span className="font-mono text-white font-bold">
+                  <span className="font-mono text-[#060606] font-bold">
                     {isFreeDelivery ? (
-                      <span className="text-emerald-400 uppercase font-display tracking-wider font-bold">FREE</span>
+                      <span className="text-emerald-700 uppercase font-display tracking-wider font-bold">FREE</span>
                     ) : (
                       formatCurrency(deliveryFeeMinor, 'LKR', true)
                     )}
                   </span>
                 </div>
-                {storeSettings.freeShippingThreshold && (
-                  <div className="text-[10px] text-neutral-400 font-display">
-                    {subtotalMinor >= storeSettings.freeShippingThreshold ? (
-                      <span className="text-emerald-400 font-semibold">Free shipping applied (orders over {formatCurrency(storeSettings.freeShippingThreshold, 'LKR', true)})</span>
-                    ) : (
-                      <span>
-                        Add {formatCurrency(storeSettings.freeShippingThreshold - subtotalMinor, 'LKR', true)} more for FREE delivery
-                      </span>
-                    )}
-                  </div>
-                )}
-                <div className="flex justify-between text-sm font-bold uppercase tracking-wider font-display pt-3 border-t border-neutral-800 text-white">
+                <div className="flex justify-between text-sm font-bold uppercase tracking-wider font-display pt-3 border-t border-zinc-200 text-[#060606]">
                   <span>Total Amount</span>
-                  <span className="font-mono text-white text-base">{formatCurrency(totalMinor, 'LKR', true)}</span>
+                  <span className="font-mono text-[#060606] text-base">{formatCurrency(totalMinor, 'LKR', true)}</span>
                 </div>
               </div>
 
@@ -469,10 +456,10 @@ export default function CheckoutPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`w-full py-4 text-xs font-display uppercase tracking-widest font-bold rounded-xl transition-all duration-300 shadow-lg text-center ${
+                  className={`w-full py-3.5 text-xs font-display uppercase tracking-widest font-bold rounded-lg transition-colors shadow-sm text-center ${
                     isSubmitting
-                      ? 'bg-neutral-200 text-black cursor-wait'
-                      : 'bg-white text-black hover:bg-neutral-200 cursor-pointer'
+                      ? 'bg-zinc-300 text-black cursor-wait'
+                      : 'bg-[#060606] text-white hover:bg-zinc-800 cursor-pointer'
                   }`}
                 >
                   {isSubmitting
@@ -482,7 +469,7 @@ export default function CheckoutPage() {
               ) : (
                 <Link
                   href="/#early-access"
-                  className="w-full py-4 text-xs font-display uppercase tracking-widest font-bold rounded-xl bg-white text-black hover:bg-neutral-200 transition-all shadow-lg text-center block"
+                  className="w-full py-3.5 text-xs font-display uppercase tracking-widest font-bold rounded-lg bg-[#060606] text-white hover:bg-zinc-800 transition-colors shadow-sm text-center block"
                 >
                   Join Launch Registry &rarr;
                 </Link>

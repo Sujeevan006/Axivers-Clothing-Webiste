@@ -1,38 +1,22 @@
 import { Hero } from './components/Hero';
-import { BrandIntro } from './components/BrandIntro';
-import { FlagshipHighlight } from './components/FlagshipHighlight';
-import { CraftsmanshipDetails } from './components/CraftsmanshipDetails';
-import { FabricStory } from './components/FabricStory';
-import { MadeInSriLankaStory } from './components/MadeInSriLankaStory';
-import { EditorialGallery } from './components/EditorialGallery';
-import { EarlyAccessSection } from './components/EarlyAccessSection';
+import { FeaturedCollection } from './components/FeaturedCollection';
+import { BrandStatement } from './components/BrandStatement';
+import { EditorialDiscovery } from './components/EditorialDiscovery';
 
 export default function HomePage() {
   return (
     <>
-      {/* 1. Premium Editorial Hero Section */}
+      {/* SECTION 2 — Large Premium Fashion Hero */}
       <Hero />
 
-      {/* 2. Introduction to Axivers & Brand Philosophy */}
-      <BrandIntro />
+      {/* SECTION 3 — Featured Collection (Clean Light Shopping Grid) */}
+      <FeaturedCollection />
 
-      {/* 3. Signature Flagship T-Shirt Highlight */}
-      <FlagshipHighlight />
+      {/* SECTION 4 — Premium Brand Statement (Refined Dark Contrast Section) */}
+      <BrandStatement />
 
-      {/* 4. Product Details & Craftsmanship Highlights */}
-      <CraftsmanshipDetails />
-
-      {/* 5. Fabric & Comfort Story (180 GSM Mercerized Cotton) */}
-      <FabricStory />
-
-      {/* 6. Made in Sri Lanka Brand Story */}
-      <MadeInSriLankaStory />
-
-      {/* 7. Editorial Lifestyle Gallery */}
-      <EditorialGallery />
-
-      {/* 8. Newsletter / Early-Access Signup */}
-      <EarlyAccessSection />
+      {/* SECTION 5 — Editorial / Brand Discovery (Two Clean Editorial Tiles) */}
+      <EditorialDiscovery />
     </>
   );
 }

@@ -6,159 +6,167 @@ import Image from 'next/image';
 import type { Product } from '@/types/product';
 import { subscribeToActiveProducts, getProducts } from '@/services/productService';
 import { formatCurrency } from '@/lib/utils/formatters';
-import { useCart } from '../context/CartContext';
 import { QuickAddModal } from './QuickAddModal';
 
 export const FeaturedCollection: React.FC = () => {
-  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [quickAddProduct, setQuickAddProduct] = useState<Product | null>(null);
 
   useEffect(() => {
-    getProducts({ activeOnly: true, featuredOnly: true }).then((products) => {
-      if (products && products.length > 0) {
-        setFeaturedProducts(products);
+    getProducts({ activeOnly: true }).then((fetched) => {
+      if (fetched && fetched.length > 0) {
+        setProducts(fetched);
       }
       setIsLoading(false);
     });
 
     const unsubscribe = subscribeToActiveProducts(
       (allActive) => {
-        const featured = allActive.filter((p) => p.featured === true && p.active === true);
-        if (featured.length > 0) {
-          setFeaturedProducts(featured);
+        if (allActive.length > 0) {
+          setProducts(allActive);
         }
         setIsLoading(false);
-      },
-      { featuredOnly: true }
+      }
     );
 
     return () => unsubscribe();
   }, []);
 
-  if (isLoading) {
-    return (
-      <section className="py-20 bg-[#09090b] text-[#ffffff] text-center">
-        <svg className="animate-spin h-6 w-6 text-white mx-auto mb-2" fill="none" viewBox="0 0 24 24">
-          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-        </svg>
-        <p className="text-xs uppercase tracking-widest font-display text-zinc-500">Loading Collection...</p>
-      </section>
-    );
-  }
-
-  // Display top 3 featured products as in the mockup design
-  const displayList = featuredProducts.slice(0, 3);
+  // Use genuine approved products (Onyx Black flagship + Optic White capsule preview)
+  const displayProducts = products.length > 0 ? products : [
+    {
+      id: 'flagship-tee-black',
+      slug: 'flagship-tee-black',
+      name: 'The Signature Essential Crewneck — Onyx Black',
+      price: 400000,
+      currency: 'LKR',
+      images: ['/images/flagship-tee-black.jpg', '/images/editorial-men-black.jpg'],
+      categoryLabel: '180 GSM Mercerized Cotton',
+      active: true,
+      stock: 50,
+      sizes: ['S', 'M', 'L', 'XL'],
+      colors: ['Onyx Black'],
+    } as Product,
+    {
+      id: 'flagship-tee-white',
+      slug: 'flagship-tee-white',
+      name: 'The Signature Essential Crewneck — Optic White',
+      price: 400000,
+      currency: 'LKR',
+      images: ['/images/flagship-tee-white.jpg', '/images/editorial-pedestal-black.png'],
+      categoryLabel: 'Capsule Preview',
+      active: true,
+      stock: 0,
+      sizes: ['S', 'M', 'L', 'XL'],
+      colors: ['Optic White'],
+    } as Product,
+  ];
 
   return (
-    <section className="py-20 sm:py-24 bg-[#09090b] text-[#ffffff] relative overflow-hidden">
-      {/* Subtle ambient luxury backdrop glow */}
-      <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-white/[0.02] blur-[140px] rounded-full" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 relative z-10">
-        {/* Header with connecting horizontal divider line */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 pb-2">
-          <div className="space-y-1.5 shrink-0">
-            <div className="flex items-center space-x-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-white/80 animate-pulse" />
-              <span className="text-[10px] uppercase tracking-[0.25em] text-zinc-400 font-display font-semibold block">
-                FEATURED COLLECTION
-              </span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold tracking-tight text-white">
-              Timeless Essentials.
-            </h2>
-          </div>
-
-          <div className="hidden sm:block flex-grow h-[1px] bg-zinc-800/80 mx-6 mb-3 self-end" />
-
-          <Link
-            href="/shop"
-            className="group/link text-xs font-display uppercase tracking-widest font-semibold text-zinc-300 hover:text-white transition-colors flex items-center space-x-1.5 shrink-0 mb-1"
-          >
-            <span>VIEW ALL GARMENTS</span>
-            <span className="transform transition-transform group-hover/link:translate-x-1">&rarr;</span>
-          </Link>
+    <section className="py-20 sm:py-24 bg-white text-[#060606]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        {/* Section Header: Minimal & Clean */}
+        <div className="text-center space-y-2">
+          <h2 className="text-2xl sm:text-3xl font-display font-bold uppercase tracking-[0.16em] text-[#060606]">
+            The Collection
+          </h2>
+          <p className="text-xs sm:text-sm font-light text-zinc-500 tracking-wide">
+            Everyday essentials, thoughtfully designed.
+          </p>
         </div>
 
-        {/* 3 Product Cards Grid - Modern Landscape Size */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7">
-          {displayList.map((product) => {
+        {/* Clean Responsive Product Grid (2 cols mobile, up to 3-4 desktop) */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+          {displayProducts.slice(0, 4).map((product) => {
             const isOutOfStock = product.stock !== undefined && product.stock <= 0;
-            const displayImage = product.images?.[0] || '/images/pdp_front.jpg';
+            const primaryImage = product.images?.[0] || '/images/flagship-tee-black.jpg';
+            const secondaryImage = product.images?.[1] || null;
 
             return (
               <div
                 key={product.id}
-                className="group relative flex flex-col justify-between bg-[#111113] hover:bg-[#141417] border border-zinc-800/80 hover:border-zinc-700/90 rounded-2xl p-3.5 sm:p-4 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.7)]"
+                className="group flex flex-col justify-between bg-white transition-all duration-300"
               >
-                {/* Product Image Box - Landscape Aspect Ratio (16:10) */}
+                {/* Product Image Tile with Subtle Secondary Image Swap on Hover */}
                 <Link
                   href={`/product/${product.slug || product.id}`}
-                  className="aspect-[16/10] bg-[#161618] rounded-xl overflow-hidden relative block border border-zinc-800/60 group-hover:border-zinc-700/80 transition-colors cursor-pointer"
+                  className="relative aspect-[3/4] bg-[#f6f6f6] rounded-xl overflow-hidden block border border-zinc-200/70 group-hover:border-zinc-400 transition-colors"
                 >
+                  {/* Primary Image */}
                   <Image
-                    src={displayImage}
+                    src={primaryImage}
                     alt={product.name}
                     fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className={`object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105 ${
-                      isOutOfStock ? 'opacity-40 grayscale' : ''
-                    }`}
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    className={`object-cover object-center transition-all duration-700 ease-out group-hover:scale-102 ${
+                      secondaryImage ? 'group-hover:opacity-0' : ''
+                    } ${isOutOfStock ? 'opacity-60' : ''}`}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 opacity-40 pointer-events-none" />
 
-                  <span className="absolute top-2.5 left-2.5 bg-black/60 backdrop-blur-md text-white/90 text-[9px] uppercase tracking-[0.2em] font-display font-medium px-2.5 py-1 rounded-full border border-white/10 shadow-sm">
-                    Featured
-                  </span>
+                  {/* Secondary Image for smooth hover swap if available */}
+                  {secondaryImage && (
+                    <Image
+                      src={secondaryImage}
+                      alt={`${product.name} alternate view`}
+                      fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      className={`object-cover object-center transition-opacity duration-700 ease-out opacity-0 group-hover:opacity-100 ${
+                        isOutOfStock ? 'opacity-0' : ''
+                      }`}
+                    />
+                  )}
 
-                  {isOutOfStock ? (
-                    <span className="absolute top-2.5 right-2.5 bg-zinc-900/90 text-zinc-400 text-[9px] uppercase tracking-wider font-display font-semibold px-2.5 py-1 rounded-full border border-zinc-700/80 shadow-md">
-                      Sold Out
+                  {/* Availability Badge */}
+                  {isOutOfStock && (
+                    <span className="absolute top-2.5 left-2.5 bg-white/95 text-zinc-700 text-[9px] uppercase tracking-wider font-display font-medium px-2 py-0.5 rounded shadow-sm border border-zinc-200">
+                      Limited Preview
                     </span>
-                  ) : null}
+                  )}
                 </Link>
 
-                {/* Card Bottom Meta - Clean & Minimalist */}
-                <div className="pt-3.5 flex flex-col justify-between flex-grow space-y-3">
-                  <div className="space-y-1">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 font-display font-medium block">
-                      {product.categoryLabel || 'Premium Crewneck T-Shirt'}
-                    </span>
-                    <Link href={`/product/${product.slug || product.id}`}>
-                      <h3 className="text-sm sm:text-base font-display font-semibold uppercase tracking-wider text-white group-hover:text-zinc-300 transition-colors line-clamp-1">
-                        {product.name}
-                      </h3>
-                    </Link>
-                  </div>
+                {/* Minimal Card Details */}
+                <div className="pt-3 sm:pt-4 space-y-1.5 flex flex-col">
+                  {/* Discreet Option or Material Indicator */}
+                  <span className="text-[10px] uppercase tracking-wider text-zinc-400 font-display font-medium">
+                    {product.categoryLabel || '180 GSM Mercerized Cotton'}
+                  </span>
 
-                  <div className="pt-2 flex items-center justify-between gap-2">
-                    <div>
-                      <span className="text-sm sm:text-base font-bold font-mono text-white">
-                        {formatCurrency(product.price, product.currency || 'LKR', true)}
-                      </span>
-                    </div>
+                  {/* Product Title */}
+                  <Link href={`/product/${product.slug || product.id}`}>
+                    <h3 className="text-xs sm:text-sm font-display font-medium text-[#060606] hover:text-zinc-600 transition-colors line-clamp-1 leading-snug">
+                      {product.name}
+                    </h3>
+                  </Link>
+
+                  {/* Price in LKR */}
+                  <div className="flex items-center justify-between pt-0.5">
+                    <span className="text-xs sm:text-sm font-semibold font-mono text-[#060606]">
+                      {formatCurrency(product.price, product.currency || 'LKR', true)}
+                    </span>
 
                     <button
                       onClick={() => setQuickAddProduct(product)}
-                      disabled={isOutOfStock}
-                      className={`inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-display font-semibold transition-all duration-300 cursor-pointer ${
-                        isOutOfStock
-                          ? 'bg-zinc-800/60 text-zinc-500 border border-zinc-800 cursor-not-allowed'
-                          : 'bg-zinc-800/80 hover:bg-white text-zinc-200 hover:text-black border border-zinc-700/60 hover:border-white shadow-sm'
-                      }`}
+                      className="text-[10px] uppercase tracking-wider font-display font-semibold text-zinc-500 hover:text-black transition-colors cursor-pointer"
                     >
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                      </svg>
-                      <span>ADD TO CART</span>
+                      {isOutOfStock ? 'Preview' : 'Quick Add +'}
                     </button>
                   </div>
                 </div>
               </div>
             );
           })}
+        </div>
+
+        {/* View All Products Link Below Section */}
+        <div className="text-center pt-4">
+          <Link
+            href="/shop"
+            className="inline-flex items-center space-x-2 text-xs font-display uppercase tracking-[0.2em] font-semibold text-[#060606] hover:opacity-70 transition-opacity border-b border-[#060606] pb-1 cursor-pointer"
+          >
+            <span>View All Products</span>
+            <span className="text-sm">&rarr;</span>
+          </Link>
         </div>
       </div>
 
