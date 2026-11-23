@@ -19,7 +19,8 @@ export default function AccountPage() {
             Axivers <span className="font-bold">Client Account</span>
           </h1>
           <p className="text-sm sm:text-sm font-normal text-muted">
-            Access your order history, delivery status, and saved address information.
+            Access your order history, delivery status, and saved address
+            information.
           </p>
         </div>
 
@@ -30,7 +31,8 @@ export default function AccountPage() {
               Quick Order Access
             </h2>
             <p className="text-sm text-muted font-normal">
-              Enter your order reference and registered phone number to view live fulfillment updates.
+              Enter your order reference and registered phone number to view
+              live fulfillment updates.
             </p>
           </div>
 
@@ -44,10 +46,14 @@ export default function AccountPage() {
             className="space-y-4"
           >
             <div className="space-y-1.5">
-              <label htmlFor="app-account-page-tsx-field-1" className="block text-sm normal-case font-semibold tracking-wider text-muted">
+              <label
+                htmlFor="app-account-page-tsx-field-1"
+                className="block text-sm normal-case font-semibold tracking-wider text-muted"
+              >
                 Order Reference Number *
               </label>
-              <input id="app-account-page-tsx-field-1"
+              <input
+                id="app-account-page-tsx-field-1"
                 type="text"
                 required
                 value={orderNumber}
@@ -58,10 +64,14 @@ export default function AccountPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label htmlFor="app-account-page-tsx-field-2" className="block text-sm normal-case font-semibold tracking-wider text-muted">
+              <label
+                htmlFor="app-account-page-tsx-field-2"
+                className="block text-sm normal-case font-semibold tracking-wider text-muted"
+              >
                 Registered Phone Number
               </label>
-              <input id="app-account-page-tsx-field-2"
+              <input
+                id="app-account-page-tsx-field-2"
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -95,7 +105,10 @@ export default function AccountPage() {
             </li>
             <li className="flex items-center space-x-2">
               <span className="text-ink">•</span>
-              <span>Invitations to limited-run 180 GSM mercerized cotton seasonal drops.</span>
+              <span>
+                Invitations to limited-run 180 GSM mercerized cotton seasonal
+                drops.
+              </span>
             </li>
           </ul>
         </div>
