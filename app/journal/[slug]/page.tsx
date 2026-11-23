@@ -38,12 +38,12 @@ export default async function JournalArticlePage({ params }: Props) {
     : null;
 
   return (
-    <div className="min-h-screen bg-white text-[#060606] pt-28 sm:pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-canvas text-ink pt-10 sm:pt-14 pb-24 px-4 sm:px-6 lg:px-8">
       <article className="max-w-3xl mx-auto space-y-10">
         {/* Back Link */}
         <Link
           href="/journal"
-          className="inline-flex items-center space-x-2 text-xs uppercase tracking-widest text-[#777777] hover:text-[#060606] font-display transition-colors"
+          className="inline-flex items-center space-x-2 text-sm normal-case tracking-widest text-muted hover:text-ink font-display transition-colors"
         >
           <span>&larr;</span>
           <span>Back to Journal</span>
@@ -51,8 +51,8 @@ export default async function JournalArticlePage({ params }: Props) {
 
         {/* Header */}
         <div className="space-y-4">
-          <div className="flex items-center space-x-3 text-xs uppercase tracking-widest text-[#777777] font-display">
-            <span className="px-2.5 py-0.5 rounded-full bg-zinc-100 text-[#060606] border border-zinc-200 font-semibold">
+          <div className="flex items-center space-x-3 text-sm normal-case tracking-widest text-muted font-display">
+            <span className="px-2.5 py-0.5 rounded-full bg-zinc-100 text-ink border border-zinc-200 font-semibold">
               {article.category}
             </span>
             <span>•</span>
@@ -61,11 +61,11 @@ export default async function JournalArticlePage({ params }: Props) {
             <span>{article.readTime}</span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold tracking-tight text-[#060606] uppercase leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold tracking-tight text-ink normal-case leading-tight">
             {article.title}
           </h1>
 
-          <p className="text-sm sm:text-base font-light text-zinc-700 leading-relaxed border-l-2 border-[#060606] pl-4 italic">
+          <p className="text-sm sm:text-base font-normal text-zinc-700 leading-relaxed border-l-2 border-ink pl-4 italic">
             {article.content.lead}
           </p>
         </div>
@@ -82,13 +82,13 @@ export default async function JournalArticlePage({ params }: Props) {
         </div>
 
         {/* Article Body */}
-        <div className="space-y-6 text-sm sm:text-base font-light text-zinc-700 leading-relaxed">
+        <div className="space-y-6 text-sm sm:text-base font-normal text-zinc-700 leading-relaxed">
           {article.content.paragraphs.map((p, idx) => (
             <p key={idx}>{p}</p>
           ))}
 
           {article.content.quote && (
-            <blockquote className="my-8 p-6 bg-[#f6f6f6] border-l-4 border-[#060606] rounded-r-2xl font-display italic text-lg text-[#060606]">
+            <blockquote className="my-8 p-6 bg-canvas border-l-4 border-ink rounded-r-2xl font-display italic text-lg text-ink">
               {article.content.quote}
             </blockquote>
           )}
@@ -97,13 +97,13 @@ export default async function JournalArticlePage({ params }: Props) {
         {/* Related Product Spotlight */}
         {relatedProduct && (
           <div className="border-t border-zinc-200 pt-10 mt-12 space-y-4">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-[#777777] font-display font-semibold block">
+            <span className="text-sm normal-case tracking-[0.25em] text-muted font-display font-semibold block">
               Featured In This Article
             </span>
 
-            <div className="bg-[#f6f6f6] border border-zinc-200 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-5">
+            <div className="bg-canvas border border-zinc-200 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-5">
               <div className="flex items-center space-x-4">
-                <div className="w-16 h-16 rounded-xl overflow-hidden relative shrink-0 bg-white border border-zinc-200">
+                <div className="w-16 h-16 rounded-xl overflow-hidden relative shrink-0 bg-surface border border-zinc-200">
                   <Image
                     src={relatedProduct.images?.[0] || '/images/flagship-tee-black.jpg'}
                     alt={relatedProduct.name}
@@ -112,13 +112,13 @@ export default async function JournalArticlePage({ params }: Props) {
                   />
                 </div>
                 <div>
-                  <span className="text-[9px] uppercase tracking-wider text-[#777777] font-display block">
+                  <span className="text-sm normal-case tracking-wider text-muted font-display block">
                     {relatedProduct.categoryLabel}
                   </span>
-                  <h4 className="text-sm font-display font-bold text-[#060606] uppercase">
+                  <h4 className="text-sm font-display font-bold text-ink normal-case">
                     {relatedProduct.name}
                   </h4>
-                  <span className="text-xs font-mono font-bold text-zinc-800">
+                  <span className="text-sm font-mono font-bold text-zinc-800">
                     {formatCurrency(relatedProduct.price, relatedProduct.currency || 'LKR', true)}
                   </span>
                 </div>
@@ -126,7 +126,7 @@ export default async function JournalArticlePage({ params }: Props) {
 
               <Link
                 href={`/product/${relatedProduct.slug || relatedProduct.id}`}
-                className="px-5 py-2.5 bg-[#060606] text-white font-display text-xs uppercase tracking-wider font-bold rounded-xl hover:bg-zinc-800 transition-colors shrink-0"
+                className="px-5 py-2.5 bg-ink text-paper font-display text-sm normal-case tracking-wider font-bold rounded-xl hover:bg-zinc-800 transition-colors shrink-0"
               >
                 View Garment &rarr;
               </Link>

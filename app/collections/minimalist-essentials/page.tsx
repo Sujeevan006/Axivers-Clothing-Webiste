@@ -13,7 +13,7 @@ const config: CollectionConfig = {
   tagline: 'Clean Lines. Unadorned Luxury.',
   description:
     'Architectural silhouettes focused on pure form and fabric density. Featuring 240 GSM combed cotton heavyweight boxy tees and unadorned crewnecks that hold their structure.',
-  bannerImage: '/images/cat-essentials-bg.png',
+  bannerImage: '/images/Modern Portrait in White Tee.png',
   badge: 'Pure Essentials',
 };
 

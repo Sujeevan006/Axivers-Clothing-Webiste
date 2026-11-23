@@ -15,16 +15,16 @@ export default function JournalPage() {
   const otherArticles = journalArticles.slice(1);
 
   return (
-    <div className="min-h-screen bg-white text-[#060606] pt-24 sm:pt-28 pb-24">
+    <div className="min-h-screen bg-canvas text-ink pt-10 sm:pt-14 pb-24">
       {/* Editorial Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-4 text-center">
-        <span className="text-[10px] uppercase tracking-[0.3em] text-[#777777] font-display font-semibold block">
+        <span className="text-sm normal-case tracking-[0.3em] text-muted font-display font-semibold block">
           Axivers Editorial Magazine
         </span>
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-display font-light uppercase tracking-tight text-[#060606]">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl font-display font-normal normal-case tracking-tight text-ink">
           The <span className="font-bold">Axivers Journal</span>
         </h1>
-        <p className="text-xs sm:text-sm font-light text-[#777777] max-w-xl mx-auto leading-relaxed">
+        <p className="text-sm sm:text-sm font-normal text-muted max-w-xl mx-auto leading-relaxed">
           Essays on textile engineering, athletic luxury aesthetics, and behind-the-scenes craftsmanship from our Colombo studio.
         </p>
       </div>
@@ -34,7 +34,7 @@ export default function JournalPage() {
         {featuredArticle && (
           <Link
             href={`/journal/${featuredArticle.slug}`}
-            className="group relative block rounded-3xl overflow-hidden border border-zinc-200 bg-[#f6f6f6] transition-all duration-500 hover:border-zinc-300 shadow-sm"
+            className="group relative block rounded-3xl overflow-hidden border border-zinc-200 bg-canvas transition-all duration-500 hover:border-zinc-300 shadow-sm"
           >
             <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
               <div className="lg:col-span-7 relative h-72 sm:h-96 md:h-[420px] overflow-hidden bg-zinc-100">
@@ -48,23 +48,23 @@ export default function JournalPage() {
               </div>
 
               <div className="lg:col-span-5 p-6 sm:p-10 space-y-4">
-                <div className="flex items-center space-x-3 text-[10px] font-display uppercase tracking-widest text-[#777777]">
-                  <span className="px-2.5 py-1 rounded-full bg-white text-[#060606] border border-zinc-200 font-medium shadow-xs">
+                <div className="flex items-center space-x-3 text-sm font-display normal-case tracking-widest text-muted">
+                  <span className="px-2.5 py-1 rounded-full bg-surface text-ink border border-zinc-200 font-medium shadow-xs">
                     {featuredArticle.category}
                   </span>
                   <span>•</span>
                   <span>{featuredArticle.readTime}</span>
                 </div>
 
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-display font-bold uppercase tracking-tight text-[#060606] group-hover:text-zinc-700 transition-colors">
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-display font-bold normal-case tracking-tight text-ink group-hover:text-zinc-700 transition-colors">
                   {featuredArticle.title}
                 </h2>
 
-                <p className="text-xs sm:text-sm font-light text-[#777777] leading-relaxed">
+                <p className="text-sm sm:text-sm font-normal text-muted leading-relaxed">
                   {featuredArticle.excerpt}
                 </p>
 
-                <div className="pt-2 flex items-center space-x-2 text-xs font-display uppercase tracking-wider text-[#060606] font-semibold">
+                <div className="pt-2 flex items-center space-x-2 text-sm font-display normal-case tracking-wider text-ink font-semibold">
                   <span>Read Article</span>
                   <span className="transform transition-transform group-hover:translate-x-1">&rarr;</span>
                 </div>
@@ -76,10 +76,10 @@ export default function JournalPage() {
         {/* 3-Column Articles Grid */}
         <div className="space-y-6">
           <div className="flex items-center justify-between border-b border-zinc-200 pb-4">
-            <h3 className="text-base sm:text-lg font-display uppercase tracking-wider font-bold text-[#060606]">
+            <h3 className="text-base sm:text-lg font-display normal-case tracking-wider font-bold text-ink">
               Recent Articles & Guides
             </h3>
-            <span className="text-xs font-mono text-[#777777]">{otherArticles.length} Stories</span>
+            <span className="text-sm font-mono text-muted">{otherArticles.length} Stories</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -87,7 +87,7 @@ export default function JournalPage() {
               <Link
                 key={art.slug}
                 href={`/journal/${art.slug}`}
-                className="group flex flex-col justify-between bg-[#f6f6f6] border border-zinc-200 hover:border-zinc-300 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 shadow-sm"
+                className="group flex flex-col justify-between bg-canvas border border-zinc-200 hover:border-zinc-300 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 shadow-sm"
               >
                 <div>
                   <div className="relative aspect-[16/10] overflow-hidden bg-zinc-200 border-b border-zinc-200">
@@ -98,29 +98,29 @@ export default function JournalPage() {
                       sizes="(max-width: 768px) 100vw, 33vw"
                       className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
                     />
-                    <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-[9px] uppercase tracking-wider text-[#060606] px-2.5 py-1 rounded-full border border-zinc-200 font-display font-medium shadow-xs">
+                    <span className="absolute top-3 left-3 bg-surface/90 backdrop-blur-md text-sm normal-case tracking-wider text-ink px-2.5 py-1 rounded-full border border-zinc-200 font-display font-medium shadow-xs">
                       {art.category}
                     </span>
                   </div>
 
                   <div className="p-6 space-y-3">
-                    <div className="text-[10px] font-mono text-[#777777] flex items-center space-x-2">
+                    <div className="text-sm font-mono text-muted flex items-center space-x-2">
                       <span>{art.publishedAt}</span>
                       <span>•</span>
                       <span>{art.readTime}</span>
                     </div>
 
-                    <h4 className="text-base font-display font-bold uppercase tracking-tight text-[#060606] group-hover:text-zinc-700 transition-colors line-clamp-2">
+                    <h4 className="text-base font-display font-bold normal-case tracking-tight text-ink group-hover:text-zinc-700 transition-colors line-clamp-2">
                       {art.title}
                     </h4>
 
-                    <p className="text-xs text-[#777777] font-light leading-relaxed line-clamp-3">
+                    <p className="text-sm text-muted font-normal leading-relaxed line-clamp-3">
                       {art.excerpt}
                     </p>
                   </div>
                 </div>
 
-                <div className="p-6 pt-0 flex items-center text-xs font-display uppercase tracking-wider text-[#060606] font-semibold group-hover:text-zinc-600 transition-colors">
+                <div className="p-6 pt-0 flex items-center text-sm font-display normal-case tracking-wider text-ink font-semibold group-hover:text-zinc-600 transition-colors">
                   <span>Continue Reading</span>
                   <span className="ml-1.5 transform transition-transform group-hover:translate-x-1">&rarr;</span>
                 </div>

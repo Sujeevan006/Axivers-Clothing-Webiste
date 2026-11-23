@@ -10,24 +10,24 @@ export const metadata: Metadata = {
 
 export default function SizeGuidePage() {
   return (
-    <div className="min-h-screen bg-white text-[#060606] pt-24 sm:pt-28 pb-20 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-canvas text-ink pt-10 sm:pt-14 pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-10 sm:space-y-12">
         {/* Header */}
         <div className="text-center space-y-2 pt-4">
-          <span className="text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono font-medium block">
+          <span className="text-sm normal-case tracking-[0.25em] text-accent font-mono font-medium block">
             Fit &amp; Sizing Specification
           </span>
-          <h1 className="text-3xl sm:text-4xl font-display font-bold uppercase tracking-tight text-[#060606]">
+          <h1 className="text-3xl sm:text-4xl font-display font-bold normal-case tracking-tight text-ink">
             Size &amp; Fit Guide
           </h1>
-          <p className="text-xs sm:text-sm font-light text-zinc-500 max-w-lg mx-auto leading-relaxed">
+          <p className="text-sm sm:text-sm font-normal text-zinc-500 max-w-lg mx-auto leading-relaxed">
             Axivers foundations are engineered with tailored athletic proportions. Follow our measurement recommendations below to find your intended fit.
           </p>
         </div>
 
         {/* Specification Status Note */}
-        <div className="bg-[#fafafa] border border-zinc-200 rounded-xl p-5 sm:p-6 text-xs font-light text-zinc-700 space-y-1 shadow-sm">
-          <div className="flex items-center space-x-2 text-[#c5a059] font-mono text-[11px] font-medium uppercase tracking-wider">
+        <div className="bg-surface border border-zinc-200 rounded-xl p-5 sm:p-6 text-sm font-normal text-zinc-700 space-y-1 shadow-sm">
+          <div className="flex items-center space-x-2 text-accent font-mono text-sm font-medium normal-case tracking-wider">
             <span>&bull;</span>
             <span>Production Sizing Notice</span>
           </div>
@@ -37,23 +37,23 @@ export default function SizeGuidePage() {
         </div>
 
         {/* Body Measurement Table */}
-        <div className="bg-[#fafafa] border border-zinc-200 rounded-2xl p-6 sm:p-8 space-y-5 shadow-sm">
+        <div className="bg-surface border border-zinc-200 rounded-2xl p-6 sm:p-8 space-y-5 shadow-sm">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-200 pb-4 gap-2">
             <div>
-              <h2 className="text-sm font-display font-bold uppercase text-[#060606] tracking-wider">
+              <h2 className="text-sm font-display font-bold normal-case text-ink tracking-wider">
                 Recommended Body Measurements (Centimetres)
               </h2>
-              <p className="text-[11px] text-zinc-500">
+              <p className="text-sm text-zinc-500">
                 Measure directly around your body for the intended athletic tailored fit.
               </p>
             </div>
-            <span className="text-[10px] font-mono text-zinc-600 uppercase bg-white px-3 py-1 rounded-full border border-zinc-200 self-start sm:self-auto">
+            <span className="text-sm font-mono text-zinc-600 normal-case bg-surface px-3 py-1 rounded-full border border-zinc-200 self-start sm:self-auto">
               Centimetre Standard
             </span>
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs font-mono">
+            <table className="w-full text-left text-sm font-mono">
               <thead>
                 <tr className="border-b border-zinc-200 text-zinc-500">
                   <th className="py-3 px-3">Size</th>
@@ -64,25 +64,25 @@ export default function SizeGuidePage() {
               </thead>
               <tbody className="divide-y divide-zinc-200 text-zinc-700">
                 <tr>
-                  <td className="py-3.5 px-3 font-bold text-black">S (Small)</td>
+                  <td className="py-3.5 px-3 font-bold text-ink">S (Small)</td>
                   <td className="py-3.5 px-3 font-mono">91 – 96 cm</td>
                   <td className="py-3.5 px-3 font-mono">43 – 44 cm</td>
                   <td className="py-3.5 px-3 text-zinc-600 font-sans">Athletic Tailored</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-3 font-bold text-black">M (Medium)</td>
+                  <td className="py-3.5 px-3 font-bold text-ink">M (Medium)</td>
                   <td className="py-3.5 px-3 font-mono">99 – 104 cm</td>
                   <td className="py-3.5 px-3 font-mono">45 – 46 cm</td>
                   <td className="py-3.5 px-3 text-zinc-600 font-sans">Athletic Tailored</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-3 font-bold text-black">L (Large)</td>
+                  <td className="py-3.5 px-3 font-bold text-ink">L (Large)</td>
                   <td className="py-3.5 px-3 font-mono">106 – 111 cm</td>
                   <td className="py-3.5 px-3 font-mono">47 – 48 cm</td>
                   <td className="py-3.5 px-3 text-zinc-600 font-sans">Athletic Tailored</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-3 font-bold text-black">XL (Extra Large)</td>
+                  <td className="py-3.5 px-3 font-bold text-ink">XL (Extra Large)</td>
                   <td className="py-3.5 px-3 font-mono">114 – 119 cm</td>
                   <td className="py-3.5 px-3 font-mono">49 – 50 cm</td>
                   <td className="py-3.5 px-3 text-zinc-600 font-sans">Athletic Tailored</td>
@@ -93,22 +93,22 @@ export default function SizeGuidePage() {
         </div>
 
         {/* Measuring Guide: Step-by-Step */}
-        <div className="bg-[#fafafa] border border-zinc-200 rounded-2xl p-6 sm:p-8 space-y-5 shadow-sm">
+        <div className="bg-surface border border-zinc-200 rounded-2xl p-6 sm:p-8 space-y-5 shadow-sm">
           <div className="border-b border-zinc-200 pb-3">
-            <h3 className="text-sm font-display font-bold uppercase text-[#060606] tracking-wider">
+            <h3 className="text-sm font-display font-bold normal-case text-ink tracking-wider">
               How to Measure Accurately
             </h3>
-            <p className="text-[11px] text-zinc-500">
+            <p className="text-sm text-zinc-500">
               Use a flexible tape measure while standing in a relaxed, natural posture.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs text-zinc-700 font-light">
-            <div className="space-y-2 p-4 rounded-xl bg-white border border-zinc-200">
-              <span className="text-[10px] font-mono text-[#c5a059] uppercase block font-medium">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 text-sm text-zinc-700 font-normal">
+            <div className="space-y-2 p-4 rounded-xl bg-surface border border-zinc-200">
+              <span className="text-sm font-mono text-accent normal-case block font-medium">
                 Step 01
               </span>
-              <h4 className="font-display uppercase tracking-wider font-bold text-[#060606]">
+              <h4 className="font-display normal-case tracking-wider font-bold text-ink">
                 Chest Measurement
               </h4>
               <p className="leading-relaxed text-zinc-600">
@@ -116,11 +116,11 @@ export default function SizeGuidePage() {
               </p>
             </div>
 
-            <div className="space-y-2 p-4 rounded-xl bg-white border border-zinc-200">
-              <span className="text-[10px] font-mono text-[#c5a059] uppercase block font-medium">
+            <div className="space-y-2 p-4 rounded-xl bg-surface border border-zinc-200">
+              <span className="text-sm font-mono text-accent normal-case block font-medium">
                 Step 02
               </span>
-              <h4 className="font-display uppercase tracking-wider font-bold text-[#060606]">
+              <h4 className="font-display normal-case tracking-wider font-bold text-ink">
                 Shoulder Width
               </h4>
               <p className="leading-relaxed text-zinc-600">
@@ -128,11 +128,11 @@ export default function SizeGuidePage() {
               </p>
             </div>
 
-            <div className="space-y-2 p-4 rounded-xl bg-white border border-zinc-200">
-              <span className="text-[10px] font-mono text-[#c5a059] uppercase block font-medium">
+            <div className="space-y-2 p-4 rounded-xl bg-surface border border-zinc-200">
+              <span className="text-sm font-mono text-accent normal-case block font-medium">
                 Step 03
               </span>
-              <h4 className="font-display uppercase tracking-wider font-bold text-[#060606]">
+              <h4 className="font-display normal-case tracking-wider font-bold text-ink">
                 Between Sizes?
               </h4>
               <p className="leading-relaxed text-zinc-600">
@@ -144,12 +144,12 @@ export default function SizeGuidePage() {
 
         {/* Concierge Support CTA */}
         <div className="border-t border-zinc-200 pt-6 text-center space-y-2">
-          <p className="text-xs text-zinc-500">
+          <p className="text-sm text-zinc-500">
             Have questions regarding sizing or fit preference?
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center space-x-1.5 text-xs font-display uppercase tracking-wider font-semibold text-[#060606] underline hover:text-zinc-600 transition-colors"
+            className="inline-flex items-center space-x-1.5 text-sm font-display normal-case tracking-wider font-semibold text-ink underline hover:text-zinc-600 transition-colors"
           >
             <span>Contact Axivers Concierge</span>
             <span>&rarr;</span>

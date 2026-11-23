@@ -1,65 +1,39 @@
 'use client';
 
-import React from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export const Hero: React.FC = () => {
+const slides = [
+  { image: '/images/Urban Minimalist Fashion Duo.png', eyebrow: 'THE SIGNATURE COLLECTION', first: 'OWN YOUR', second: 'AXIS.', copy: 'Considered essentials. Confident silhouettes. Find the pieces that move through every day with you.', href: '/shop', action: 'Shop the collection', alt: 'Axivers black and white essentials styled against an urban backdrop' },
+  { image: '/images/Axivers Urban Luxury Duo.png', eyebrow: 'EVERYDAY, ELEVATED', first: 'LESS NOISE.', second: 'MORE YOU.', copy: 'Clean lines and an effortless fit. A fresh perspective on your everyday wardrobe.', href: '/collections/new-arrivals', action: 'Explore new arrivals', alt: 'Axivers essentials styled in the city' },
+  { image: '/images/Axivers Luxury City Duo.png', eyebrow: 'FROM SRI LANKA', first: 'MADE FOR', second: 'YOUR DAY.', copy: 'From the first plan to the last stop. Discover your own way to wear Axivers.', href: '/lookbook', action: 'Explore the lookbook', alt: 'Two models wearing Axivers tees on a city street' },
+];
+
+export function Hero() {
+  const [active, setActive] = useState(0);
+  const slide = slides[active];
   return (
-    <section className="relative min-h-[85vh] sm:min-h-[90vh] bg-[#060606] text-white flex items-center justify-center overflow-hidden pt-20 sm:pt-24 pb-16">
-      {/* Editorial Fashion Photography Background */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="/images/editorial-pedestal-black.png"
-          alt="Axivers Elevated Essentials"
-          fill
-          priority
-          sizes="100vw"
-          quality={95}
-          className="object-cover object-center opacity-55 sm:opacity-50"
-        />
-        {/* Subtle Vignette for Maximum Fashion Impact & Contrast */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#060606] via-transparent to-[#060606]/60 pointer-events-none" />
-        <div className="absolute inset-0 bg-black/25 pointer-events-none" />
+    <section className="campaign-hero" aria-label="Axivers collections" aria-roledescription="carousel">
+      <div className="campaign-backdrop" key={slide.image}>
+        <Image src={slide.image} alt={slide.alt} fill priority={active === 0} sizes="100vw" className="campaign-photo" />
       </div>
-
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10 relative text-center space-y-6 sm:space-y-8">
-        {/* Subtle Brand Tagline */}
-        <div className="inline-flex items-center space-x-3 text-zinc-400 justify-center">
-          <span className="w-6 sm:w-8 h-[1px] bg-zinc-600" />
-          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-[#c5a059] font-mono font-medium">
-            Own Your Axis
-          </span>
-          <span className="w-6 sm:w-8 h-[1px] bg-zinc-600" />
-        </div>
-
-        {/* Clean, Refined Headline */}
-        <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-light tracking-tight leading-[1.08] uppercase text-white">
-          Elevated <br className="sm:hidden" />
-          <span className="font-bold">Essentials.</span>
-        </h1>
-
-        {/* Concise Supporting Copy */}
-        <p className="text-sm sm:text-base md:text-lg font-light text-zinc-300 max-w-xl mx-auto leading-relaxed tracking-wide">
-          Designed for the modern lifestyle.
-        </p>
-
-        {/* Clean, Elegant Action Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-4">
-          <Link
-            href="/shop"
-            className="w-full sm:w-auto px-8 py-3.5 bg-white text-[#060606] text-xs font-display uppercase tracking-[0.18em] font-bold rounded-lg hover:bg-zinc-200 transition-all text-center cursor-pointer shadow-lg"
-          >
-            Shop Collection
-          </Link>
-          <Link
-            href="/our-story"
-            className="w-full sm:w-auto px-8 py-3.5 bg-transparent text-white text-xs font-display uppercase tracking-[0.18em] font-medium rounded-lg border border-white/60 hover:border-white hover:bg-white/10 transition-all text-center cursor-pointer"
-          >
-            Discover Axivers
-          </Link>
+      <div className="campaign-shade" />
+      <div className="campaign-inner">
+        <div className="campaign-copy" aria-live="polite" aria-atomic="true">
+          <span className="eyebrow">{slide.eyebrow}</span>
+          <h1>{slide.first}<br /><span>{slide.second}</span></h1>
+          <p>{slide.copy}</p>
+          <div className="hero-actions">
+            <Link href={slide.href} className="button-primary">{slide.action} <span aria-hidden="true">↗</span></Link>
+            <Link href="/our-story" className="text-link">Our story <span aria-hidden="true">→</span></Link>
+          </div>
+          <div className="campaign-note"><span aria-hidden="true">✓</span> Thoughtfully made. Unmistakably Axivers.</div>
         </div>
       </div>
+      <button className="hero-arrow hero-previous" aria-label="Previous campaign" onClick={() => setActive((active + slides.length - 1) % slides.length)}>‹</button>
+      <button className="hero-arrow hero-next" aria-label="Next campaign" onClick={() => setActive((active + 1) % slides.length)}>›</button>
+      <div className="hero-dots">{slides.map((item, index) => <button key={item.image} onClick={() => setActive(index)} aria-label={`Go to campaign ${index + 1}`} aria-pressed={active === index}><span /></button>)}</div>
     </section>
   );
-};
+}

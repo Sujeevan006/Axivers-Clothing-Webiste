@@ -16,7 +16,7 @@ const TOP_CATEGORIES: CategoryItem[] = [
     href: '/collections/men',
     name: "MEN'S COLLECTION",
     actionText: 'Explore Men',
-    image: '/images/cat-men-bg.png',
+    image: '/images/Minimalist Axivers Studio Portrait.png',
   },
   {
     href: '/collections/women',
@@ -31,19 +31,19 @@ const BOTTOM_CATEGORIES: CategoryItem[] = [
     href: '/collections/flagship-piping',
     name: 'FLAGSHIP PIPING',
     actionText: 'Explore Flagship',
-    image: '/images/cat-piping-bg.png',
+    image: '/images/Urban Minimalist Fashion Duo.png',
   },
   {
     href: '/collections/minimalist-essentials',
     name: 'MINIMALIST ESSENTIALS',
     actionText: 'Explore Essentials',
-    image: '/images/cat-essentials-bg.png',
+    image: '/images/Modern Portrait in White Tee.png',
   },
   {
     href: '/collections/technical',
     name: 'TECHNICAL GARMENTS',
     actionText: 'Explore Technical',
-    image: '/images/cat-technical-bg.png',
+    image: '/images/Axivers Luxury City Duo.png',
   },
 ];
 
@@ -51,22 +51,22 @@ export const CategoryGrid: React.FC = () => {
   return (
     <section
       id="categories"
-      className="py-20 sm:py-24 bg-[#09090b] text-[#ffffff]"
+      className="py-20 sm:py-24 bg-ink text-paper"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         {/* Header Centered with decorative line accents */}
         <div className="text-center space-y-2 max-w-2xl mx-auto">
-          <span className="text-[10px] sm:text-xs uppercase tracking-[0.25em] text-zinc-400 font-display font-semibold block">
+          <span className="text-sm sm:text-sm normal-case tracking-[0.25em] text-zinc-400 font-display font-semibold block">
             BROWSE CURATED COLLECTIONS
           </span>
           <div className="flex items-center justify-center space-x-4 pt-1">
             <span className="w-8 sm:w-16 h-[1px] bg-zinc-700"></span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold tracking-tight text-white whitespace-nowrap">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold tracking-tight text-paper whitespace-nowrap">
               Explore Collections
             </h2>
             <span className="w-8 sm:w-16 h-[1px] bg-zinc-700"></span>
           </div>
-          <p className="text-xs sm:text-sm font-light text-zinc-400 pt-1">
+          <p className="text-sm sm:text-sm font-normal text-zinc-400 pt-1">
             Discover tailored silhouettes and signature textiles crafted for elevated everyday living.
           </p>
         </div>
@@ -95,10 +95,10 @@ export const CategoryGrid: React.FC = () => {
 
               {/* Text content */}
               <div className="relative z-20 space-y-1">
-                <h3 className="text-base sm:text-lg font-display uppercase tracking-wider font-bold text-white group-hover:text-zinc-200 transition-colors">
+                <h3 className="text-base sm:text-lg font-display normal-case tracking-wider font-bold text-paper group-hover:text-zinc-200 transition-colors">
                   {cat.name}
                 </h3>
-                <div className="text-xs text-zinc-300 font-medium flex items-center space-x-1.5 pt-0.5">
+                <div className="text-sm text-zinc-300 font-medium flex items-center space-x-1.5 pt-0.5">
                   <span>{cat.actionText}</span>
                   <span className="transform transition-transform group-hover:translate-x-1">
                     &rarr;
@@ -133,10 +133,10 @@ export const CategoryGrid: React.FC = () => {
 
               {/* Text content */}
               <div className="relative z-20 space-y-1">
-                <h3 className="text-sm sm:text-base font-display uppercase tracking-wider font-bold text-white group-hover:text-zinc-200 transition-colors">
+                <h3 className="text-sm sm:text-base font-display normal-case tracking-wider font-bold text-paper group-hover:text-zinc-200 transition-colors">
                   {cat.name}
                 </h3>
-                <div className="text-xs text-zinc-300 font-medium flex items-center space-x-1.5 pt-0.5">
+                <div className="text-sm text-zinc-300 font-medium flex items-center space-x-1.5 pt-0.5">
                   <span>{cat.actionText}</span>
                   <span className="transform transition-transform group-hover:translate-x-1">
                     &rarr;

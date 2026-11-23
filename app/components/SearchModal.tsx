@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useDialogFocus } from './useDialogFocus';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import type { Product } from '@/types/product';
@@ -19,6 +20,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
   const [filteredResults, setFilteredResults] = useState<Product[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const panelRef = useDialogFocus(isOpen, onClose);
 
   useEffect(() => {
     if (isOpen) {
@@ -52,8 +54,10 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Escape') {
+      e.preventDefault();
       onClose();
     } else if (e.key === 'Enter' && query.trim()) {
+      e.preventDefault();
       onClose();
       router.push(`/shop?q=${encodeURIComponent(query.trim())}`);
     }
@@ -62,14 +66,14 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-ink/60 backdrop-blur-sm animate-fade-in">
       <div
         className="fixed inset-0"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      <div className="relative w-full max-w-2xl bg-white border border-zinc-200 rounded-2xl shadow-2xl overflow-hidden z-10 flex flex-col max-h-[80vh]">
+      <div ref={panelRef} role="dialog" aria-modal="true" aria-label="Search the collection" tabIndex={-1} className="search-panel relative w-full max-w-2xl bg-surface border border-zinc-200 rounded-2xl shadow-2xl overflow-hidden z-10 flex flex-col max-h-[80vh]">
         {/* Search Input Bar */}
         <div className="flex items-center px-5 py-4 border-b border-zinc-200">
           <svg className="w-5 h-5 text-zinc-400 shrink-0 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -77,24 +81,25 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
           </svg>
           <input
             ref={inputRef}
+            aria-label="Search garments"
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Search garments by name, fabric, or collection..."
-            className="w-full bg-transparent text-[#060606] placeholder-zinc-400 text-sm font-display tracking-wide focus:outline-none"
+            className="w-full bg-transparent text-ink placeholder-zinc-400 text-sm font-display tracking-wide focus:outline-none"
           />
           {query && (
             <button
               onClick={() => setQuery('')}
-              className="text-xs uppercase tracking-wider text-zinc-400 hover:text-black px-2 py-1 mr-2"
+              className="text-sm normal-case tracking-wider text-zinc-400 hover:text-ink px-2 py-1 mr-2"
             >
               Clear
             </button>
           )}
           <button
             onClick={onClose}
-            className="p-1.5 text-zinc-400 hover:text-black rounded-lg hover:bg-zinc-100 transition-colors"
+            className="p-1.5 text-zinc-400 hover:text-ink rounded-lg hover:bg-zinc-100 transition-colors"
             aria-label="Close search"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -106,7 +111,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
         {/* Quick Suggestion Pills */}
         {!query && (
           <div className="p-6 space-y-4">
-            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 font-display font-semibold block">
+            <span className="text-sm normal-case tracking-[0.2em] text-zinc-400 font-display font-semibold block">
               Suggested Collections
             </span>
             <div className="flex flex-wrap gap-2">
@@ -121,7 +126,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
                   key={pill.label}
                   href={pill.href}
                   onClick={onClose}
-                  className="px-3 py-1.5 rounded-lg bg-[#f6f6f6] hover:bg-[#060606] text-zinc-700 hover:text-white text-xs font-display transition-colors"
+                  className="px-3 py-1.5 rounded-lg bg-canvas hover:bg-ink text-zinc-700 hover:text-paper text-sm font-display transition-colors"
                 >
                   {pill.label}
                 </Link>
@@ -138,13 +143,13 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
                 <p className="text-sm font-display text-zinc-600">
                   No garments found for &ldquo;{query}&rdquo;
                 </p>
-                <p className="text-xs text-zinc-400">
+                <p className="text-sm text-zinc-400">
                   Try searching for &quot;Crewneck&quot;, &quot;Mercerized&quot;, or &quot;Onyx Black&quot;.
                 </p>
               </div>
             ) : (
               <div className="space-y-1">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 font-display font-semibold block px-3 py-1">
+                <span className="text-sm normal-case tracking-[0.2em] text-zinc-400 font-display font-semibold block px-3 py-1">
                   Results ({filteredResults.length})
                 </span>
                 {filteredResults.map((product) => (
@@ -152,9 +157,9 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
                     key={product.id}
                     href={`/product/${product.slug || product.id}`}
                     onClick={onClose}
-                    className="flex items-center space-x-4 p-3 rounded-xl hover:bg-[#f6f6f6] transition-colors group"
+                    className="flex items-center space-x-4 p-3 rounded-xl hover:bg-canvas transition-colors group"
                   >
-                    <div className="w-14 h-14 bg-[#f6f6f6] rounded-lg overflow-hidden relative shrink-0 border border-zinc-200">
+                    <div className="w-14 h-14 bg-canvas rounded-lg overflow-hidden relative shrink-0 border border-zinc-200">
                       <Image
                         src={product.images?.[0] || '/images/flagship-tee-black.jpg'}
                         alt={product.name}
@@ -164,17 +169,17 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <span className="text-[10px] uppercase tracking-wider text-zinc-400 font-display block">
+                      <span className="text-sm normal-case tracking-wider text-zinc-400 font-display block">
                         {product.categoryLabel || 'Essential'}
                       </span>
-                      <h4 className="text-xs sm:text-sm font-display font-medium text-[#060606] group-hover:text-black truncate">
+                      <h4 className="text-sm sm:text-sm font-display font-medium text-ink group-hover:text-ink truncate">
                         {product.name}
                       </h4>
-                      <p className="text-xs font-mono font-bold text-[#060606] mt-0.5">
+                      <p className="text-sm font-mono font-bold text-ink mt-0.5">
                         {formatCurrency(product.price, product.currency || 'LKR', true)}
                       </p>
                     </div>
-                    <span className="text-xs text-zinc-400 group-hover:text-black font-display font-medium shrink-0">
+                    <span className="text-sm text-zinc-400 group-hover:text-ink font-display font-medium shrink-0">
                       View &rarr;
                     </span>
                   </Link>

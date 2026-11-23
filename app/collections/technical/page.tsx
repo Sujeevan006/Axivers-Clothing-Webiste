@@ -13,7 +13,7 @@ const config: CollectionConfig = {
   tagline: 'High Performance. Seamless Athletic Drape.',
   description:
     'Textile engineering meets athletic luxury. Built with micro-mesh breathability, high yarn resilience, and thermoregulating modal fibers suited for active metropolitan life.',
-  bannerImage: '/images/cat-technical-bg.png',
+  bannerImage: '/images/Axivers Luxury City Duo.png',
   badge: 'Performance Knit',
 };
 

@@ -43,15 +43,15 @@ export const BestSellersSection: React.FC = () => {
   if (isLoading || bestSellers.length === 0) return null;
 
   return (
-    <section className="py-20 sm:py-24 bg-[#09090b] text-[#ffffff] border-t border-zinc-800/80">
+    <section className="py-20 sm:py-24 bg-ink text-paper border-t border-zinc-800/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 pb-2">
           <div className="space-y-1.5 shrink-0">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-zinc-400 font-display font-semibold block">
+            <span className="text-sm normal-case tracking-[0.25em] text-zinc-400 font-display font-semibold block">
               Tested & Proven
             </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold tracking-tight text-white uppercase">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold tracking-tight text-paper normal-case">
               Best Sellers.
             </h2>
           </div>
@@ -60,7 +60,7 @@ export const BestSellersSection: React.FC = () => {
 
           <Link
             href="/collections/best-sellers"
-            className="group/link text-xs font-display uppercase tracking-widest font-semibold text-zinc-300 hover:text-white transition-colors flex items-center space-x-1.5 shrink-0 mb-1"
+            className="group/link text-sm font-display normal-case tracking-widest font-semibold text-zinc-300 hover:text-paper transition-colors flex items-center space-x-1.5 shrink-0 mb-1"
           >
             <span>View All Best Sellers</span>
             <span className="transform transition-transform group-hover/link:translate-x-1">&rarr;</span>
@@ -76,12 +76,12 @@ export const BestSellersSection: React.FC = () => {
             return (
               <div
                 key={product.id}
-                className="group relative flex flex-col justify-between bg-[#111113] hover:bg-[#141417] border border-zinc-800/80 hover:border-zinc-700/90 rounded-2xl p-3.5 sm:p-4 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.7)]"
+                className="group relative flex flex-col justify-between bg-ink hover:bg-ink border border-zinc-800/80 hover:border-zinc-700/90 rounded-2xl p-3.5 sm:p-4 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.7)]"
               >
                 {/* Product Image Box */}
                 <Link
                   href={`/product/${product.slug || product.id}`}
-                  className="aspect-[16/10] bg-[#161618] rounded-xl overflow-hidden relative block border border-zinc-800/60 group-hover:border-zinc-700/80 transition-colors cursor-pointer"
+                  className="aspect-[16/10] bg-ink rounded-xl overflow-hidden relative block border border-zinc-800/60 group-hover:border-zinc-700/80 transition-colors cursor-pointer"
                 >
                   <Image
                     src={displayImage}
@@ -94,12 +94,12 @@ export const BestSellersSection: React.FC = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 opacity-40 pointer-events-none" />
 
-                  <span className="absolute top-2.5 left-2.5 bg-black/60 backdrop-blur-md text-white/90 text-[9px] uppercase tracking-[0.2em] font-display font-medium px-2.5 py-1 rounded-full border border-white/10 shadow-sm">
+                  <span className="absolute top-2.5 left-2.5 bg-ink/60 backdrop-blur-md text-paper/90 text-sm normal-case tracking-[0.2em] font-display font-medium px-2.5 py-1 rounded-full border border-paper/10 shadow-sm">
                     Best Seller
                   </span>
 
                   {isOutOfStock ? (
-                    <span className="absolute top-2.5 right-2.5 bg-zinc-900/90 text-zinc-400 text-[9px] uppercase tracking-wider font-display font-semibold px-2.5 py-1 rounded-full border border-zinc-700/80 shadow-md">
+                    <span className="absolute top-2.5 right-2.5 bg-zinc-900/90 text-zinc-400 text-sm normal-case tracking-wider font-display font-semibold px-2.5 py-1 rounded-full border border-zinc-700/80 shadow-md">
                       Sold Out
                     </span>
                   ) : null}
@@ -108,11 +108,11 @@ export const BestSellersSection: React.FC = () => {
                 {/* Card Bottom Meta */}
                 <div className="pt-3.5 flex flex-col justify-between flex-grow space-y-3">
                   <div className="space-y-1">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 font-display font-medium block">
+                    <span className="text-sm normal-case tracking-[0.2em] text-zinc-400 font-display font-medium block">
                       {product.categoryLabel || 'Premium Garment'}
                     </span>
                     <Link href={`/product/${product.slug || product.id}`}>
-                      <h3 className="text-sm sm:text-base font-display font-semibold uppercase tracking-wider text-white group-hover:text-zinc-300 transition-colors line-clamp-1">
+                      <h3 className="text-sm sm:text-base font-display font-semibold normal-case tracking-wider text-paper group-hover:text-zinc-300 transition-colors line-clamp-1">
                         {product.name}
                       </h3>
                     </Link>
@@ -120,7 +120,7 @@ export const BestSellersSection: React.FC = () => {
 
                   <div className="pt-2 flex items-center justify-between gap-2">
                     <div>
-                      <span className="text-sm sm:text-base font-bold font-mono text-white">
+                      <span className="text-sm sm:text-base font-bold font-mono text-paper">
                         {formatCurrency(product.price, product.currency || 'LKR', true)}
                       </span>
                     </div>
@@ -128,10 +128,10 @@ export const BestSellersSection: React.FC = () => {
                     <button
                       onClick={() => setQuickAddProduct(product)}
                       disabled={isOutOfStock}
-                      className={`inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-display font-semibold transition-all duration-300 cursor-pointer ${
+                      className={`inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-sm normal-case tracking-wider font-display font-semibold transition-all duration-300 cursor-pointer ${
                         isOutOfStock
                           ? 'bg-zinc-800/60 text-zinc-500 border border-zinc-800 cursor-not-allowed'
-                          : 'bg-zinc-800/80 hover:bg-white text-zinc-200 hover:text-black border border-zinc-700/60 hover:border-white shadow-sm'
+                          : 'bg-zinc-800/80 hover:bg-surface text-zinc-200 hover:text-ink border border-zinc-700/60 hover:border-paper shadow-sm'
                       }`}
                     >
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

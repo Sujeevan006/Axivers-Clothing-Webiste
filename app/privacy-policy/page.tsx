@@ -8,22 +8,22 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="min-h-screen bg-white text-[#060606] pt-28 sm:pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-canvas text-ink pt-10 sm:pt-14 pb-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-10">
         <div className="space-y-3 border-b border-zinc-200 pb-6">
-          <div className="inline-flex items-center space-x-2 text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059]" />
+          <div className="inline-flex items-center space-x-2 text-sm normal-case tracking-[0.25em] text-accent font-mono">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent" />
             <span>Governance &amp; Privacy</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-display font-bold uppercase tracking-tight text-[#060606]">
+          <h1 className="text-3xl sm:text-4xl font-display font-bold normal-case tracking-tight text-ink">
             Privacy Policy
           </h1>
-          <p className="text-xs text-[#777777] font-mono">Axivers Clothing (Pvt) Ltd &bull; Colombo, Sri Lanka</p>
+          <p className="text-sm text-muted font-mono">Axivers Clothing (Pvt) Ltd &bull; Colombo, Sri Lanka</p>
         </div>
 
-        <div className="space-y-6 text-xs sm:text-sm font-light text-zinc-700 leading-relaxed bg-[#f6f6f6] border border-zinc-200 rounded-3xl p-6 sm:p-10 shadow-sm">
+        <div className="space-y-6 text-sm sm:text-sm font-normal text-zinc-700 leading-relaxed bg-canvas border border-zinc-200 rounded-3xl p-6 sm:p-10 shadow-sm">
           <section className="space-y-2 border-b border-zinc-200 pb-5">
-            <h2 className="text-base font-display font-bold uppercase text-[#060606] tracking-wider">
+            <h2 className="text-base font-display font-bold normal-case text-ink tracking-wider">
               1. Information We Collect
             </h2>
             <p>
@@ -37,7 +37,7 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section className="space-y-2 border-b border-zinc-200 pb-5">
-            <h2 className="text-base font-display font-bold uppercase text-[#060606] tracking-wider">
+            <h2 className="text-base font-display font-bold normal-case text-ink tracking-wider">
               2. How We Use Your Data
             </h2>
             <p>
@@ -52,7 +52,7 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section className="space-y-2">
-            <h2 className="text-base font-display font-bold uppercase text-[#060606] tracking-wider">
+            <h2 className="text-base font-display font-bold normal-case text-ink tracking-wider">
               3. Data Protection &amp; Confidentiality
             </h2>
             <p>

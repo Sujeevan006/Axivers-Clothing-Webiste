@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useDialogFocus } from './useDialogFocus';
 import Image from 'next/image';
 import { useCart } from '../context/CartContext';
 import { StoreSettings } from '@/types/settings';
@@ -47,6 +48,8 @@ export const CartDrawer: React.FC = () => {
 
     return () => unsubscribe();
   }, []);
+
+  const panelRef = useDialogFocus(isCartOpen, () => { setIsCartOpen(false); setCheckoutStep('cart'); setErrorMessage(''); });
 
   if (!isCartOpen) return null;
 
@@ -138,29 +141,30 @@ export const CartDrawer: React.FC = () => {
       {/* Backdrop */}
       <div
         onClick={handleClose}
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity animate-fade-in cursor-pointer"
+        className="absolute inset-0 bg-ink/60 backdrop-blur-sm transition-opacity animate-fade-in cursor-pointer"
       />
 
-      <div className="fixed inset-y-0 right-0 max-w-full flex pl-6">
-        <div className="w-screen max-w-md bg-white text-[#060606] border-l border-zinc-200 shadow-2xl flex flex-col justify-between animate-slide-left">
+      <div className="fixed inset-y-0 right-0 max-w-full flex pl-0 sm:pl-6">
+        <div ref={panelRef} role="dialog" aria-modal="true" aria-label="Your shopping bag" tabIndex={-1} className="cart-panel w-screen max-w-md bg-surface text-ink border-l border-zinc-200 shadow-2xl flex flex-col justify-between animate-slide-left">
           
           {/* Drawer Header */}
-          <div className="px-6 py-4 border-b border-zinc-200 flex items-center justify-between bg-white">
+          <div className="px-6 py-4 border-b border-zinc-200 flex items-center justify-between bg-surface">
             <div className="flex items-center space-x-2">
-              <span className="text-xs uppercase tracking-wider font-display font-bold text-[#060606]">
+              <span className="text-sm normal-case tracking-wider font-display font-bold text-ink">
                 {checkoutStep === 'cart' && 'Your Shopping Bag'}
                 {checkoutStep === 'details' && 'Shipping & Payment'}
                 {checkoutStep === 'success' && 'Order Confirmed'}
               </span>
               {checkoutStep === 'cart' && (
-                <span className="text-[10px] bg-[#060606] text-white font-mono px-2 py-0.5 font-bold rounded-full">
+                <span className="text-sm bg-ink text-paper font-mono px-2 py-0.5 font-bold rounded-full">
                   {cartItems.reduce((acc, i) => acc + i.quantity, 0)}
                 </span>
               )}
             </div>
             <button
               onClick={handleClose}
-              className="text-zinc-500 hover:text-black p-1.5 rounded-lg hover:bg-zinc-100 transition-colors focus:outline-none cursor-pointer"
+              aria-label="Close shopping bag"
+              className="text-zinc-500 hover:text-ink p-1.5 rounded-lg hover:bg-zinc-100 transition-colors focus:outline-none cursor-pointer"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -179,16 +183,17 @@ export const CartDrawer: React.FC = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                       </svg>
                     </div>
-                    <h3 className="text-xs uppercase tracking-wider font-display font-semibold text-zinc-800">Your bag is currently empty</h3>
-                    <p className="text-xs text-zinc-500 max-w-[220px] font-light leading-relaxed">
+                    <h3 className="text-sm normal-case tracking-wider font-display font-semibold text-zinc-800">Your bag is currently empty</h3>
+                    <p className="text-sm text-zinc-500 max-w-[220px] font-normal leading-relaxed">
                       Discover our athletic luxury essentials designed in Sri Lanka.
                     </p>
-                    <button
+                    <Link
+                      href="/shop"
                       onClick={handleClose}
-                      className="px-6 py-3 bg-[#060606] text-white text-xs font-display uppercase tracking-wider font-bold rounded-lg hover:bg-zinc-800 cursor-pointer shadow-sm"
+                      className="px-6 py-3 bg-ink text-paper text-sm font-display normal-case tracking-wider font-bold rounded-lg hover:bg-zinc-800 cursor-pointer shadow-sm"
                     >
                       Explore Collection
-                    </button>
+                    </Link>
                   </div>
                 ) : (
                   cartItems.map((item) => {
@@ -198,7 +203,7 @@ export const CartDrawer: React.FC = () => {
 
                     return (
                       <div key={`${item.id}-${itemSize}-${itemColor}`} className="flex space-x-4 pb-4 border-b border-zinc-100">
-                        <div className="w-20 h-20 bg-[#f6f6f6] overflow-hidden relative rounded-xl border border-zinc-200 flex-shrink-0">
+                        <div className="w-20 h-20 bg-canvas overflow-hidden relative rounded-xl border border-zinc-200 flex-shrink-0">
                           <Image
                             src={item.image || (item.images && item.images[0]) || '/images/flagship-tee-black.jpg'}
                             alt={item.name}
@@ -211,40 +216,43 @@ export const CartDrawer: React.FC = () => {
                         <div className="flex-1 flex flex-col justify-between">
                           <div>
                             <div className="flex justify-between items-start">
-                              <h4 className="text-xs uppercase tracking-wider font-semibold font-display text-[#060606] line-clamp-1 pr-2">
+                              <h4 className="text-sm normal-case tracking-wider font-semibold font-display text-ink line-clamp-1 pr-2">
                                 {item.name}
                               </h4>
                               <button
+                                aria-label={`Remove ${item.name} from bag`}
                                 onClick={() => removeItem(item.id, itemSize, itemColor)}
-                                className="text-[10px] text-zinc-400 hover:text-rose-600 font-display cursor-pointer"
+                                className="text-sm text-zinc-400 hover:text-rose-600 font-display cursor-pointer"
                               >
                                 REMOVE
                               </button>
                             </div>
-                            <div className="flex space-x-3 text-[10px] text-zinc-500 mt-1 font-mono">
-                              <span>Size: <strong className="text-black">{itemSize}</strong></span>
-                              {itemColor && <span>Color: <strong className="text-black">{itemColor}</strong></span>}
+                            <div className="flex space-x-3 text-sm text-zinc-500 mt-1 font-mono">
+                              <span>Size: <strong className="text-ink">{itemSize}</strong></span>
+                              {itemColor && <span>Color: <strong className="text-ink">{itemColor}</strong></span>}
                             </div>
                           </div>
 
                           <div className="flex justify-between items-center mt-3">
                             <div className="flex items-center border border-zinc-300 bg-zinc-50 rounded-md">
                               <button
+                                aria-label={`Decrease quantity of ${item.name}`}
                                 onClick={() => updateQuantity(item.id, itemSize, itemColor, item.quantity - 1)}
-                                className="px-2 py-0.5 text-xs text-zinc-600 hover:text-black cursor-pointer"
+                                className="px-2 py-0.5 text-sm text-zinc-600 hover:text-ink cursor-pointer"
                               >
                                 -
                               </button>
-                              <span className="px-2 text-xs font-mono font-bold text-[#060606]">{item.quantity}</span>
+                              <span className="px-2 text-sm font-mono font-bold text-ink">{item.quantity}</span>
                               <button
+                                aria-label={`Increase quantity of ${item.name}`}
                                 onClick={() => updateQuantity(item.id, itemSize, itemColor, item.quantity + 1)}
-                                className="px-2 py-0.5 text-xs text-zinc-600 hover:text-black cursor-pointer"
+                                className="px-2 py-0.5 text-sm text-zinc-600 hover:text-ink cursor-pointer"
                               >
                                 +
                               </button>
                             </div>
 
-                            <div className="text-xs font-mono font-bold text-[#060606]">
+                            <div className="text-sm font-mono font-bold text-ink">
                               {formatCurrency(itemPriceMinor * item.quantity, 'LKR', true)}
                             </div>
                           </div>
@@ -256,37 +264,37 @@ export const CartDrawer: React.FC = () => {
               </div>
 
               {cartItems.length > 0 && (
-                <div className="p-6 border-t border-zinc-200 bg-[#fafafa] space-y-4">
-                  <div className="space-y-2 text-xs">
+                <div className="p-6 border-t border-zinc-200 bg-surface space-y-4">
+                  <div className="space-y-2 text-sm">
                     <div className="flex justify-between text-zinc-600">
                       <span>Subtotal</span>
-                      <span className="font-mono text-[#060606]">{formatCurrency(subtotalMinor, 'LKR', true)}</span>
+                      <span className="font-mono text-ink">{formatCurrency(subtotalMinor, 'LKR', true)}</span>
                     </div>
                     <div className="flex justify-between text-zinc-600">
                       <span>Delivery Fee</span>
-                      <span className="font-mono text-[#060606] font-bold">
+                      <span className="font-mono text-ink font-bold">
                         {isFreeDelivery ? (
-                          <span className="text-emerald-600 uppercase font-display font-bold">FREE</span>
+                          <span className="text-emerald-600 normal-case font-display font-bold">FREE</span>
                         ) : (
                           formatCurrency(deliveryFeeMinor, 'LKR', true)
                         )}
                       </span>
                     </div>
-                    <div className="flex justify-between text-sm font-bold uppercase tracking-wider font-display pt-2 border-t border-zinc-200 text-[#060606]">
+                    <div className="flex justify-between text-sm font-bold normal-case tracking-wider font-display pt-2 border-t border-zinc-200 text-ink">
                       <span>Total Amount</span>
-                      <span className="font-mono text-[#060606]">{formatCurrency(totalMinor, 'LKR', true)}</span>
+                      <span className="font-mono text-ink">{formatCurrency(totalMinor, 'LKR', true)}</span>
                     </div>
                   </div>
 
                   {!storeSettings.ordersEnabled ? (
                     <div className="space-y-2">
-                      <div className="p-3 rounded-lg bg-zinc-100 border border-zinc-200 text-[11px] text-zinc-600 text-center">
+                      <div className="p-3 rounded-lg bg-zinc-100 border border-zinc-200 text-sm text-zinc-600 text-center">
                         Launch Preview Mode: Online orders open with our inaugural release.
                       </div>
                       <Link
                         href="/#early-access"
                         onClick={() => setIsCartOpen(false)}
-                        className="w-full py-3.5 bg-[#060606] text-white text-xs font-display uppercase tracking-widest font-bold rounded-lg hover:bg-zinc-800 transition-colors shadow-sm block text-center"
+                        className="w-full py-3.5 bg-ink text-paper text-sm font-display normal-case tracking-widest font-bold rounded-lg hover:bg-zinc-800 transition-colors shadow-sm block text-center"
                       >
                         Join Launch Registry
                       </Link>
@@ -294,7 +302,7 @@ export const CartDrawer: React.FC = () => {
                   ) : (
                     <button
                       onClick={() => setCheckoutStep('details')}
-                      className="w-full py-3.5 bg-[#060606] text-white text-xs font-display uppercase tracking-widest font-bold rounded-lg hover:bg-zinc-800 transition-colors shadow-sm cursor-pointer text-center"
+                      className="w-full py-3.5 bg-ink text-paper text-sm font-display normal-case tracking-widest font-bold rounded-lg hover:bg-zinc-800 transition-colors shadow-sm cursor-pointer text-center"
                     >
                       Proceed to Checkout
                     </button>
@@ -309,98 +317,98 @@ export const CartDrawer: React.FC = () => {
             <form onSubmit={handleCheckoutSubmit} className="flex-1 flex flex-col justify-between overflow-y-auto">
               <div className="p-6 space-y-4">
                 {errorMessage && (
-                  <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg">
+                  <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-sm rounded-lg">
                     {errorMessage}
                   </div>
                 )}
 
                 <div>
-                  <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-zinc-600">
+                  <label htmlFor="app-components-CartDrawer-tsx-field-1" className="block text-sm normal-case font-display font-semibold mb-1 text-zinc-600">
                     Full Name *
                   </label>
-                  <input
+                  <input id="app-components-CartDrawer-tsx-field-1"
                     type="text"
                     required
                     value={customerName}
                     onChange={(e) => setCustomerName(e.target.value)}
                     placeholder="e.g. Kasun Perera"
-                    className="w-full px-3 py-2 text-xs border border-zinc-300 rounded-lg bg-[#f6f6f6] text-[#060606] focus:outline-none focus:border-black"
+                    className="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg bg-canvas text-ink focus:outline-none focus:border-ink"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-zinc-600">
+                    <label htmlFor="app-components-CartDrawer-tsx-field-2" className="block text-sm normal-case font-display font-semibold mb-1 text-zinc-600">
                       Phone Number *
                     </label>
-                    <input
+                    <input id="app-components-CartDrawer-tsx-field-2"
                       type="tel"
                       required
                       value={customerPhone}
                       onChange={(e) => setCustomerPhone(e.target.value)}
                       placeholder="0771234567"
-                      className="w-full px-3 py-2 text-xs border border-zinc-300 rounded-lg bg-[#f6f6f6] text-[#060606] focus:outline-none focus:border-black"
+                      className="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg bg-canvas text-ink focus:outline-none focus:border-ink"
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-zinc-600">
+                    <label htmlFor="app-components-CartDrawer-tsx-field-3" className="block text-sm normal-case font-display font-semibold mb-1 text-zinc-600">
                       Email Address
                     </label>
-                    <input
+                    <input id="app-components-CartDrawer-tsx-field-3"
                       type="email"
                       value={customerEmail}
                       onChange={(e) => setCustomerEmail(e.target.value)}
                       placeholder="kasun@example.com"
-                      className="w-full px-3 py-2 text-xs border border-zinc-300 rounded-lg bg-[#f6f6f6] text-[#060606] focus:outline-none focus:border-black"
+                      className="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg bg-canvas text-ink focus:outline-none focus:border-ink"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-zinc-600">
+                  <label htmlFor="app-components-CartDrawer-tsx-field-4" className="block text-sm normal-case font-display font-semibold mb-1 text-zinc-600">
                     Shipping Address *
                   </label>
-                  <textarea
+                  <textarea id="app-components-CartDrawer-tsx-field-4"
                     required
                     rows={2}
                     value={shippingAddress}
                     onChange={(e) => setShippingAddress(e.target.value)}
                     placeholder="Street address, apartment or house number"
-                    className="w-full px-3 py-2 text-xs border border-zinc-300 rounded-lg bg-[#f6f6f6] text-[#060606] focus:outline-none focus:border-black"
+                    className="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg bg-canvas text-ink focus:outline-none focus:border-ink"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-zinc-600">
+                    <label htmlFor="app-components-CartDrawer-tsx-field-5" className="block text-sm normal-case font-display font-semibold mb-1 text-zinc-600">
                       City *
                     </label>
-                    <input
+                    <input id="app-components-CartDrawer-tsx-field-5"
                       type="text"
                       required
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
                       placeholder="e.g. Colombo"
-                      className="w-full px-3 py-2 text-xs border border-zinc-300 rounded-lg bg-[#f6f6f6] text-[#060606] focus:outline-none focus:border-black"
+                      className="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg bg-canvas text-ink focus:outline-none focus:border-ink"
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-zinc-600">
+                    <label htmlFor="app-components-CartDrawer-tsx-field-6" className="block text-sm normal-case font-display font-semibold mb-1 text-zinc-600">
                       Postal Code
                     </label>
-                    <input
+                    <input id="app-components-CartDrawer-tsx-field-6"
                       type="text"
                       value={postalCode}
                       onChange={(e) => setPostalCode(e.target.value)}
                       placeholder="10100"
-                      className="w-full px-3 py-2 text-xs border border-zinc-300 rounded-lg bg-[#f6f6f6] text-[#060606] focus:outline-none focus:border-black"
+                      className="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg bg-canvas text-ink focus:outline-none focus:border-ink"
                     />
                   </div>
                 </div>
 
                 {/* Payment Method Selector */}
                 <div className="space-y-2 pt-1">
-                  <label className="block text-[10px] uppercase font-display font-semibold text-zinc-600">
+                  <label htmlFor="app-components-CartDrawer-tsx-field-7" className="block text-sm normal-case font-display font-semibold text-zinc-600">
                     Select Payment Method:
                   </label>
                   <div className="grid grid-cols-3 gap-2">
@@ -409,12 +417,12 @@ export const CartDrawer: React.FC = () => {
                       onClick={() => setSelectedPaymentMethod('cash_on_delivery')}
                       className={`p-2.5 rounded-lg border text-left flex flex-col justify-between cursor-pointer transition-all ${
                         selectedPaymentMethod === 'cash_on_delivery'
-                          ? 'bg-[#060606] border-[#060606] text-white font-bold'
-                          : 'bg-white border-zinc-300 text-zinc-700 hover:border-black'
+                          ? 'bg-ink border-ink text-paper font-bold'
+                          : 'bg-surface border-zinc-300 text-zinc-700 hover:border-ink'
                       }`}
                     >
-                      <span className="text-[11px] font-bold font-display uppercase">COD</span>
-                      <span className="text-[9px] opacity-75 mt-0.5">Pay at door</span>
+                      <span className="text-sm font-bold font-display normal-case">COD</span>
+                      <span className="text-sm opacity-75 mt-0.5">Pay at door</span>
                     </button>
 
                     <button
@@ -422,12 +430,12 @@ export const CartDrawer: React.FC = () => {
                       onClick={() => setSelectedPaymentMethod('bank_transfer')}
                       className={`p-2.5 rounded-lg border text-left flex flex-col justify-between cursor-pointer transition-all ${
                         selectedPaymentMethod === 'bank_transfer'
-                          ? 'bg-[#060606] border-[#060606] text-white font-bold'
-                          : 'bg-white border-zinc-300 text-zinc-700 hover:border-black'
+                          ? 'bg-ink border-ink text-paper font-bold'
+                          : 'bg-surface border-zinc-300 text-zinc-700 hover:border-ink'
                       }`}
                     >
-                      <span className="text-[11px] font-bold font-display uppercase">Bank Transfer</span>
-                      <span className="text-[9px] opacity-75 mt-0.5">Slip upload</span>
+                      <span className="text-sm font-bold font-display normal-case">Bank Transfer</span>
+                      <span className="text-sm opacity-75 mt-0.5">Slip upload</span>
                     </button>
 
                     <button
@@ -435,44 +443,44 @@ export const CartDrawer: React.FC = () => {
                       onClick={() => setSelectedPaymentMethod('payhere')}
                       className={`p-2.5 rounded-lg border text-left flex flex-col justify-between cursor-pointer transition-all ${
                         selectedPaymentMethod === 'payhere'
-                          ? 'bg-[#060606] border-[#060606] text-white font-bold'
-                          : 'bg-white border-zinc-300 text-zinc-700 hover:border-black'
+                          ? 'bg-ink border-ink text-paper font-bold'
+                          : 'bg-surface border-zinc-300 text-zinc-700 hover:border-ink'
                       }`}
                     >
-                      <span className="text-[11px] font-bold font-display uppercase">Card</span>
-                      <span className="text-[9px] opacity-75 mt-0.5">Online card</span>
+                      <span className="text-sm font-bold font-display normal-case">Card</span>
+                      <span className="text-sm opacity-75 mt-0.5">Online card</span>
                     </button>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase font-display font-semibold mb-1 text-zinc-600">
+                  <label className="block text-sm normal-case font-display font-semibold mb-1 text-zinc-600">
                     Order Notes (Optional)
                   </label>
-                  <input
+                  <input id="app-components-CartDrawer-tsx-field-7"
                     type="text"
                     value={customerNotes}
                     onChange={(e) => setCustomerNotes(e.target.value)}
                     placeholder="Delivery instructions, gate code, etc."
-                    className="w-full px-3 py-2 text-xs border border-zinc-300 rounded-lg bg-[#f6f6f6] text-[#060606] focus:outline-none focus:border-black"
+                    className="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg bg-canvas text-ink focus:outline-none focus:border-ink"
                   />
                 </div>
               </div>
 
-              <div className="p-6 border-t border-zinc-200 bg-[#fafafa] space-y-3">
-                <div className="flex justify-between text-xs font-bold uppercase tracking-wider font-display">
+              <div className="p-6 border-t border-zinc-200 bg-surface space-y-3">
+                <div className="flex justify-between text-sm font-bold normal-case tracking-wider font-display">
                   <span className="text-zinc-600">Total Payable</span>
-                  <span className="font-mono text-[#060606] text-sm font-bold">{formatCurrency(totalMinor, 'LKR', true)}</span>
+                  <span className="font-mono text-ink text-sm font-bold">{formatCurrency(totalMinor, 'LKR', true)}</span>
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmitting || !storeSettings.ordersEnabled}
-                  className="w-full py-3.5 bg-[#060606] text-white text-xs font-display uppercase tracking-widest font-bold rounded-lg hover:bg-zinc-800 transition-colors shadow-sm cursor-pointer flex items-center justify-center"
+                  className="w-full py-3.5 bg-ink text-paper text-sm font-display normal-case tracking-widest font-bold rounded-lg hover:bg-zinc-800 transition-colors shadow-sm cursor-pointer flex items-center justify-center"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center space-x-2">
-                      <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                      <svg className="animate-spin h-4 w-4 text-paper" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                       </svg>
@@ -486,7 +494,7 @@ export const CartDrawer: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setCheckoutStep('cart')}
-                  className="w-full text-[10px] uppercase tracking-wider font-display text-zinc-500 hover:text-black py-1 text-center cursor-pointer"
+                  className="w-full text-sm normal-case tracking-wider font-display text-zinc-500 hover:text-ink py-1 text-center cursor-pointer"
                 >
                   &larr; Back to Bag
                 </button>
@@ -505,43 +513,43 @@ export const CartDrawer: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <h3 className="text-xl font-display uppercase tracking-wider font-bold text-[#060606]">
+                  <h3 className="text-xl font-display normal-case tracking-wider font-bold text-ink">
                     Order Confirmed!
                   </h3>
-                  <p className="text-xs text-zinc-500 leading-relaxed">
+                  <p className="text-sm text-zinc-500 leading-relaxed">
                     Thank you for ordering with Axivers. Your order has been placed in our unified system.
                   </p>
                 </div>
 
                 {/* Generated Order Number Highlight */}
-                <div className="bg-[#f6f6f6] p-4 rounded-xl border border-zinc-200 text-center space-y-1">
-                  <span className="text-[10px] uppercase tracking-widest text-zinc-500 font-display block">
+                <div className="bg-canvas p-4 rounded-xl border border-zinc-200 text-center space-y-1">
+                  <span className="text-sm normal-case tracking-widest text-zinc-500 font-display block">
                     Order Number
                   </span>
-                  <span className="font-mono text-lg font-bold text-[#060606] tracking-wider">
+                  <span className="font-mono text-lg font-bold text-ink tracking-wider">
                     {placedOrderNumber}
                   </span>
                 </div>
 
-                <div className="text-left bg-zinc-50 p-4 rounded-xl border border-zinc-200 text-xs space-y-2">
-                  <p className="font-semibold text-zinc-700 uppercase tracking-wider font-display">Order Summary:</p>
-                  <p className="text-zinc-600">Customer: <strong className="text-black">{placedOrderDetails?.customer?.name}</strong></p>
-                  <p className="text-zinc-600">Payment: <strong className="text-black uppercase">{placedOrderDetails?.paymentMethod}</strong></p>
-                  <p className="text-zinc-600 font-mono">Total: <strong className="text-black">{formatCurrency(placedOrderDetails?.total || 0, 'LKR', true)}</strong></p>
+                <div className="text-left bg-zinc-50 p-4 rounded-xl border border-zinc-200 text-sm space-y-2">
+                  <p className="font-semibold text-zinc-700 normal-case tracking-wider font-display">Order Summary:</p>
+                  <p className="text-zinc-600">Customer: <strong className="text-ink">{placedOrderDetails?.customer?.name}</strong></p>
+                  <p className="text-zinc-600">Payment: <strong className="text-ink normal-case">{placedOrderDetails?.paymentMethod}</strong></p>
+                  <p className="text-zinc-600 font-mono">Total: <strong className="text-ink">{formatCurrency(placedOrderDetails?.total || 0, 'LKR', true)}</strong></p>
                 </div>
 
                 <div className="pt-2 space-y-2">
                   <Link
                     href={`/track-order?orderNumber=${placedOrderNumber}&phone=${encodeURIComponent(customerPhone)}`}
                     onClick={handleClose}
-                    className="block w-full py-3 bg-[#060606] text-white text-xs font-display uppercase tracking-widest font-bold rounded-lg hover:bg-zinc-800 transition-colors shadow-sm"
+                    className="block w-full py-3 bg-ink text-paper text-sm font-display normal-case tracking-widest font-bold rounded-lg hover:bg-zinc-800 transition-colors shadow-sm"
                   >
                     Track Order Status &rarr;
                   </Link>
 
                   <button
                     onClick={handleClose}
-                    className="w-full py-2.5 text-xs text-zinc-600 hover:text-black uppercase tracking-wider font-display font-semibold cursor-pointer"
+                    className="w-full py-2.5 text-sm text-zinc-600 hover:text-ink normal-case tracking-wider font-display font-semibold cursor-pointer"
                   >
                     Continue Shopping
                   </button>

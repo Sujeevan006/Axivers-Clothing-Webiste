@@ -23,8 +23,8 @@ export default async function ProductsRoutePage() {
 
   return (
     <Suspense fallback={
-      <div className="pt-32 pb-24 text-center bg-[#060606] text-white min-h-screen">
-        <p className="text-xs uppercase tracking-widest font-display text-zinc-500">Loading catalog...</p>
+      <div className="pt-32 pb-24 text-center bg-ink text-paper min-h-screen">
+        <p className="text-sm normal-case tracking-widest font-display text-zinc-500">Loading catalog...</p>
       </div>
     }>
       <ProductsPage initialProducts={initialProducts} />

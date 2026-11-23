@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import type { Product } from '@/types/product';
 import type { Category } from '@/types/category';
-import { useCart } from '../context/CartContext';
 import { getProducts, subscribeToActiveProducts } from '@/services/productService';
 import { getCategories, subscribeToCategories, BASELINE_CATEGORIES } from '@/services/categoryService';
 import { formatCurrency, fromMinorUnits } from '@/lib/utils/formatters';
 import { QuickAddModal } from './QuickAddModal';
+import { ProductCard } from './ProductCard';
+import { ProductSlider } from './ProductSlider';
+import { ShopCategories } from './HomeSections';
 
 interface ProductsPageProps {
   initialProducts?: Product[];
@@ -31,18 +31,13 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
   const [isLoading, setIsLoading] = useState<boolean>(initialProducts.length === 0);
   const [quickAddProduct, setQuickAddProduct] = useState<Product | null>(null);
 
-  const { addToCart } = useCart();
 
   useEffect(() => {
-    if (categoryParam) {
-      setSelectedCategory(categoryParam);
-    }
+    setSelectedCategory(categoryParam || 'all');
   }, [categoryParam]);
 
   useEffect(() => {
-    if (queryParam !== null) {
-      setSearchQuery(queryParam);
-    }
+    setSearchQuery(queryParam || '');
   }, [queryParam]);
 
   useEffect(() => {
@@ -80,13 +75,14 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
   }, []);
 
   const categoryOptions = [
-    { value: 'all', label: 'All Garments' },
+    { value: 'all', label: 'All essentials' },
     ...categories.map((c) => ({ value: c.slug, label: c.name })),
   ];
 
   const sizeOptions = ['all', 'S', 'M', 'L', 'XL'];
 
   const filteredProducts = products.filter((product) => {
+    if (product.slug === 'piping-crewneck') return false;
     const matchesCategory =
       selectedCategory === 'all' ||
       product.category === selectedCategory ||
@@ -118,29 +114,30 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
   });
 
   return (
-    <section className="pt-24 sm:pt-28 pb-24 px-4 sm:px-6 lg:px-8 bg-white text-[#060606] min-h-screen">
+    <section className="catalog-page pt-10 sm:pt-14 pb-24 px-4 sm:px-6 lg:px-8 bg-surface text-ink min-h-screen">
       <div className="max-w-7xl mx-auto space-y-10">
         {/* Page Header */}
-        <div className="text-center space-y-3 max-w-2xl mx-auto">
-          <span className="text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono font-medium block">
-            Axivers Collection
+        <div className="catalog-heading space-y-3">
+          <span className="text-sm normal-case tracking-[0.25em] text-accent font-mono font-medium block">
+            An everyday of your own
           </span>
-          <h1 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-[#060606] uppercase">
-            All Garments
+          <h1 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-ink normal-case">
+            All essentials
           </h1>
-          <p className="text-xs sm:text-sm font-light text-zinc-500 leading-relaxed">
-            Minimalist everyday essentials crafted in Sri Lanka.
+          <p className="text-sm sm:text-sm font-normal text-zinc-500 leading-relaxed">
+            Find your fit. Make it your own. Thoughtful essentials, crafted in Sri Lanka.
           </p>
 
           {/* Search bar */}
           <div className="pt-2">
-            <div className="relative max-w-md mx-auto">
+            <div className="catalog-search relative max-w-md mx-auto">
               <input
-                type="text"
+                type="search"
+                aria-label="Search the collection"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search garments by name or fabric..."
-                className="w-full px-4 py-2.5 pl-10 bg-[#f6f6f6] border border-zinc-200 rounded-lg text-xs font-display tracking-wider text-[#060606] focus:outline-none focus:border-black placeholder:text-zinc-400"
+                className="w-full px-4 py-2.5 pl-10 pr-16 bg-canvas border border-zinc-200 rounded-lg text-sm font-display tracking-wider text-ink focus:outline-none focus:border-ink placeholder:text-zinc-400"
               />
               <svg
                 className="w-4 h-4 text-zinc-400 absolute left-3.5 top-3"
@@ -153,7 +150,7 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-2.5 text-xs text-zinc-500 hover:text-black"
+                  className="absolute right-3 top-2.5 text-sm text-zinc-500 hover:text-ink"
                 >
                   Clear
                 </button>
@@ -162,22 +159,24 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
           </div>
         </div>
 
-        {/* Clean Light Filter Bar */}
-        <div className="bg-[#fafafa] border border-zinc-200 rounded-xl p-5 space-y-4 shadow-sm">
+        <ShopCategories navigation />
+        {/* Collection filters */}
+        <div className="catalog-filters border border-zinc-200 space-y-4">
           {/* Category Tabs */}
           <div>
-            <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-display font-semibold block mb-2">
+            <span className="text-sm normal-case tracking-wider text-zinc-500 font-display font-semibold block mb-2">
               Categories:
             </span>
             <div className="flex flex-wrap gap-2">
               {categoryOptions.map((cat) => (
                 <button
                   key={cat.value}
+                  aria-pressed={selectedCategory === cat.value}
                   onClick={() => setSelectedCategory(cat.value)}
-                  className={`px-3.5 py-1.5 text-xs font-display uppercase tracking-wider rounded-lg border transition-all cursor-pointer ${
+                  className={`px-3.5 py-1.5 text-sm font-display normal-case tracking-wider rounded-lg border transition-all cursor-pointer ${
                     selectedCategory === cat.value
-                      ? 'bg-[#060606] text-white border-[#060606] font-bold shadow-sm'
-                      : 'bg-white text-zinc-700 border-zinc-200 hover:border-black'
+                      ? 'bg-ink text-paper border-ink font-bold shadow-sm'
+                      : 'bg-surface text-zinc-700 border-zinc-200 hover:border-ink'
                   }`}
                 >
                   {cat.label}
@@ -189,18 +188,19 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3 border-t border-zinc-200 items-center">
             {/* Size Filter */}
             <div className="flex items-center space-x-2">
-              <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-display font-semibold whitespace-nowrap">
+              <span className="text-sm normal-case tracking-wider text-zinc-500 font-display font-semibold whitespace-nowrap">
                 Size:
               </span>
               <div className="flex gap-1.5 flex-wrap">
                 {sizeOptions.map((sz) => (
                   <button
                     key={sz}
+                    aria-pressed={selectedSizeFilter === sz}
                     onClick={() => setSelectedSizeFilter(sz)}
-                    className={`px-2.5 py-1 text-xs font-mono rounded border transition-all cursor-pointer ${
+                    className={`px-2.5 py-1 text-sm font-mono rounded border transition-all cursor-pointer ${
                       selectedSizeFilter === sz
-                        ? 'bg-[#060606] text-white border-[#060606] font-bold'
-                        : 'bg-white text-zinc-700 border-zinc-200 hover:border-black'
+                        ? 'bg-ink text-paper border-ink font-bold'
+                        : 'bg-surface text-zinc-700 border-zinc-200 hover:border-ink'
                     }`}
                   >
                     {sz === 'all' ? 'All' : sz}
@@ -211,30 +211,32 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
 
             {/* Price Filter */}
             <div className="space-y-1">
-              <div className="flex justify-between text-[10px] font-display text-zinc-500">
+              <div className="flex justify-between text-sm font-display text-zinc-500">
                 <span>Max Price:</span>
-                <span className="font-mono text-[#060606] font-bold">{formatCurrency(maxPriceFilter, 'LKR', false)}</span>
+                <span className="font-mono text-ink font-bold">{formatCurrency(maxPriceFilter, 'LKR', false)}</span>
               </div>
               <input
                 type="range"
+                aria-label="Maximum price in LKR"
                 min={2000}
                 max={25000}
                 step={500}
                 value={maxPriceFilter}
                 onChange={(e) => setMaxPriceFilter(Number(e.target.value))}
-                className="w-full accent-[#060606] cursor-pointer"
+                className="w-full accent-ink cursor-pointer"
               />
             </div>
 
             {/* Sort Dropdown */}
             <div className="flex items-center space-x-2 md:justify-end">
-              <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-display font-semibold">
+              <span className="text-sm normal-case tracking-wider text-zinc-500 font-display font-semibold">
                 Sort:
               </span>
               <select
+                aria-label="Sort products"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="bg-white border border-zinc-200 text-xs font-display py-1.5 px-3 focus:outline-none focus:border-black rounded-lg text-[#060606] cursor-pointer"
+                className="bg-surface border border-zinc-200 text-sm font-display py-1.5 px-3 focus:outline-none focus:border-ink rounded-lg text-ink cursor-pointer"
               >
                 <option value="default">Default</option>
                 <option value="featured">Featured First</option>
@@ -245,19 +247,20 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
           </div>
         </div>
 
+        <div className="flex items-center justify-between gap-4"><p aria-live="polite" className="text-muted">{isLoading ? 'Finding your essentials…' : `${sortedProducts.length} ${sortedProducts.length === 1 ? 'essential' : 'essentials'}`}</p><button className="text-link" onClick={() => { setSelectedCategory('all'); setSelectedSizeFilter('all'); setMaxPriceFilter(25000); setSearchQuery(''); }}>Clear all filters</button></div>
         {/* Product Cards Grid */}
         {isLoading ? (
           <div className="text-center py-20 space-y-3">
-            <svg className="animate-spin h-6 w-6 text-[#060606] mx-auto" fill="none" viewBox="0 0 24 24">
+            <svg className="animate-spin h-6 w-6 text-ink mx-auto" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
             </svg>
-            <p className="text-xs uppercase tracking-widest font-display text-zinc-500">
+            <p className="text-sm normal-case tracking-widest font-display text-zinc-500">
               Loading Products...
             </p>
           </div>
         ) : sortedProducts.length === 0 ? (
-          <div className="text-center py-20 bg-[#fafafa] border border-zinc-200 rounded-2xl p-8 space-y-4">
+          <div className="text-center py-20 bg-surface border border-zinc-200 rounded-2xl p-8 space-y-4">
             <p className="text-sm font-display text-zinc-600">
               No garments found matching your current filter criteria.
             </p>
@@ -268,86 +271,15 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ initialProducts = []
                 setMaxPriceFilter(25000);
                 setSearchQuery('');
               }}
-              className="px-5 py-2 bg-[#060606] text-white font-display text-xs uppercase tracking-wider font-bold rounded-lg hover:bg-zinc-800 cursor-pointer"
+              className="px-5 py-2 bg-ink text-paper font-display text-sm normal-case tracking-wider font-bold rounded-lg hover:bg-zinc-800 cursor-pointer"
             >
               Reset Filters
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-            {sortedProducts.map((product) => {
-              const isOutOfStock = product.stock !== undefined && product.stock <= 0;
-              const primaryImage = product.images?.[0] || '/images/flagship-tee-black.jpg';
-              const secondaryImage = product.images?.[1] || null;
-
-              return (
-                <div
-                  key={product.id}
-                  className="group flex flex-col justify-between bg-white transition-all duration-300"
-                >
-                  {/* Garment Image Container */}
-                  <Link
-                    href={`/product/${product.slug || product.id}`}
-                    className="aspect-[3/4] bg-[#f6f6f6] rounded-xl overflow-hidden relative block border border-zinc-200/70 group-hover:border-zinc-400 transition-colors"
-                  >
-                    <Image
-                      src={primaryImage}
-                      alt={product.name}
-                      fill
-                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                      className={`object-cover object-center transition-all duration-700 ease-out group-hover:scale-102 ${
-                        secondaryImage ? 'group-hover:opacity-0' : ''
-                      } ${isOutOfStock ? 'opacity-60' : ''}`}
-                    />
-
-                    {secondaryImage && (
-                      <Image
-                        src={secondaryImage}
-                        alt={`${product.name} alternate view`}
-                        fill
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                        className={`object-cover object-center transition-opacity duration-700 ease-out opacity-0 group-hover:opacity-100 ${
-                          isOutOfStock ? 'opacity-0' : ''
-                        }`}
-                      />
-                    )}
-
-                    {isOutOfStock && (
-                      <span className="absolute top-2.5 left-2.5 bg-white/95 text-zinc-700 text-[9px] uppercase tracking-wider font-display font-medium px-2 py-0.5 rounded shadow-sm border border-zinc-200">
-                        Limited Preview
-                      </span>
-                    )}
-                  </Link>
-
-                  {/* Card Details */}
-                  <div className="pt-3 sm:pt-4 space-y-1.5 flex flex-col">
-                    <span className="text-[10px] uppercase tracking-wider text-zinc-400 font-display font-medium">
-                      {product.categoryLabel || '180 GSM Mercerized Cotton'}
-                    </span>
-
-                    <Link href={`/product/${product.slug || product.id}`}>
-                      <h3 className="text-xs sm:text-sm font-display font-medium text-[#060606] hover:text-zinc-600 transition-colors line-clamp-1 leading-snug">
-                        {product.name}
-                      </h3>
-                    </Link>
-
-                    <div className="flex items-center justify-between pt-0.5">
-                      <span className="text-xs sm:text-sm font-semibold font-mono text-[#060606]">
-                        {formatCurrency(product.price, product.currency || 'LKR', true)}
-                      </span>
-
-                      <button
-                        onClick={() => setQuickAddProduct(product)}
-                        className="text-[10px] uppercase tracking-wider font-display font-semibold text-zinc-500 hover:text-black transition-colors cursor-pointer"
-                      >
-                        {isOutOfStock ? 'Preview' : 'Quick Add +'}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <ProductSlider label="Shop essentials">
+            {sortedProducts.map(product => <ProductCard key={product.id} product={product} onQuickAdd={setQuickAddProduct} />)}
+          </ProductSlider>
         )}
       </div>
 

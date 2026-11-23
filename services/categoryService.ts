@@ -23,7 +23,7 @@ export const BASELINE_CATEGORIES: Category[] = [
     description: 'Shop Men →',
     active: true,
     sortOrder: 1,
-    image: '/images/cat-men-bg.png',
+    image: '/images/Minimalist Axivers Studio Portrait.png',
   },
   {
     id: 'women',
@@ -41,7 +41,7 @@ export const BASELINE_CATEGORIES: Category[] = [
     description: 'Shop Piping →',
     active: true,
     sortOrder: 3,
-    image: '/images/cat-piping-bg.png',
+    image: '/images/Urban Minimalist Fashion Duo.png',
   },
   {
     id: 'minimalist',
@@ -50,7 +50,7 @@ export const BASELINE_CATEGORIES: Category[] = [
     description: 'Shop Essentials →',
     active: true,
     sortOrder: 4,
-    image: '/images/cat-essentials-bg.png',
+    image: '/images/Modern Portrait in White Tee.png',
   },
   {
     id: 'technical',
@@ -59,7 +59,7 @@ export const BASELINE_CATEGORIES: Category[] = [
     description: 'Shop Technical →',
     active: true,
     sortOrder: 5,
-    image: '/images/cat-technical-bg.png',
+    image: '/images/Axivers Luxury City Duo.png',
   },
 ];
 
@@ -74,7 +74,7 @@ export function normalizeCategory(data: any, docId: string): Category {
     description: data.description || '',
     active: data.active !== undefined ? Boolean(data.active) : true,
     sortOrder: typeof data.sortOrder === 'number' ? data.sortOrder : 99,
-    image: data.image || '/images/cat-men-bg.png',
+    image: data.image || '/images/Minimalist Axivers Studio Portrait.png',
   };
 }
 

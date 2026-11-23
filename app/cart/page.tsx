@@ -41,43 +41,43 @@ export default function CartPage() {
   const amountToFreeDelivery = Math.max(0, freeThresholdMinor - subtotalMinor);
 
   return (
-    <div className="min-h-screen bg-white text-[#060606] pt-24 sm:pt-28 pb-20 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-canvas text-ink pt-10 sm:pt-14 pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Header */}
         <div className="border-b border-zinc-200 pb-5 flex items-end justify-between">
           <div>
-            <span className="text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-display font-semibold block">
+            <span className="text-sm normal-case tracking-[0.25em] text-accent font-display font-semibold block">
               Shopping Experience
             </span>
-            <h1 className="text-2xl sm:text-4xl font-display font-bold uppercase tracking-tight text-[#060606]">
+            <h1 className="text-2xl sm:text-4xl font-display font-bold normal-case tracking-tight text-ink">
               Your Shopping Bag
             </h1>
           </div>
           <Link
             href="/shop"
-            className="text-xs font-display uppercase tracking-wider text-zinc-500 hover:text-black transition-colors"
+            className="text-sm font-display normal-case tracking-wider text-zinc-500 hover:text-ink transition-colors"
           >
             &larr; Continue Shopping
           </Link>
         </div>
 
         {cartItems.length === 0 ? (
-          <div className="py-20 text-center bg-[#fafafa] border border-zinc-200 rounded-2xl p-8 space-y-5 max-w-lg mx-auto shadow-sm">
+          <div className="py-20 text-center bg-surface border border-zinc-200 rounded-2xl p-8 space-y-5 max-w-lg mx-auto shadow-sm">
             <div className="w-14 h-14 rounded-full bg-zinc-100 border border-zinc-200 flex items-center justify-center mx-auto text-xl text-zinc-500">
               🛍️
             </div>
             <div className="space-y-1">
-              <h2 className="text-base font-display font-bold uppercase text-[#060606]">
+              <h2 className="text-base font-display font-bold normal-case text-ink">
                 Your Shopping Bag is Empty
               </h2>
-              <p className="text-xs text-zinc-500 font-light">
+              <p className="text-sm text-zinc-500 font-normal">
                 Discover our signature 180 GSM mercerized cotton essentials and find your perfect fit.
               </p>
             </div>
             <div className="pt-2">
               <Link
                 href="/shop"
-                className="inline-flex items-center space-x-2 px-6 py-3 rounded-lg bg-[#060606] text-white font-display text-xs uppercase tracking-wider font-bold hover:bg-zinc-800 transition-colors shadow-sm"
+                className="inline-flex items-center space-x-2 px-6 py-3 rounded-lg bg-ink text-paper font-display text-sm normal-case tracking-wider font-bold hover:bg-zinc-800 transition-colors shadow-sm"
               >
                 <span>Explore The Collection</span>
                 <span>&rarr;</span>
@@ -89,8 +89,8 @@ export default function CartPage() {
             {/* Left Column: Cart Items List */}
             <div className="lg:col-span-8 space-y-4">
               {/* Free delivery progress meter */}
-              <div className="bg-[#fafafa] border border-zinc-200 rounded-xl p-4 space-y-2">
-                <div className="flex justify-between items-center text-xs">
+              <div className="bg-surface border border-zinc-200 rounded-xl p-4 space-y-2">
+                <div className="flex justify-between items-center text-sm">
                   <span className="text-zinc-700 font-display">
                     {isFreeDelivery ? (
                       <span className="text-emerald-700 font-semibold">🎉 You qualify for Free Island-Wide Delivery!</span>
@@ -100,13 +100,13 @@ export default function CartPage() {
                       </span>
                     )}
                   </span>
-                  <span className="text-[10px] font-mono text-zinc-500 uppercase">
+                  <span className="text-sm font-mono text-zinc-500 normal-case">
                     Free Threshold: {formatCurrency(freeThresholdMinor, 'LKR', true)}
                   </span>
                 </div>
                 <div className="w-full h-1.5 bg-zinc-200 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-[#060606] transition-all duration-500"
+                    className="h-full bg-ink transition-all duration-500"
                     style={{
                       width: `${Math.min(100, (subtotalMinor / freeThresholdMinor) * 100)}%`,
                     }}
@@ -115,7 +115,7 @@ export default function CartPage() {
               </div>
 
               {/* Items Card */}
-              <div className="bg-white border border-zinc-200 rounded-xl divide-y divide-zinc-100 overflow-hidden shadow-sm">
+              <div className="bg-surface border border-zinc-200 rounded-xl divide-y divide-zinc-100 overflow-hidden shadow-sm">
                 {cartItems.map((item) => {
                   const displayImg = item.image || (item.images && item.images[0]) || '/images/flagship-tee-black.jpg';
                   const itemKey = `${item.id}-${item.selectedSize || item.size || 'M'}-${item.selectedColor || item.color || 'def'}`;
@@ -125,7 +125,7 @@ export default function CartPage() {
                     <div key={itemKey} className="p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                       {/* Left: Thumbnail & Details */}
                       <div className="flex items-center space-x-4">
-                        <div className="w-20 h-20 bg-[#f6f6f6] rounded-xl overflow-hidden relative shrink-0 border border-zinc-200">
+                        <div className="w-20 h-20 bg-canvas rounded-xl overflow-hidden relative shrink-0 border border-zinc-200">
                           <Image
                             src={displayImg}
                             alt={item.name}
@@ -135,22 +135,22 @@ export default function CartPage() {
                         </div>
 
                         <div className="space-y-1">
-                          <span className="text-[9px] uppercase tracking-wider text-zinc-400 font-display block">
+                          <span className="text-sm normal-case tracking-wider text-zinc-400 font-display block">
                             Signature Essential
                           </span>
-                          <h3 className="text-sm font-display font-semibold uppercase tracking-wider text-[#060606]">
+                          <h3 className="text-sm font-display font-semibold normal-case tracking-wider text-ink">
                             {item.name}
                           </h3>
-                          <div className="flex items-center space-x-2 text-xs text-zinc-500 font-mono">
-                            <span>Size: <strong className="text-black">{item.selectedSize || item.size || 'M'}</strong></span>
+                          <div className="flex items-center space-x-2 text-sm text-zinc-500 font-mono">
+                            <span>Size: <strong className="text-ink">{item.selectedSize || item.size || 'M'}</strong></span>
                             {item.selectedColor && (
                               <>
                                 <span>•</span>
-                                <span>Color: <strong className="text-black">{item.selectedColor}</strong></span>
+                                <span>Color: <strong className="text-ink">{item.selectedColor}</strong></span>
                               </>
                             )}
                           </div>
-                          <span className="text-sm font-mono font-bold text-[#060606] block pt-0.5">
+                          <span className="text-sm font-mono font-bold text-ink block pt-0.5">
                             {formatCurrency(itemPriceMinor, 'LKR', true)}
                           </span>
                         </div>
@@ -162,17 +162,17 @@ export default function CartPage() {
                         <div className="flex items-center border border-zinc-300 rounded-lg bg-zinc-50 p-1">
                           <button
                             onClick={() => updateQuantity(item.id, item.selectedSize || item.size || 'M', item.selectedColor || item.color || '', Math.max(1, item.quantity - 1))}
-                            className="w-8 h-8 flex items-center justify-center text-zinc-600 hover:text-black rounded hover:bg-zinc-200 cursor-pointer"
+                            className="w-8 h-8 flex items-center justify-center text-zinc-600 hover:text-ink rounded hover:bg-zinc-200 cursor-pointer"
                             aria-label="Decrease quantity"
                           >
                             &minus;
                           </button>
-                          <span className="w-8 text-center font-mono text-xs font-bold text-[#060606]">
+                          <span className="w-8 text-center font-mono text-sm font-bold text-ink">
                             {item.quantity}
                           </span>
                           <button
                             onClick={() => updateQuantity(item.id, item.selectedSize || item.size || 'M', item.selectedColor || item.color || '', item.quantity + 1)}
-                            className="w-8 h-8 flex items-center justify-center text-zinc-600 hover:text-black rounded hover:bg-zinc-200 cursor-pointer"
+                            className="w-8 h-8 flex items-center justify-center text-zinc-600 hover:text-ink rounded hover:bg-zinc-200 cursor-pointer"
                             aria-label="Increase quantity"
                           >
                             +
@@ -180,7 +180,7 @@ export default function CartPage() {
                         </div>
 
                         {/* Line total */}
-                        <span className="font-mono font-bold text-sm text-[#060606] hidden md:inline-block w-24 text-right">
+                        <span className="font-mono font-bold text-sm text-ink hidden md:inline-block w-24 text-right">
                           {formatCurrency(itemPriceMinor * item.quantity, 'LKR', true)}
                         </span>
 
@@ -204,7 +204,7 @@ export default function CartPage() {
               <div className="flex justify-end">
                 <button
                   onClick={clearCart}
-                  className="text-xs text-zinc-500 hover:text-black uppercase tracking-wider font-display transition-colors"
+                  className="text-sm text-zinc-500 hover:text-ink normal-case tracking-wider font-display transition-colors"
                 >
                   Clear Shopping Bag
                 </button>
@@ -212,15 +212,15 @@ export default function CartPage() {
             </div>
 
             {/* Right Column: Order Summary */}
-            <div className="lg:col-span-4 bg-[#fafafa] border border-zinc-200 rounded-xl p-6 space-y-5 shadow-sm sticky top-28">
-              <h2 className="text-base font-display font-bold uppercase tracking-wider text-[#060606] border-b border-zinc-200 pb-3">
+            <div className="lg:col-span-4 bg-surface border border-zinc-200 rounded-xl p-6 space-y-5 shadow-sm sticky top-28">
+              <h2 className="text-base font-display font-bold normal-case tracking-wider text-ink border-b border-zinc-200 pb-3">
                 Order Summary
               </h2>
 
-              <div className="space-y-3 text-xs font-light text-zinc-700">
+              <div className="space-y-3 text-sm font-normal text-zinc-700">
                 <div className="flex justify-between">
                   <span>Subtotal ({cartItems.length} items)</span>
-                  <span className="font-mono font-medium text-[#060606]">
+                  <span className="font-mono font-medium text-ink">
                     {formatCurrency(subtotalMinor, 'LKR', true)}
                   </span>
                 </div>
@@ -237,8 +237,8 @@ export default function CartPage() {
                 </div>
 
                 <div className="pt-3 border-t border-zinc-200 flex justify-between items-baseline text-sm">
-                  <span className="font-display font-bold uppercase text-[#060606]">Total</span>
-                  <span className="font-mono font-bold text-xl text-[#060606]">
+                  <span className="font-display font-bold normal-case text-ink">Total</span>
+                  <span className="font-mono font-bold text-xl text-ink">
                     {formatCurrency(totalMinor, 'LKR', true)}
                   </span>
                 </div>
@@ -250,11 +250,11 @@ export default function CartPage() {
                   <>
                     <Link
                       href="/checkout"
-                      className="w-full py-3.5 rounded-lg bg-[#060606] text-white font-display text-xs uppercase tracking-widest font-bold hover:bg-zinc-800 transition-colors text-center block shadow-sm"
+                      className="w-full py-3.5 rounded-lg bg-ink text-paper font-display text-sm normal-case tracking-widest font-bold hover:bg-zinc-800 transition-colors text-center block shadow-sm"
                     >
                       Proceed to Checkout &rarr;
                     </Link>
-                    <p className="text-[11px] text-zinc-500 text-center font-light leading-relaxed">
+                    <p className="text-sm text-zinc-500 text-center font-normal leading-relaxed">
                       Cash on Delivery, Bank Transfer &amp; Card options available during checkout.
                     </p>
                   </>
@@ -262,11 +262,11 @@ export default function CartPage() {
                   <>
                     <Link
                       href="/#early-access"
-                      className="w-full py-3.5 rounded-lg bg-[#060606] text-white font-display text-xs uppercase tracking-widest font-bold hover:bg-zinc-800 transition-colors text-center block shadow-sm"
+                      className="w-full py-3.5 rounded-lg bg-ink text-paper font-display text-sm normal-case tracking-widest font-bold hover:bg-zinc-800 transition-colors text-center block shadow-sm"
                     >
                       Join Launch Registry &rarr;
                     </Link>
-                    <p className="text-[11px] text-zinc-500 text-center font-light leading-relaxed">
+                    <p className="text-sm text-zinc-500 text-center font-normal leading-relaxed">
                       Axivers is currently in launch preview mode. Register for early access notification.
                     </p>
                   </>

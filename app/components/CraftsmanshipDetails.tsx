@@ -35,18 +35,18 @@ const CRAFT_HIGHLIGHTS = [
 
 export const CraftsmanshipDetails: React.FC = () => {
   return (
-    <section className="py-20 sm:py-28 bg-[#0a0a0d] text-[#ffffff] border-b border-zinc-900">
+    <section className="py-20 sm:py-28 bg-ink text-paper border-b border-zinc-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Header */}
         <div className="text-center space-y-3 max-w-2xl mx-auto">
-          <div className="inline-flex items-center space-x-2 text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059]" />
+          <div className="inline-flex items-center space-x-2 text-sm normal-case tracking-[0.25em] text-accent font-mono">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent" />
             <span>Garment Architecture</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-light uppercase tracking-tight text-white">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-normal normal-case tracking-tight text-paper">
             Considered <span className="font-bold">Construction Details.</span>
           </h2>
-          <p className="text-xs sm:text-sm font-light text-zinc-400">
+          <p className="text-sm sm:text-sm font-normal text-zinc-400">
             Every stitch, edge, and ribbing tension is calibrated according to our master production specifications.
           </p>
         </div>
@@ -56,19 +56,19 @@ export const CraftsmanshipDetails: React.FC = () => {
           {CRAFT_HIGHLIGHTS.map((item) => (
             <div
               key={item.number}
-              className="bg-[#0e0e12] border border-zinc-800/80 rounded-2xl p-6 sm:p-7 space-y-4 shadow-xl hover:border-zinc-700 transition-all flex flex-col justify-between"
+              className="bg-ink border border-zinc-800/80 rounded-2xl p-6 sm:p-7 space-y-4 shadow-xl hover:border-zinc-700 transition-all flex flex-col justify-between"
             >
               <div className="space-y-3">
-                <span className="text-xs font-mono font-bold text-[#c5a059] bg-[#c5a059]/10 px-2.5 py-1 rounded-md border border-[#c5a059]/20 inline-block">
+                <span className="text-sm font-mono font-bold text-accent bg-accent/10 px-2.5 py-1 rounded-md border border-accent/20 inline-block">
                   {item.number}
                 </span>
-                <h3 className="text-sm font-display uppercase tracking-wider font-bold text-white">
+                <h3 className="text-sm font-display normal-case tracking-wider font-bold text-paper">
                   {item.title}
                 </h3>
-                <h4 className="text-[11px] font-mono text-zinc-400 font-light">
+                <h4 className="text-sm font-mono text-zinc-400 font-normal">
                   {item.subtitle}
                 </h4>
-                <p className="text-xs text-zinc-400 font-light leading-relaxed pt-1">
+                <p className="text-sm text-zinc-400 font-normal leading-relaxed pt-1">
                   {item.description}
                 </p>
               </div>

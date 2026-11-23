@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useDialogFocus } from './useDialogFocus';
 import type { Product } from '@/types/product';
 import { useCart } from '../context/CartContext';
 import { formatCurrency } from '@/lib/utils/formatters';
@@ -24,6 +25,8 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ product, onClose }
   const [quantity, setQuantity] = useState<number>(1);
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [addedSuccess, setAddedSuccess] = useState<boolean>(false);
+
+  const panelRef = useDialogFocus(Boolean(product), onClose);
 
   if (!product) return null;
 
@@ -51,15 +54,16 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ product, onClose }
       {/* Backdrop */}
       <div
         onClick={onClose}
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fade-in cursor-pointer"
+        className="absolute inset-0 bg-ink/60 backdrop-blur-sm animate-fade-in cursor-pointer"
       />
 
       {/* Modal Card */}
-      <div className="relative w-full max-w-lg bg-white border border-zinc-200 rounded-2xl shadow-2xl overflow-hidden z-10 animate-slide-up">
+      <div ref={panelRef} role="dialog" aria-modal="true" aria-label="Choose your size and color" tabIndex={-1} className="quick-add-panel relative w-full max-w-2xl bg-surface border border-zinc-200 rounded-2xl shadow-2xl overflow-hidden z-10 animate-slide-up">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-zinc-400 hover:text-black p-2 rounded-full hover:bg-zinc-100 transition-colors z-20 cursor-pointer"
+          aria-label="Close product options"
+          className="absolute top-4 right-4 text-zinc-400 hover:text-ink p-2 rounded-full hover:bg-zinc-100 transition-colors z-20 cursor-pointer"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -68,7 +72,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ product, onClose }
 
         <div className="p-6 grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
           {/* Product Image */}
-          <div className="sm:col-span-5 aspect-[3/4] bg-[#f6f6f6] rounded-xl overflow-hidden relative border border-zinc-200">
+          <div className="sm:col-span-5 aspect-[3/4] bg-canvas rounded-xl overflow-hidden relative border border-zinc-200">
             <Image
               src={displayImage}
               alt={product.name}
@@ -77,7 +81,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ product, onClose }
               className={`w-full h-full object-cover ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
             />
             {isOutOfStock && (
-              <span className="absolute top-2 left-2 bg-white border border-zinc-200 text-zinc-700 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded shadow-sm">
+              <span className="absolute top-2 left-2 bg-surface border border-zinc-200 text-zinc-700 text-sm font-bold normal-case tracking-wider px-2 py-0.5 rounded shadow-sm">
                 Limited Preview
               </span>
             )}
@@ -86,31 +90,32 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ product, onClose }
           {/* Details & Selectors */}
           <div className="sm:col-span-7 space-y-4">
             <div>
-              <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400">
+              <span className="text-sm font-mono normal-case tracking-wider text-zinc-400">
                 {product.categoryLabel || product.category}
               </span>
-              <h3 className="text-sm sm:text-base font-display font-medium uppercase tracking-wider text-[#060606] leading-snug">
+              <h3 className="text-sm sm:text-base font-display font-medium normal-case tracking-wider text-ink leading-snug">
                 {product.name}
               </h3>
-              <p className="text-sm font-mono font-bold text-[#060606] mt-1">
+              <p className="text-sm font-mono font-bold text-ink mt-1">
                 {formatCurrency(product.price, product.currency || 'LKR', true)}
               </p>
             </div>
 
             {/* Size Selector */}
             <div className="space-y-1.5">
-              <span className="text-[10px] uppercase tracking-wider font-display font-semibold text-zinc-600 block">
+              <span className="text-sm normal-case tracking-wider font-display font-semibold text-zinc-600 block">
                 Select Size:
               </span>
               <div className="grid grid-cols-4 gap-1.5">
                 {sizes.map((sz) => (
                   <button
                     key={sz}
+                    aria-pressed={selectedSize === sz}
                     onClick={() => setSelectedSize(sz)}
-                    className={`py-2 text-xs font-mono font-bold rounded-lg border transition-all cursor-pointer ${
+                    className={`py-2 text-sm font-mono font-bold rounded-lg border transition-all cursor-pointer ${
                       selectedSize === sz
-                        ? 'bg-[#060606] text-white border-[#060606] font-bold shadow-sm'
-                        : 'bg-white text-zinc-700 border-zinc-300 hover:border-black'
+                        ? 'bg-ink text-paper border-ink font-bold shadow-sm'
+                        : 'bg-surface text-zinc-700 border-zinc-300 hover:border-ink'
                     }`}
                   >
                     {sz}
@@ -122,18 +127,19 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ product, onClose }
             {/* Color Selector if present */}
             {colors.length > 0 && (
               <div className="space-y-1.5">
-                <span className="text-[10px] uppercase tracking-wider font-display font-semibold text-zinc-600 block">
+                <span className="text-sm normal-case tracking-wider font-display font-semibold text-zinc-600 block">
                   Color:
                 </span>
                 <div className="flex flex-wrap gap-1.5">
                   {colors.map((c) => (
                     <button
                       key={c}
+                      aria-pressed={selectedColor === c}
                       onClick={() => setSelectedColor(c)}
-                      className={`px-3 py-1 text-xs font-display rounded-lg border transition-all cursor-pointer ${
+                      className={`px-3 py-1 text-sm font-display rounded-lg border transition-all cursor-pointer ${
                         selectedColor === c
-                          ? 'bg-[#060606] text-white border-[#060606] font-bold'
-                          : 'bg-white text-zinc-700 border-zinc-300 hover:border-black'
+                          ? 'bg-ink text-paper border-ink font-bold'
+                          : 'bg-surface text-zinc-700 border-zinc-300 hover:border-ink'
                       }`}
                     >
                       {c}
@@ -148,12 +154,12 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ product, onClose }
               <button
                 onClick={handleAdd}
                 disabled={isAdding || isOutOfStock}
-                className={`w-full py-3 px-4 rounded-lg font-display text-xs uppercase tracking-wider font-bold transition-all shadow-sm cursor-pointer flex items-center justify-center space-x-2 ${
+                className={`w-full py-3 px-4 rounded-lg font-display text-sm normal-case tracking-wider font-bold transition-all shadow-sm cursor-pointer flex items-center justify-center space-x-2 ${
                   isOutOfStock
                     ? 'bg-zinc-200 text-zinc-500 cursor-not-allowed'
                     : addedSuccess
-                    ? 'bg-emerald-600 text-white'
-                    : 'bg-[#060606] text-white hover:bg-zinc-800'
+                    ? 'bg-emerald-600 text-paper'
+                    : 'bg-ink text-paper hover:bg-zinc-800'
                 }`}
               >
                 <span>
@@ -171,9 +177,9 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ product, onClose }
                 <Link
                   href={`/product/${product.slug || product.id}`}
                   onClick={onClose}
-                  className="text-[11px] text-zinc-500 hover:text-black underline font-display"
+                  className="text-sm text-zinc-500 hover:text-ink underline font-display"
                 >
-                  View Full Product Details &rarr;
+                  View full product details
                 </Link>
               </div>
             </div>

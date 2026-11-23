@@ -87,17 +87,17 @@ export default function FAQPage() {
   const currentCategory = FAQ_DATA.find((c) => c.category === activeCategory) || FAQ_DATA[0];
 
   return (
-    <div className="min-h-screen bg-white text-[#060606] pt-24 sm:pt-28 pb-20 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-canvas text-ink pt-10 sm:pt-14 pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-10 sm:space-y-12">
         {/* Header */}
         <div className="text-center space-y-2 pt-4">
-          <span className="text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono font-medium block">
+          <span className="text-sm normal-case tracking-[0.25em] text-accent font-mono font-medium block">
             Frequently Asked Questions
           </span>
-          <h1 className="text-3xl sm:text-4xl font-display font-bold uppercase tracking-tight text-[#060606]">
+          <h1 className="text-3xl sm:text-4xl font-display font-bold normal-case tracking-tight text-ink">
             Questions &amp; Answers
           </h1>
-          <p className="text-xs sm:text-sm font-light text-zinc-500 max-w-lg mx-auto leading-relaxed">
+          <p className="text-sm sm:text-sm font-normal text-zinc-500 max-w-lg mx-auto leading-relaxed">
             Find answers regarding our master textile specifications, initial launch, ordering procedures, and shipping policies.
           </p>
         </div>
@@ -111,10 +111,10 @@ export default function FAQPage() {
                 setActiveCategory(cat.category);
                 setOpenQuestionIndex(0);
               }}
-              className={`px-4 py-2 rounded-lg text-xs font-display uppercase tracking-wider transition-all cursor-pointer ${
+              className={`px-4 py-2 rounded-lg text-sm font-display normal-case tracking-wider transition-all cursor-pointer ${
                 activeCategory === cat.category
-                  ? 'bg-[#060606] text-white font-bold shadow-sm'
-                  : 'bg-white text-zinc-700 hover:text-black border border-zinc-200 hover:border-black'
+                  ? 'bg-ink text-paper font-bold shadow-sm'
+                  : 'bg-surface text-zinc-700 hover:text-ink border border-zinc-200 hover:border-ink'
               }`}
             >
               {cat.category}
@@ -129,13 +129,13 @@ export default function FAQPage() {
             return (
               <div
                 key={idx}
-                className="bg-[#fafafa] border border-zinc-200 rounded-xl overflow-hidden transition-colors"
+                className="bg-surface border border-zinc-200 rounded-xl overflow-hidden transition-colors"
               >
                 <button
                   onClick={() => setOpenQuestionIndex(isOpen ? null : idx)}
                   className="w-full p-5 text-left flex justify-between items-center space-x-4 cursor-pointer hover:bg-zinc-100 transition-colors"
                 >
-                  <span className="text-xs sm:text-sm font-display font-bold uppercase tracking-wider text-[#060606]">
+                  <span className="text-sm sm:text-sm font-display font-bold normal-case tracking-wider text-ink">
                     {item.q}
                   </span>
                   <span className="text-lg text-zinc-400 font-mono shrink-0">
@@ -143,7 +143,7 @@ export default function FAQPage() {
                   </span>
                 </button>
                 {isOpen && (
-                  <div className="px-5 pb-5 text-xs sm:text-sm font-light text-zinc-600 leading-relaxed border-t border-zinc-200 pt-3 bg-white">
+                  <div className="px-5 pb-5 text-sm sm:text-sm font-normal text-zinc-600 leading-relaxed border-t border-zinc-200 pt-3 bg-surface">
                     {item.a}
                   </div>
                 )}
@@ -154,12 +154,12 @@ export default function FAQPage() {
 
         {/* Bottom Concierge Link */}
         <div className="border-t border-zinc-200 pt-6 text-center space-y-2">
-          <p className="text-xs text-zinc-500">
+          <p className="text-sm text-zinc-500">
             Have a question that is not addressed here?
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center space-x-1.5 text-xs font-display uppercase tracking-wider font-semibold text-[#060606] underline hover:text-zinc-600 transition-colors"
+            className="inline-flex items-center space-x-1.5 text-sm font-display normal-case tracking-wider font-semibold text-ink underline hover:text-zinc-600 transition-colors"
           >
             <span>Inquire Directly with Concierge</span>
             <span>&rarr;</span>

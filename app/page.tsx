@@ -2,21 +2,20 @@ import { Hero } from './components/Hero';
 import { FeaturedCollection } from './components/FeaturedCollection';
 import { BrandStatement } from './components/BrandStatement';
 import { EditorialDiscovery } from './components/EditorialDiscovery';
+import { StoreBenefits, ShopCategories, WardrobeStories, BrandValues, BrandWordmarks } from './components/HomeSections';
 
 export default function HomePage() {
-  return (
-    <>
-      {/* SECTION 2 — Large Premium Fashion Hero */}
-      <Hero />
-
-      {/* SECTION 3 — Featured Collection (Clean Light Shopping Grid) */}
-      <FeaturedCollection />
-
-      {/* SECTION 4 — Premium Brand Statement (Refined Dark Contrast Section) */}
-      <BrandStatement />
-
-      {/* SECTION 5 — Editorial / Brand Discovery (Two Clean Editorial Tiles) */}
-      <EditorialDiscovery />
-    </>
-  );
+  return <div className="storefront-home">
+    <Hero />
+    <StoreBenefits />
+    <ShopCategories />
+    <FeaturedCollection variant="arrivals" />
+    <WardrobeStories />
+    <FeaturedCollection variant="featured" />
+    <BrandValues />
+    <FeaturedCollection variant="compact" />
+    <BrandStatement />
+    <BrandWordmarks />
+    <EditorialDiscovery />
+  </div>;
 }

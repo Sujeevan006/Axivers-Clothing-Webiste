@@ -74,16 +74,16 @@ export default function LookbookPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white text-[#060606] pt-24 sm:pt-28 pb-24">
+    <div className="min-h-screen bg-canvas text-ink pt-10 sm:pt-14 pb-24">
       {/* Editorial Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 text-center space-y-3">
-        <span className="text-[10px] uppercase tracking-[0.3em] text-[#c5a059] font-mono block">
+        <span className="text-sm normal-case tracking-[0.3em] text-accent font-mono block">
           Editorial Series &bull; Season 01
         </span>
-        <h1 className="text-3xl sm:text-5xl font-display font-bold tracking-tight uppercase text-[#060606]">
+        <h1 className="text-3xl sm:text-5xl font-display font-bold tracking-tight normal-case text-ink">
           The Axivers Lookbook
         </h1>
-        <p className="text-xs sm:text-sm font-light text-zinc-500 max-w-xl mx-auto leading-relaxed">
+        <p className="text-sm sm:text-sm font-normal text-zinc-500 max-w-xl mx-auto leading-relaxed">
           An exploration of form, drape, and movement. Documenting everyday essentials refined through athletic luxury and precision Sri Lankan craftsmanship.
         </p>
       </div>
@@ -94,9 +94,9 @@ export default function LookbookPage() {
           {looks.map((look) => (
             <div
               key={look.id}
-              className={`${look.colSpan} group rounded-2xl overflow-hidden border border-zinc-200 bg-[#fafafa] shadow-sm flex flex-col justify-between hover:border-zinc-400 transition-all`}
+              className={`${look.colSpan} group rounded-2xl overflow-hidden border border-zinc-200 bg-surface shadow-sm flex flex-col justify-between hover:border-zinc-400 transition-all`}
             >
-              <div className={`relative ${look.aspect} w-full overflow-hidden bg-[#f6f6f6]`}>
+              <div className={`relative ${look.aspect} w-full overflow-hidden bg-canvas`}>
                 <Image
                   src={look.image}
                   alt={look.title}
@@ -107,25 +107,25 @@ export default function LookbookPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-40 pointer-events-none" />
               </div>
 
-              <div className="p-6 sm:p-7 space-y-2 border-t border-zinc-200 bg-white">
+              <div className="p-6 sm:p-7 space-y-2 border-t border-zinc-200 bg-surface">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                  <h3 className="text-base font-display uppercase tracking-wider font-bold text-[#060606]">
+                  <h3 className="text-base font-display normal-case tracking-wider font-bold text-ink">
                     {look.title}
                   </h3>
-                  <span className="text-[11px] font-mono text-[#c5a059] font-medium">
+                  <span className="text-sm font-mono text-accent font-medium">
                     {look.specs}
                   </span>
                 </div>
-                <div className="text-xs font-mono text-zinc-500">
+                <div className="text-sm font-mono text-zinc-500">
                   {look.subtitle}
                 </div>
-                <p className="text-xs text-zinc-600 font-light leading-relaxed pt-1">
+                <p className="text-sm text-zinc-600 font-normal leading-relaxed pt-1">
                   {look.description}
                 </p>
                 <div className="pt-2">
                   <Link
                     href={look.productLink}
-                    className="inline-flex items-center space-x-1.5 text-xs font-display uppercase tracking-wider font-semibold text-[#060606] hover:text-zinc-600 transition-colors"
+                    className="inline-flex items-center space-x-1.5 text-sm font-display normal-case tracking-wider font-semibold text-ink hover:text-zinc-600 transition-colors"
                   >
                     <span>Garment Details</span>
                     <span>&rarr;</span>
@@ -138,16 +138,16 @@ export default function LookbookPage() {
 
         {/* Bottom Banner */}
         <div className="mt-16 text-center border-t border-zinc-200 pt-12 space-y-4 max-w-xl mx-auto">
-          <h4 className="text-sm uppercase tracking-[0.2em] font-display font-bold text-[#060606]">
+          <h4 className="text-sm normal-case tracking-[0.2em] font-display font-bold text-ink">
             Own Your Axis
           </h4>
-          <p className="text-xs text-zinc-500 font-light">
+          <p className="text-sm text-zinc-500 font-normal">
             Register for our private launch registry to receive invitations to inaugural small-batch releases.
           </p>
           <div className="pt-2">
             <Link
               href="/shop"
-              className="px-7 py-3.5 bg-[#060606] text-white font-display text-xs uppercase tracking-wider font-bold rounded-lg hover:bg-zinc-800 transition-colors inline-block shadow-sm"
+              className="px-7 py-3.5 bg-ink text-paper font-display text-sm normal-case tracking-wider font-bold rounded-lg hover:bg-zinc-800 transition-colors inline-block shadow-sm"
             >
               Explore Collection
             </Link>

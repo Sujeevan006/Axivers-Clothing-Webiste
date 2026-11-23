@@ -176,14 +176,14 @@ export function subscribeToActiveProducts(
         }
       });
 
-      if (products.length === 0) {
-        // Fallback to local products
-        products = productsDatabase
-          .filter(p => p.active && !isPlaceholderOrTestProduct(p))
-          .filter(p => (options?.featuredOnly ? p.featured : true))
-          .filter(p => (options?.category && options.category !== 'all' ? p.category === options.category : true))
-          .map(p => normalizeProduct(p));
-      }
+      // Merge any local catalog products that are not present in Firestore
+      const remoteIds = new Set(products.map(p => p.id));
+      const localActive = productsDatabase
+        .filter(p => p.active && !isPlaceholderOrTestProduct(p) && !remoteIds.has(p.id))
+        .filter(p => (options?.featuredOnly ? p.featured : true))
+        .filter(p => (options?.category && options.category !== 'all' ? p.category === options.category : true))
+        .map(p => normalizeProduct(p));
+      products = [...products, ...localActive];
 
       if (options?.gender && options.gender !== 'all') {
         products = products.filter(p => p.gender === options.gender || p.gender === 'unisex');
@@ -251,24 +251,14 @@ export async function getProducts(options?: {
       }
     });
 
-    if (products.length === 0) {
-      let fallback = productsDatabase
-        .filter(p => p.active && !isPlaceholderOrTestProduct(p))
-        .filter(p => (options?.featuredOnly ? p.featured : true))
-        .filter(p => (options?.category && options.category !== 'all' ? p.category === options.category : true))
-        .map(p => normalizeProduct(p));
-
-      if (options?.gender && options.gender !== 'all') {
-        fallback = fallback.filter(p => p.gender === options.gender || p.gender === 'unisex');
-      }
-      if (options?.isNewArrival) {
-        fallback = fallback.filter(p => p.isNewArrival);
-      }
-      if (options?.isBestSeller) {
-        fallback = fallback.filter(p => p.isBestSeller);
-      }
-      return fallback;
-    }
+    // Merge any local catalog products that are not present in Firestore
+    const remoteIds = new Set(products.map(p => p.id));
+    const localActive = productsDatabase
+      .filter(p => p.active && !isPlaceholderOrTestProduct(p) && !remoteIds.has(p.id))
+      .filter(p => (options?.featuredOnly ? p.featured : true))
+      .filter(p => (options?.category && options.category !== 'all' ? p.category === options.category : true))
+      .map(p => normalizeProduct(p));
+    products = [...products, ...localActive];
 
     if (options?.gender && options.gender !== 'all') {
       products = products.filter(p => p.gender === options.gender || p.gender === 'unisex');

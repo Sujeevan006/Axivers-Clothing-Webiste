@@ -47,17 +47,17 @@ export default function CareGuidePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white text-[#060606] pt-24 sm:pt-28 pb-20 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-canvas text-ink pt-10 sm:pt-14 pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-10 sm:space-y-12">
         {/* Header */}
         <div className="text-center space-y-2 pt-4">
-          <span className="text-[10px] uppercase tracking-[0.25em] text-[#c5a059] font-mono font-medium block">
+          <span className="text-sm normal-case tracking-[0.25em] text-accent font-mono font-medium block">
             Garment Longevity Protocol
           </span>
-          <h1 className="text-3xl sm:text-4xl font-display font-bold uppercase tracking-tight text-[#060606]">
+          <h1 className="text-3xl sm:text-4xl font-display font-bold normal-case tracking-tight text-ink">
             Care &amp; Maintenance
           </h1>
-          <p className="text-xs sm:text-sm font-light text-zinc-500 max-w-lg mx-auto leading-relaxed">
+          <p className="text-sm sm:text-sm font-normal text-zinc-500 max-w-lg mx-auto leading-relaxed">
             Preserve the lustre, drape, and structural recovery of your 180 GSM mercerized cotton essentials with our recommended care practices.
           </p>
         </div>
@@ -67,12 +67,12 @@ export default function CareGuidePage() {
           {careSections.map((sec) => (
             <div
               key={sec.title}
-              className="bg-[#fafafa] border border-zinc-200 rounded-2xl p-6 sm:p-7 space-y-3 shadow-sm"
+              className="bg-surface border border-zinc-200 rounded-2xl p-6 sm:p-7 space-y-3 shadow-sm"
             >
-              <h3 className="text-sm font-display font-bold uppercase tracking-wider text-[#060606] border-b border-zinc-200 pb-2">
+              <h3 className="text-sm font-display font-bold normal-case tracking-wider text-ink border-b border-zinc-200 pb-2">
                 {sec.title}
               </h3>
-              <ul className="space-y-2 text-xs font-light text-zinc-600 leading-relaxed list-disc pl-4">
+              <ul className="space-y-2 text-sm font-normal text-zinc-600 leading-relaxed list-disc pl-4">
                 {sec.rules.map((rule, idx) => (
                   <li key={idx}>{rule}</li>
                 ))}
@@ -82,8 +82,8 @@ export default function CareGuidePage() {
         </div>
 
         {/* Additional Note */}
-        <div className="bg-[#fafafa] border border-zinc-200 rounded-2xl p-6 text-xs text-zinc-600 space-y-2 shadow-sm">
-          <h4 className="font-display font-bold uppercase text-[#060606]">
+        <div className="bg-surface border border-zinc-200 rounded-2xl p-6 text-sm text-zinc-600 space-y-2 shadow-sm">
+          <h4 className="font-display font-bold normal-case text-ink">
             Why Mercerized Cotton Behaves Differently
           </h4>
           <p className="leading-relaxed">
@@ -93,12 +93,12 @@ export default function CareGuidePage() {
 
         {/* Concierge Link */}
         <div className="border-t border-zinc-200 pt-6 text-center space-y-2">
-          <p className="text-xs text-zinc-500">
+          <p className="text-sm text-zinc-500">
             Have questions regarding stain treatment or garment care?
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center space-x-1.5 text-xs font-display uppercase tracking-wider font-semibold text-[#060606] underline hover:text-zinc-600 transition-colors"
+            className="inline-flex items-center space-x-1.5 text-sm font-display normal-case tracking-wider font-semibold text-ink underline hover:text-zinc-600 transition-colors"
           >
             <span>Contact Axivers Concierge</span>
             <span>&rarr;</span>

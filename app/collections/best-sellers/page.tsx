@@ -13,7 +13,7 @@ const config: CollectionConfig = {
   tagline: 'Most Celebrated. Tested & Proven.',
   description:
     'The foundational pieces our community returns to time and again. Enduring quality, timeless athletic proportions, and proven durability in real-world wear.',
-  bannerImage: '/images/cat-piping-bg.png',
+  bannerImage: '/images/Urban Minimalist Fashion Duo.png',
   badge: 'Customer Favorites',
 };
 

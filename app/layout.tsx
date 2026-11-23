@@ -9,7 +9,7 @@ import { CartDrawer } from './components/CartDrawer';
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.axivers.com';
 
 export const viewport: Viewport = {
-  themeColor: '#060606',
+  themeColor: '#dedede',
   width: 'device-width',
   initialScale: 1,
 };
@@ -75,7 +75,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark scroll-smooth">
+    <html lang="en" className="scroll-smooth">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -84,11 +84,12 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen bg-brand-dark text-brand-light flex flex-col transition-colors duration-300 antialiased selection:bg-white selection:text-black">
+      <body className="min-h-screen bg-canvas text-ink flex flex-col transition-colors duration-300 antialiased selection:bg-surface selection:text-ink">
+        <a href="#main-content" className="skip-link">Skip to content</a>
         <AuthProvider>
           <CartProvider>
             <Header />
-            <main className="flex-grow">{children}</main>
+            <main id="main-content" className="flex-grow">{children}</main>
             <Footer />
             <CartDrawer />
           </CartProvider>
