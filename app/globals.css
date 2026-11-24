@@ -1565,8 +1565,17 @@ body:has(dialog[open]) {
   .category-section .category-caption p {
     display: none;
   }
-  .collection-arrivals {
-    padding-inline: clamp(2px, 1.5vw, 12px);
+  .featured-section.site-shell {
+    width: 100%;
+    padding-inline: 10px;
+  }
+  #main-content > .catalog-page,
+  #main-content > .collection-page {
+    margin-inline: 0;
+  }
+  .catalog-page,
+  .collection-page > .max-w-7xl {
+    padding-inline: 12px;
   }
   .collection-arrivals .section-heading {
     padding-right: 100px;
@@ -1592,7 +1601,7 @@ body:has(dialog[open]) {
   }
   .featured-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 25px 16px;
+    gap: 20px 10px;
   }
   .product-card-info {
     padding: 15px 10px 12px;
