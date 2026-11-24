@@ -258,22 +258,6 @@ body:has(dialog[open]) {
 .text-link:hover {
   opacity: 0.75;
 }
-.announcement-bar {
-  min-height: 47px;
-  background: #000;
-  border-bottom: 1px solid #333;
-  color: #e5e5e5;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 9px 16px;
-  font-size: 15px;
-}
-.announcement-bar a {
-  text-underline-offset: 4px;
-}
-
 .store-header {
   position: sticky;
   top: 0;
@@ -401,7 +385,7 @@ body:has(dialog[open]) {
   font-size: 15px;
 }
 
-/* Edge-to-edge campaign, with the reference's 116 / 66 px title scale. */
+/* Display the complete campaign image while preserving its proportions. */
 .campaign-hero {
   position: relative;
   min-height: 630px;
@@ -1463,15 +1447,6 @@ body:has(dialog[open]) {
   }
 }
 @media (max-width: 760px) {
-  .announcement-bar {
-    justify-content: center;
-    min-height: 38px;
-    font-size: 14px;
-    text-align: center;
-  }
-  .announcement-bar a {
-    display: none;
-  }
   .header-inner {
     min-height: 70px;
     gap: 10px;
@@ -1495,9 +1470,6 @@ body:has(dialog[open]) {
   }
   .campaign-shade {
     background: linear-gradient(0deg, #000e, #0008 55%, #0002);
-  }
-  .campaign-photo {
-    object-position: 66% center;
   }
   #main-content .campaign-copy h1 {
     font-size: 66px;

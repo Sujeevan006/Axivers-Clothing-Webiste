@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useCart } from '../context/CartContext';
-import { DEFAULT_STORE_SETTINGS, getStoreSettings, subscribeToStoreSettings } from '@/services/settingsService';
 import { SearchModal } from './SearchModal';
 import { StoreIcon } from './StoreIcon';
 
@@ -22,18 +21,12 @@ export function Header() {
   const pathname = usePathname();
   const { totalCartCount, setIsCartOpen } = useCart();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [storeSettings, setStoreSettings] = useState(DEFAULT_STORE_SETTINGS);
   const menuRef = useRef<HTMLDialogElement>(null);
 
-  useEffect(() => {
-    getStoreSettings().then(setStoreSettings);
-    return subscribeToStoreSettings(setStoreSettings);
-  }, []);
   useEffect(() => { menuRef.current?.close(); }, [pathname]);
 
   return (
     <>
-      <div className="announcement-bar"><span>{storeSettings.ordersEnabled ? 'Considered essentials. Crafted in Sri Lanka.' : 'A new everyday is coming. Explore our launch preview.'}</span><Link href={storeSettings.ordersEnabled ? '/shipping' : '/contact'}>{storeSettings.ordersEnabled ? 'Delivery information' : 'Stay in touch'}</Link></div>
       <header className="store-header">
         <div className="site-shell header-inner">
           <button className="icon-button mobile-menu-button" aria-label="Open navigation" onClick={() => menuRef.current?.showModal()}><StoreIcon name="menu" /></button>
