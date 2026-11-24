@@ -19,7 +19,7 @@ export function ShopCategories({ navigation = false }: { navigation?: boolean })
     { name: 'Essentials', copy: 'Less, but better', image: '/images/Modern Portrait in White Tee.png', href: '/collections/minimalist-essentials' },
     { name: 'New Arrivals', copy: 'A fresh everyday', image: '/images/pdp_white_piping.jpg', href: '/collections/new-arrivals' },
     { name: 'Best Sellers', copy: 'Find your next favorite', image: '/images/editorial-pedestal-black.png', href: '/collections/best-sellers' },
-  ];
+  ].filter(item => navigation || item.href !== '/collections/best-sellers');
   return <section className={`${navigation ? 'collection-navigation' : 'category-section'} site-shell`} aria-label="Shop collections">{!navigation && <div className="section-heading"><div><span className="eyebrow">FIND YOUR FIT</span><h2>Shop By Collection</h2></div><Link className="text-link" href="/shop">Explore all essentials <span aria-hidden="true">→</span></Link></div>}<div className="category-grid">{items.map(item => <Link href={item.href} key={item.name} className="category-tile"><div className="category-image"><Image src={item.image} alt={item.name + ' collection'} fill sizes="(max-width: 600px) 45vw, (max-width: 1000px) 30vw, 17vw" className="object-cover object-top" /></div><div className="category-caption"><h3>{item.name}</h3><p>{item.copy}</p><span aria-hidden="true">↗</span></div></Link>)}</div></section>;
 }
 

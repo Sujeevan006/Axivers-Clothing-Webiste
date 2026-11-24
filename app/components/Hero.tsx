@@ -19,7 +19,7 @@ export function Hero() {
         <Image src={slide.image} alt={slide.alt} fill priority={active === 0} sizes="100vw" className="campaign-photo" />
       </div>
       <div className="campaign-shade" />
-      <div className="campaign-inner">
+      <div className="campaign-inner site-shell">
         <div className="campaign-copy" aria-live="polite" aria-atomic="true">
           <span className="eyebrow">{slide.eyebrow}</span>
           <h1>{slide.first}<br /><span>{slide.second}</span></h1>

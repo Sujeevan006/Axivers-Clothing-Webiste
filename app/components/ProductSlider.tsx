@@ -2,11 +2,50 @@
 
 import { Children, useEffect, useId, useRef, useState, type ReactNode } from 'react';
 
-export function ProductSlider({ children, label }: { children: ReactNode; label: string }) {
+export function ProductSlider({ children, label, autoPlay = false, suspended = false }: { children: ReactNode; label: string; autoPlay?: boolean; suspended?: boolean }) {
   const slides = Children.toArray(children);
   const trackRef = useRef<HTMLDivElement>(null);
   const trackId = useId();
   const [position, setPosition] = useState({ previous: false, next: slides.length > 2 });
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [touching, setTouching] = useState(false);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track || !autoPlay || suspended || hovered || focused || touching || slides.length < 2) return;
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let timer: ReturnType<typeof setTimeout>;
+    const schedule = () => {
+      clearTimeout(timer);
+      if (document.hidden || reducedMotion.matches) return;
+      timer = setTimeout(() => {
+        const first = track.children[0] as HTMLElement | undefined;
+        const second = track.children[1] as HTMLElement | undefined;
+        const end = track.scrollWidth - track.clientWidth;
+        if (first && second && end > 6) {
+          const step = second.offsetLeft - first.offsetLeft;
+          track.scrollTo({
+            left: track.scrollLeft >= end - 6 ? 0 : Math.min(track.scrollLeft + step, end),
+            behavior: 'smooth',
+          });
+        }
+        schedule();
+      }, 3000);
+    };
+    // Restart the dwell time after scrolling, including manual swipes.
+    track.addEventListener('scroll', schedule, { passive: true });
+    document.addEventListener('visibilitychange', schedule);
+    reducedMotion.addEventListener('change', schedule);
+    schedule();
+    return () => {
+      clearTimeout(timer);
+      track.removeEventListener('scroll', schedule);
+      document.removeEventListener('visibilitychange', schedule);
+      reducedMotion.removeEventListener('change', schedule);
+    };
+  }, [autoPlay, suspended, hovered, focused, touching, slides.length]);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -44,7 +83,20 @@ export function ProductSlider({ children, label }: { children: ReactNode; label:
   };
 
   return (
-    <section className="product-slider" aria-label={label} aria-roledescription="carousel">
+    <section
+      className="product-slider"
+      aria-label={label}
+      aria-roledescription="carousel"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocusCapture={() => setFocused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false);
+      }}
+      onTouchStart={() => setTouching(true)}
+      onTouchEnd={() => setTouching(false)}
+      onTouchCancel={() => setTouching(false)}
+    >
       <div className="slider-toolbar">
         <span className="slider-count">{slides.length} {slides.length === 1 ? 'item' : 'items'}</span>
         <div className="slider-controls">

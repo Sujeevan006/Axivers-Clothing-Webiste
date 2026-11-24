@@ -16,10 +16,9 @@ export default function HomePage() {
     <div className="storefront-home">
       <Hero />
       <StoreBenefits />
-      <LogoMarquee />
-
       <ShopCategories />
       <FeaturedCollection variant="arrivals" />
+      <LogoMarquee />
       <WardrobeStories />
       <FeaturedCollection variant="featured" />
       <BrandValues />
