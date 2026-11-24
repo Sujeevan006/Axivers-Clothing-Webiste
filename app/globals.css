@@ -1562,6 +1562,12 @@ body:has(dialog[open]) {
   .category-caption p {
     font-size: 14px;
   }
+  .category-section .category-caption p {
+    display: none;
+  }
+  .collection-arrivals {
+    padding-inline: clamp(2px, 1.5vw, 12px);
+  }
   .collection-arrivals .section-heading {
     padding-right: 100px;
   }
@@ -1576,7 +1582,7 @@ body:has(dialog[open]) {
     gap: 6px;
   }
   .product-slider-track {
-    gap: 16px;
+    gap: 10px;
   }
   .product-slide {
     flex-basis: calc((100% - 16px) / 2);
@@ -1592,7 +1598,7 @@ body:has(dialog[open]) {
     padding: 15px 10px 12px;
   }
   .product-card h3 {
-    font-size: 16px;
+    font-size: 13px;
   }
   .product-badge {
     top: 9px;
@@ -1600,11 +1606,16 @@ body:has(dialog[open]) {
     padding: 2px 9px;
   }
   .product-card-bottom {
+    justify-content: center;
+    text-align: center;
     gap: 4px;
-    padding-inline: 6px;
+    padding: 12px 10px;
   }
   .product-card-bottom strong {
     font-size: 14px;
+  }
+  .product-cart-button {
+    display: none;
   }
   .wardrobe-grid {
     grid-template-columns: 1fr;
