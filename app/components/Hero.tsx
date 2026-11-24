@@ -16,7 +16,7 @@ export function Hero() {
   return (
     <section className="campaign-hero" aria-label="Axivers collections" aria-roledescription="carousel">
       <div className="campaign-backdrop" key={slide.image}>
-        <Image src={slide.image} alt={slide.alt} fill priority={active === 0} sizes="100vw" className="campaign-photo" />
+        <Image src={slide.image} alt={slide.alt} fill quality={90} priority={active === 0} sizes="100vw" className="campaign-photo" />
       </div>
       <div className="campaign-shade" />
       <div className="campaign-inner site-shell">

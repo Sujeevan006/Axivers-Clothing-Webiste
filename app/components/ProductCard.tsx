@@ -35,7 +35,8 @@ export function ProductCard({
           src={primaryImage}
           alt={product.name}
           fill
-          sizes="(max-width: 640px) 75vw, (max-width: 1024px) 33vw, 25vw"
+          sizes="(max-width: 760px) 50vw, (max-width: 1000px) 33vw, 25vw"
+          quality={90}
           className={`object-cover object-center product-card-img-primary ${
             secondaryImage
               ? 'transition-opacity duration-300 group-hover:opacity-0'
@@ -47,7 +48,8 @@ export function ProductCard({
             src={secondaryImage}
             alt={`${product.name} alternate view`}
             fill
-            sizes="(max-width: 640px) 75vw, (max-width: 1024px) 33vw, 25vw"
+            sizes="(max-width: 760px) 50vw, (max-width: 1000px) 33vw, 25vw"
+            quality={90}
             className="object-cover object-center product-card-img-secondary opacity-0 transition-opacity duration-300 group-hover:opacity-100"
           />
         )}

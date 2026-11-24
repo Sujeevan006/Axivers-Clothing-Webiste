@@ -4,6 +4,7 @@ const nextConfig = {
   images: {
     // Enable AVIF and WebP auto-conversion for optimal bandwidth and Core Web Vitals
     formats: ['image/avif', 'image/webp'],
+    qualities: [75, 85, 90],
     remotePatterns: [
       // Strictly target Firebase Cloud Storage buckets for axivers-clothing-65138
       {
