@@ -1,14 +1,24 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { StoreIcon } from './StoreIcon';
 
 export function StoreBenefits() {
   const items = [
-    { icon: '↗', title: 'Islandwide Delivery', copy: 'Explore delivery options', href: '/shipping' },
-    { icon: '↔', title: 'Find Your Fit', copy: 'Your size, made simple', href: '/size-guide' },
-    { icon: '◇', title: 'Considered Fabrics', copy: 'Comfort in every detail', href: '/fabric-technology' },
-    { icon: '⌁', title: 'Here To Help', copy: 'Talk to the Axivers team', href: '/contact' },
-  ];
-  return <section className="benefits-strip site-shell" aria-label="Shopping with Axivers">{items.map(item => <Link href={item.href} key={item.title}><span className="benefit-icon" aria-hidden="true">{item.icon}</span><div><h2>{item.title}</h2><p>{item.copy}</p></div></Link>)}</section>;
+    { icon: 'delivery', title: 'Islandwide Delivery', copy: 'Explore delivery options', href: '/shipping' },
+    { icon: 'ruler', title: 'Find Your Fit', copy: 'Your size, made simple', href: '/size-guide' },
+    { icon: 'fabric', title: 'Considered Fabrics', copy: 'Comfort in every detail', href: '/fabric-technology' },
+    { icon: 'support', title: 'Here To Help', copy: 'Talk to the Axivers team', href: '/contact' },
+  ] as const;
+  return (
+    <section className="benefits-strip site-shell" aria-label="Shopping with Axivers">
+      {items.map(item => (
+        <Link href={item.href} key={item.title} className="benefit-card">
+          <span className="benefit-icon"><StoreIcon name={item.icon} width={24} height={24} /></span>
+          <div><h2>{item.title}</h2><p>{item.copy}</p></div>
+        </Link>
+      ))}
+    </section>
+  );
 }
 
 export function ShopCategories({ navigation = false }: { navigation?: boolean }) {
